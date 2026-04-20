@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Belle Vita</title>
+
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#000000">
+
+<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+
+<style>
+body{
+margin:0;
+font-family:Arial;
+color:white;
+background:
+radial-gradient(circle at 50% 0%, rgba(255,215,0,0.15), transparent 40%),
+#000;
+}
+
+.app{max-width:420px;margin:auto;padding:12px;}
+
+.tabs{display:flex;gap:10px;}
+.tab{
+flex:1;
+padding:12px;
+text-align:center;
+border-radius:14px;
+background:#111;
+border:1px solid #444;
+}
+.active{background:red;}
+
+.logo{
+width:150px;
+display:block;
+margin:20px auto;
+border-radius:50%;
+box-shadow:0 0 20px gold;
+}
+
+.card{
+background:#111;
+border-radius:20px;
+padding:15px;
+margin-top:15px;
+border:1px solid gold;
+}
+
+input{
+width:100%;
+padding:10px;
+margin-top:8px;
+border-radius:10px;
+border:none;
+background:#222;
+color:white;
+}
+
+button{
+width:100%;
+padding:10px;
+margin-top:10px;
+border:none;
+border-radius:10px;
+font-weight:bold;
+}
+
+.btn-red{background:red;}
+.btn-gold{background:gold;color:black;}
+.btn-green{background:green;}
+
+.big{
+font-size:30px;
+text-align:center;
+color:gold;
+}
+
+.hidden{display:none;}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<div class="tabs">
+<div class="tab active" onclick="tab('reg')">Registro</div>
+<div class="tab" onclick="tab('rep')">Reporte</div>
+</div>
+
+<img id="logo" class="logo" src="logo.png">
+<input type="file" id="fileInput" hidden accept="image/*">
+
+<div id="reg">
+
+<div class="card">
+    <input id="fecha" type="date">
+<input id="cliente" placeholder="Cliente">
+<input id="total" type="number" placeholder="Total $">
+<button class="btn-red" onclick="add()">Guardar</button>
+</div>
+
+<div class="card">
+<input id="cerrado" type="number" placeholder="Producto cerrado">
+<button class="btn-red" onclick="addCerrado()">Agregar</button>
+</div>
+
+<div class="card">
+<div id="lista"></div>
+</div>
+
+</div>
+
+<div id="rep" class="hidden">
+
+<div id="reporte" class="card"></div>
+
+<button class="btn-gold" onclick="generar()">Actualizar</button>
+<button class="btn-green" onclick="capturar()">📸 Imagen</button>
+<button class="btn-green" onclick="whatsapp()">📤 WhatsApp</button>
+
+</div>
+
+</div>
+
+<script>
+
+// PWA
+if('serviceWorker' in navigator){
+navigator.serviceWorker.register('service-worker.js');
+}
+
+// LOGO editable
+logo.onclick=()=>fileInput.click();
+
+fileInput.onchange=e=>{
+let r=new FileReader();
+r.onload=()=>{
+localStorage.setItem("logoCustom",r.result);
+logo.src=r.result;
+}
+r.readAsDataURL(e.target.files[0]);
+};
+
+if(localStorage.getItem("logoCustom")){
+logo.src=localStorage.getItem("logoCustom");
+}
+
+// DATOS
+let datos=JSON.parse(localStorage.getItem("datos"))||[];
+
+function save(){localStorage.setItem("datos",JSON.stringify(datos));}
+function hoy(){return new Date().toLocaleDateString();}
+
+// TABS
+function tab(t){
+reg.classList.toggle("hidden",t!="reg");
+rep.classList.toggle("hidden",t!="rep");
+document.querySelectorAll(".tab")[0].classList.toggle("active",t=="reg");
+document.querySelectorAll(".tab")[1].classList.toggle("active",t=="rep");
+if(t=="rep") generar();
+}
+
+// ADD
+function add(){
+let c=cliente.value;
+let t=parseFloat(total.value);
+if(!t)return;
+
+datos.push({fecha:hoy(),cliente:c,total:t,tipo:"normal"});
+save(); update();
+cliente.value=""; total.value="";
+}
+
+function addCerrado(){
+let m=parseFloat(cerrado.value);
+if(!m)return;
+
+datos.push({fecha:hoy(),cliente:"CERRADO",total:m,tipo:"cerrado"});
+save(); update();
+cerrado.value="";
+}
+
+// LISTA
+function update(){
+let html="";
+datos.forEach(d=>{
+if(d.fecha===hoy()){
+if(d.tipo==="normal") html+=`<p>🥤 ${d.cliente} - $${d.total}</p>`;
+if(d.tipo==="cerrado") html+=`<p>📦 $${d.total}</p>`;
+}
+});
+lista.innerHTML=html;
+}
+
+// SEMANA
+function inicioSemana(){
+let d=new Date();
+let day=d.getDay();
+let diff=d.getDate()-day+(day===5?0:(day<5?-7:0))+5;
+return new Date(d.setDate(diff));
+}
+
+// REPORTE
+function generar(){
+let h=0,s=0,m=0;
+let hoyStr=hoy();
+let sem=inicioSemana();
+let mes=new Date(new Date().getFullYear(), new Date().getMonth(),1);
+
+datos.forEach(d=>{
+let f=new Date(d.fecha);
+if(d.fecha===hoyStr && d.tipo==="normal") h+=d.total;
+if(f>=sem && d.tipo==="normal") s+=d.total;
+if(f>=mes && d.tipo==="normal") m+=d.total;
+});
+
+reporte.innerHTML=`
+<h3 style="text-align:center;color:gold;">BELLE VITA</h3>
+<div class="big">$${h}</div>
+<p style="text-align:center;">🥤 ${(h/90).toFixed(2)} consumos</p>
+<hr>
+<p>🔴 $${(h*0.7).toFixed(2)}</p>
+<p>🟢 $${(h*0.3).toFixed(2)}</p>
+<hr>
+<p>Semana 🔴 $${(s*0.7).toFixed(2)} | 🟢 $${(s*0.3).toFixed(2)}</p>
+<p>Mes 🔴 $${(m*0.7).toFixed(2)} | 🟢 $${(m*0.3).toFixed(2)}</p>
+`;
+}
+
+// IMAGEN
+function capturar(){
+html2canvas(reporte).then(c=>{
+let img=c.toDataURL();
+let a=document.createElement("a");
+a.href=img;
+a.download="reporte.png";
+a.click();
+});
+}
+
+// WHATSAPP
+function whatsapp(){
+html2canvas(reporte).then(c=>{
+let img=c.toDataURL("image/png");
+let a=document.createElement("a");
+a.href=img;
+a.download="reporte.png";
+a.click();
+alert("Imagen lista, envíala en WhatsApp 📲");
+});
+}
+
+update();
+</script>
+
+</body>
+</html>
