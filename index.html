@@ -11,102 +11,53 @@
 body{
 margin:0;
 font-family:sans-serif;
-background:radial-gradient(circle at top,#1a1a1a,#000);
+background:radial-gradient(circle,#1a1a1a,#000);
 color:white;
 }
 
-/* CONTENEDOR */
-.app{
-max-width:360px;
-margin:auto;
-padding:10px;
-}
+.app{max-width:360px;margin:auto;padding:10px;}
 
-/* TABS */
-.tabs{
-display:flex;
-gap:6px;
-}
-.tab{
-flex:1;
-padding:8px;
-text-align:center;
-border-radius:10px;
-background:#111;
-border:1px solid #333;
-font-size:13px;
-}
-.tab.active{
-background:linear-gradient(#ff3c3c,#7a0000);
-box-shadow:0 0 8px rgba(255,0,0,.6);
-}
+.tabs{display:flex;gap:6px;}
+.tab{flex:1;padding:8px;text-align:center;border-radius:10px;background:#111;border:1px solid #333;font-size:13px;}
+.tab.active{background:red;}
 
-/* LOGO */
 .logo{
-width:110px;
-height:110px;
-object-fit:contain;
-display:block;
-margin:12px auto;
-border-radius:50%;
-box-shadow:0 0 12px gold;
-cursor:pointer;
+width:110px;height:110px;object-fit:contain;
+display:block;margin:12px auto;border-radius:50%;
+box-shadow:0 0 15px gold;cursor:pointer;
 }
 
-/* CARDS */
 .card{
-background:linear-gradient(145deg,#111,#1a1a1a);
-padding:10px;
-border-radius:10px;
-margin-top:8px;
-border:1px solid gold;
-box-shadow:0 0 8px rgba(255,215,0,.2);
+background:#111;padding:10px;border-radius:10px;
+margin-top:8px;border:1px solid gold;
 }
 
-/* INPUTS MÁS COMPACTOS */
-input{
-width:100%;
-padding:6px;
-margin-top:5px;
-border-radius:6px;
-border:none;
-background:#222;
-color:white;
-font-size:13px;
+input,select{
+width:100%;padding:6px;margin-top:5px;
+border-radius:6px;border:none;background:#222;color:white;font-size:13px;
 }
 
-/* BOTONES */
 button{
-width:100%;
-padding:7px;
-margin-top:6px;
-border:none;
-border-radius:7px;
-font-weight:bold;
-font-size:13px;
+width:100%;padding:7px;margin-top:6px;
+border:none;border-radius:7px;font-weight:bold;font-size:13px;
 }
 
 .btn-red{background:#e60000;}
 .btn-gold{background:gold;color:black;}
 .btn-green{background:#2ecc71;}
 
-.lista p{
-margin:3px 0;
-padding:3px 0;
-border-bottom:1px solid #333;
-font-size:13px;
-}
+.lista p{margin:3px 0;font-size:13px;border-bottom:1px solid #333;padding:3px;}
 
 .hidden{display:none;}
 
-.flyer{
-text-align:center;
-padding:12px;
-border-radius:12px;
-background:black;
-border:1px solid gold;
-box-shadow:0 0 15px rgba(255,215,0,.4);
+/* 🔥 CONSUMOS RESALTADOS */
+.consumos{
+font-size:28px;
+color:gold;
+text-shadow:0 0 10px gold;
+margin:10px 0;
 }
+
 </style>
 </head>
 
@@ -114,15 +65,13 @@ box-shadow:0 0 15px rgba(255,215,0,.4);
 
 <div class="app">
 
-<!-- TABS -->
 <div class="tabs">
 <div class="tab active" onclick="tab('reg')">Registro</div>
 <div class="tab" onclick="tab('rep')">Reporte</div>
 </div>
 
-<!-- LOGO (CLICK PARA CAMBIAR) -->
 <img id="logo" class="logo">
-<input type="file" id="fileLogo" accept="image/*" hidden>
+<input type="file" id="fileLogo" hidden>
 
 <!-- REGISTRO -->
 <div id="reg">
@@ -141,7 +90,12 @@ box-shadow:0 0 15px rgba(255,215,0,.4);
 
 <div class="card">
 <h4>Clientes del día</h4>
-<div id="lista" class="lista"></div>
+<div id="lista"></div>
+</div>
+
+<div class="card">
+<h4>Producto cerrado</h4>
+<div id="cerrados"></div>
 </div>
 
 </div>
@@ -150,13 +104,18 @@ box-shadow:0 0 15px rgba(255,215,0,.4);
 <div id="rep" class="hidden">
 
 <div class="card">
+<select id="tipoReporte" onchange="generar()">
+<option value="dia">Diario</option>
+<option value="semana">Semanal</option>
+<option value="mes">Mensual</option>
+</select>
+
 <input id="filtro" type="date" onchange="generar()">
 </div>
 
-<div id="reporte" class="card flyer"></div>
+<div id="reporte" class="card"></div>
 
-<button class="btn-gold" onclick="generar()">Actualizar</button>
-<button class="btn-green" onclick="capturar()">📸 Imagen</button>
+<button class="btn-gold" onclick="capturar()">📸 Imagen</button>
 
 </div>
 
@@ -167,111 +126,109 @@ box-shadow:0 0 15px rgba(255,215,0,.4);
 let datos = JSON.parse(localStorage.getItem("datos")) || [];
 
 /* LOGO */
-let logo = document.getElementById("logo");
-let fileLogo = document.getElementById("fileLogo");
-
-logo.onclick = ()=> fileLogo.click();
-
-fileLogo.onchange = e=>{
-let reader = new FileReader();
-reader.onload = ()=>{
-localStorage.setItem("logo", reader.result);
-logo.src = reader.result;
+logo.onclick=()=>fileLogo.click();
+fileLogo.onchange=e=>{
+let r=new FileReader();
+r.onload=()=>{
+localStorage.setItem("logo",r.result);
+logo.src=r.result;
 };
-reader.readAsDataURL(e.target.files[0]);
+r.readAsDataURL(e.target.files[0]);
 };
+logo.src=localStorage.getItem("logo")||"logo.png";
 
-let savedLogo = localStorage.getItem("logo");
-logo.src = savedLogo ? savedLogo : "logo.png";
-
-/* STORAGE */
-function save(){
-localStorage.setItem("datos", JSON.stringify(datos));
-}
-
-function hoy(){
-return new Date().toISOString().split("T")[0];
-}
+/* FECHA */
+function hoy(){return new Date().toISOString().split("T")[0];}
 
 /* TABS */
 function tab(t){
-reg.classList.toggle("hidden", t!="reg");
-rep.classList.toggle("hidden", t!="rep");
-
-document.querySelectorAll(".tab")[0].classList.toggle("active", t=="reg");
-document.querySelectorAll(".tab")[1].classList.toggle("active", t=="rep");
-
+reg.classList.toggle("hidden",t!="reg");
+rep.classList.toggle("hidden",t!="rep");
+document.querySelectorAll(".tab")[0].classList.toggle("active",t=="reg");
+document.querySelectorAll(".tab")[1].classList.toggle("active",t=="rep");
 if(t=="rep") generar();
 }
 
 /* AGREGAR */
 function add(){
-let f = fecha.value || hoy();
-let c = cliente.value;
-let t = parseFloat(total.value);
-if(!t) return;
-
-datos.push({fecha:f, cliente:c, total:t, tipo:"normal"});
-save();
-update();
-
-cliente.value="";
-total.value="";
+let f=fecha.value||hoy();
+let c=cliente.value;
+let t=parseFloat(total.value);
+if(!t)return;
+datos.push({fecha:f,cliente:c,total:t,tipo:"normal"});
+save();update();
+cliente.value="";total.value="";
 }
 
-/* CERRADO */
 function addCerrado(){
-let f = fecha.value || hoy();
-let m = parseFloat(cerrado.value);
-if(!m) return;
-
-datos.push({fecha:f, total:m, tipo:"cerrado"});
-save();
-update();
-
+let f=fecha.value||hoy();
+let m=parseFloat(cerrado.value);
+if(!m)return;
+datos.push({fecha:f,total:m,tipo:"cerrado"});
+save();update();
 cerrado.value="";
 }
 
-/* LISTA */
+function save(){localStorage.setItem("datos",JSON.stringify(datos));}
+
+/* LISTAS */
 function update(){
-let html="";
-let fSel = fecha.value || hoy();
+let fSel=fecha.value||hoy();
+let html="",html2="";
 
 datos.forEach(d=>{
-if(d.fecha === fSel){
+if(d.fecha===fSel){
 if(d.tipo==="normal") html+=`<p>🥤 ${d.cliente} - $${d.total}</p>`;
-if(d.tipo==="cerrado") html+=`<p>📦 $${d.total}</p>`;
+if(d.tipo==="cerrado") html2+=`<p>📦 $${d.total}</p>`;
 }
 });
 
-lista.innerHTML = html;
+lista.innerHTML=html;
+cerrados.innerHTML=html2;
+}
+
+/* SEMANA VIERNES A JUEVES */
+function inicioSemana(fecha){
+let d=new Date(fecha);
+let day=d.getDay();
+let diff=d.getDate()-day+5;
+return new Date(d.setDate(diff));
 }
 
 /* REPORTE */
 function generar(){
-let fSel = filtro.value || hoy();
-let total = 0;
+let tipo=tipoReporte.value;
+let fSel=new Date(filtro.value||hoy());
+
+let total=0;
 
 datos.forEach(d=>{
-if(d.fecha === fSel && d.tipo==="normal"){
-total += d.total;
+let fd=new Date(d.fecha);
+
+if(tipo==="dia" && d.fecha===fSel.toISOString().split("T")[0] && d.tipo==="normal") total+=d.total;
+
+if(tipo==="semana"){
+let ini=inicioSemana(fSel);
+let fin=new Date(ini); fin.setDate(ini.getDate()+6);
+if(fd>=ini && fd<=fin && d.tipo==="normal") total+=d.total;
 }
+
+if(tipo==="mes"){
+if(fd.getMonth()===fSel.getMonth() && fd.getFullYear()===fSel.getFullYear() && d.tipo==="normal") total+=d.total;
+}
+
 });
 
-let consumos = (total/90).toFixed(2);
-let rojo = (total*0.7).toFixed(2);
-let verde = (total*0.3).toFixed(2);
+let consumos=(total/90).toFixed(2);
+let rojo=(total*0.7).toFixed(2);
+let verde=(total*0.3).toFixed(2);
 
-reporte.innerHTML = `
-<h2 style="color:gold;">BELLE VITA</h2>
-<p>${fSel}</p>
+reporte.innerHTML=`
+<h3 style="color:gold;">REPORTE</h3>
 
-<h1 style="color:gold;">$${total}</h1>
+<div class="consumos">${consumos} 🥤</div>
 
-<p>🥤 ${consumos} consumos</p>
-
-<hr>
-
+<p>Total: $${total}</p>
 <p>🔴 $${rojo}</p>
 <p>🟢 $${verde}</p>
 `;
@@ -279,17 +236,17 @@ reporte.innerHTML = `
 
 /* IMAGEN */
 function capturar(){
-html2canvas(reporte).then(canvas=>{
-let link = document.createElement("a");
+html2canvas(reporte).then(c=>{
+let link=document.createElement("a");
 link.download="reporte.png";
-link.href=canvas.toDataURL();
+link.href=c.toDataURL();
 link.click();
 });
 }
 
 /* INIT */
-fecha.value = hoy();
-filtro.value = hoy();
+fecha.value=hoy();
+filtro.value=hoy();
 update();
 
 </script>
