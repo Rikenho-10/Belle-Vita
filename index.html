@@ -5,76 +5,57 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Belle Vita PRO</title>
 
+<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+
 <style>
 body{
 margin:0;
 font-family:sans-serif;
 background:radial-gradient(circle,#1a1a1a,#000);
-color:#fff;
+color:white;
 }
 
-/* TABS */
 .tabs{display:flex;gap:5px;padding:10px;}
 .tab{
-flex:1;
-padding:8px;
-text-align:center;
-border-radius:10px;
-background:#111;
+flex:1;padding:8px;text-align:center;
+border-radius:10px;background:#111;
 border:1px solid gold;
 }
-.active{background:linear-gradient(gold,#5a3d00);color:#000;}
+.active{background:gold;color:black;}
 
-/* LOGO */
 .logo{
-width:100px;
-display:block;
-margin:10px auto;
+width:90px;display:block;margin:10px auto;
 }
 
-/* CARDS */
 .card{
-background:rgba(0,0,0,0.7);
+background:#111;padding:10px;
+margin:10px;border-radius:12px;
 border:1px solid gold;
-border-radius:15px;
-padding:10px;
-margin:10px;
-box-shadow:0 0 10px gold;
 }
 
-/* INPUTS */
-input{
-width:95%;
-padding:6px;
-margin-top:5px;
-border-radius:6px;
-border:none;
-background:#222;
-color:white;
+input,select{
+width:92%;
+padding:6px;margin-top:5px;
+border-radius:6px;border:none;
+background:#222;color:white;
 font-size:13px;
 }
 
-/* BOTONES */
 button{
-width:100%;
-padding:7px;
-margin-top:6px;
-border:none;
-border-radius:8px;
+width:100%;padding:7px;margin-top:6px;
+border:none;border-radius:8px;
 font-weight:bold;
 }
 .red{background:#ff2e2e;}
 .gold{background:gold;color:black;}
 .green{background:#2ecc71;}
+.del{background:#555;font-size:11px;}
 
-/* LISTA */
 .lista p{
 margin:3px 0;
 border-bottom:1px solid #333;
-padding:3px;
 }
 
-/* HIDDEN */
 .hidden{display:none;}
 </style>
 </head>
@@ -86,22 +67,21 @@ padding:3px;
 <div class="tab" onclick="tab('rep')">Reporte</div>
 </div>
 
-<img id="logo" class="logo">
+<img src="logo.png" class="logo">
 
 <!-- REGISTRO -->
 <div id="reg">
 
 <div class="card">
-<h3>Registrar venta</h3>
+<input type="date" id="fecha">
 <input id="cliente" placeholder="Cliente">
 <input id="total" placeholder="Total $">
 <button class="red" onclick="add()">Guardar</button>
 </div>
 
 <div class="card">
-<h3>Producto cerrado</h3>
-<input id="clienteC" placeholder="Cliente">
-<input id="cerrado" placeholder="Monto $">
+<input id="clienteC" placeholder="Cliente cerrado">
+<input id="cerrado" placeholder="Monto">
 <button class="gold" onclick="addCerrado()">Agregar</button>
 </div>
 
@@ -113,12 +93,7 @@ padding:3px;
 <div id="rep" class="hidden">
 
 <div class="card">
-<h3>Seleccionar reporte</h3>
-<select id="tipoRep" onchange="generar()">
-<option value="dia">Día</option>
-<option value="semana">Semana</option>
-<option value="mes">Mes</option>
-</select>
+<h3>Reporte del día</h3>
 </div>
 
 <div class="card" id="reporte"></div>
@@ -127,35 +102,39 @@ padding:3px;
 
 </div>
 
-<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
-
 <script>
-let datos = JSON.parse(localStorage.getItem("datos"))||[];
+
+let datos = JSON.parse(localStorage.getItem("datos")) || [];
 
 function save(){
-localStorage.setItem("datos",JSON.stringify(datos));
+localStorage.setItem("datos", JSON.stringify(datos));
 }
 
 function hoy(){
 return new Date().toISOString().split("T")[0];
 }
 
-function tab(t){
-reg.classList.toggle("hidden",t!="reg");
-rep.classList.toggle("hidden",t!="rep");
+fecha.value = hoy();
 
-document.querySelectorAll(".tab")[0].classList.toggle("active",t=="reg");
-document.querySelectorAll(".tab")[1].classList.toggle("active",t=="rep");
+/* TABS */
+function tab(t){
+reg.classList.toggle("hidden", t!="reg");
+rep.classList.toggle("hidden", t!="rep");
+
+document.querySelectorAll(".tab")[0].classList.toggle("active", t=="reg");
+document.querySelectorAll(".tab")[1].classList.toggle("active", t=="rep");
 
 if(t=="rep") generar();
 }
 
+/* AGREGAR */
 function add(){
-let c=cliente.value;
-let t=parseFloat(total.value);
-if(!t)return;
+let f = fecha.value || hoy();
+let c = cliente.value;
+let t = parseFloat(total.value);
+if(!t) return;
 
-datos.push({fecha:hoy(),cliente:c,total:t,tipo:"normal"});
+datos.push({fecha:f, cliente:c, total:t, tipo:"normal"});
 save();
 update();
 
@@ -164,11 +143,12 @@ total.value="";
 }
 
 function addCerrado(){
-let c=clienteC.value;
-let t=parseFloat(cerrado.value);
-if(!t)return;
+let f = fecha.value || hoy();
+let c = clienteC.value || "Sin nombre";
+let t = parseFloat(cerrado.value);
+if(!t) return;
 
-datos.push({fecha:hoy(),cliente:c,total:t,tipo:"cerrado"});
+datos.push({fecha:f, cliente:c, total:t, tipo:"cerrado"});
 save();
 update();
 
@@ -176,74 +156,156 @@ clienteC.value="";
 cerrado.value="";
 }
 
-function update(){
-let html="";
-datos.filter(d=>d.fecha==hoy()).forEach(d=>{
-html+=`<p>${d.cliente||"—"} - $${d.total} (${d.tipo})</p>`;
-});
-lista.innerHTML=html;
+/* ELIMINAR */
+function borrar(i){
+datos.splice(i,1);
+save();
+update();
 }
 
+/* LISTA */
+function update(){
+let f = fecha.value || hoy();
+let html="";
+
+datos.forEach((d,i)=>{
+if(d.fecha==f){
+html+=`
+<p>
+${d.cliente||"—"} - $${d.total} (${d.tipo})
+<br><button class="del" onclick="borrar(${i})">Eliminar</button>
+</p>`;
+}
+});
+
+lista.innerHTML = html;
+}
+
+/* REPORTE */
 function generar(){
-let tipo=tipoRep.value;
-let h=0,c=0;
+
+let f = hoy();
+
+let ventas=0;
+let cerrado=0;
+
 let listaClientes="";
+let listaCerrados="";
 
 datos.forEach(d=>{
-if(d.fecha==hoy()){
+if(d.fecha==f){
+
 if(d.tipo=="normal"){
-h+=d.total;
-listaClientes+=`<p>${d.cliente} - $${d.total}</p>`;
-}else{
-c+=d.total;
+ventas+=d.total;
+listaClientes+=`<p>🥤 ${d.cliente} - $${d.total}</p>`;
 }
+
+if(d.tipo=="cerrado"){
+cerrado+=d.total;
+listaCerrados+=`<p>📦 ${d.cliente} - $${d.total}</p>`;
+}
+
 }
 });
 
+let total = ventas + cerrado;
+
+let rojo = (total * 0.7).toFixed(2);
+let verde = (total * 0.3).toFixed(2);
+
 reporte.innerHTML=`
-<h3>Reporte ${tipo}</h3>
-<p>💰 Ventas: $${h}</p>
-<p>📦 Producto cerrado: $${c}</p>
-<h4>Clientes:</h4>
+<h3>📊 REPORTE</h3>
+
+<p>💰 Total: $${total}</p>
+<p>🥤 Ventas: $${ventas}</p>
+<p>📦 Cerrado: $${cerrado}</p>
+
+<p>🔴 Rojo: $${rojo}</p>
+<p>🟢 Verde: $${verde}</p>
+
+<hr>
+
+<h4>Clientes</h4>
 ${listaClientes}
+
+<h4>Cerrados</h4>
+${listaCerrados}
 `;
 }
 
+/* WHATSAPP */
 function whatsapp(){
+
+let f = hoy();
+
+let ventas=0;
+let cerrado=0;
+
+let listaClientes="";
+let listaCerrados="";
+
+datos.forEach(d=>{
+if(d.fecha==f){
+
+if(d.tipo=="normal"){
+ventas+=d.total;
+listaClientes+=`<p>🥤 ${d.cliente} - $${d.total}</p>`;
+}
+
+if(d.tipo=="cerrado"){
+cerrado+=d.total;
+listaCerrados+=`<p>📦 ${d.cliente} - $${d.total}</p>`;
+}
+
+}
+});
+
+let total = ventas + cerrado;
+
+let rojo = (total * 0.7).toFixed(2);
+let verde = (total * 0.3).toFixed(2);
 
 let div=document.createElement("div");
 
 div.style.padding="20px";
-div.style.background="radial-gradient(#111,#000)";
+div.style.background="#000";
 div.style.color="white";
 div.style.textAlign="center";
 div.style.borderRadius="20px";
 div.style.border="2px solid gold";
 
-/* ROSAS SUTIL */
-div.style.backgroundImage="radial-gradient(circle at 20% 20%, rgba(255,0,80,0.15), transparent 40%), radial-gradient(circle at 80% 80%, rgba(255,0,80,0.1), transparent 40%)";
-
-let h=0,c=0;
-
-datos.forEach(d=>{
-if(d.fecha==hoy()){
-if(d.tipo=="normal") h+=d.total;
-else c+=d.total;
-}
-});
+/* 🌹 ROSAS */
+div.style.backgroundImage=`
+radial-gradient(circle at 20% 20%, rgba(255,0,80,0.2), transparent 40%),
+radial-gradient(circle at 80% 80%, rgba(255,0,80,0.15), transparent 40%)
+`;
 
 div.innerHTML=`
-<img src="${logo.src}" style="width:80px"><br>
-<h2>BELLE VITA</h2>
-<h3>${hoy()}</h3>
+<img src="logo.png" style="width:80px"><br>
 
-<p>💰 Ventas: $${h}</p>
-<p>📦 Cerrado: $${c}</p>
+<h2 style="color:gold;">BELLE VITA</h2>
+<h3>${f}</h3>
+
+<p>💰 Total: $${total}</p>
+<p>🥤 Ventas: $${ventas}</p>
+<p>📦 Cerrado: $${cerrado}</p>
+
+<p>🔴 $${rojo}</p>
+<p>🟢 $${verde}</p>
+
+<hr>
+
+<div style="text-align:left">
+${listaClientes}
+${listaCerrados}
+</div>
 `;
 
 html2canvas(div).then(canvas=>{
+let url=canvas.toDataURL("image/png");
+
 let link=document.createElement("a");
-link.href=canvas.toDataURL();
+link.href=url;
 link.download="reporte.png";
 link.click();
 
@@ -251,10 +313,8 @@ window.open("https://wa.me/");
 });
 }
 
-/* LOGO LOCAL */
-logo.src="logo.png";
-
 update();
+
 </script>
 
 </body>
