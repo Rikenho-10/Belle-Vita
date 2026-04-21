@@ -1,9 +1,10 @@
+```html
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Belle Vita - Premium Edition</title>
+    <title>Belle Vita Premium - Ricardo</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Playfair+Display:ital,wght@0,700;1,700&display=swap');
@@ -24,34 +25,36 @@
         
         .app { width: 100%; max-width: 480px; background: var(--crema); min-height: 100vh; display: flex; flex-direction: column; }
 
-        /* HEADER */
-        .header { background: var(--v-club); padding: 15px; text-align: center; border-radius: 0 0 40px 40px; box-shadow: 0 8px 25px rgba(0,0,0,0.3); z-index: 5; }
-        .logo-ring { width: 60px; height: 60px; background: white; margin: 0 auto 10px; border-radius: 50%; border: 2px solid var(--oro); display: flex; align-items: center; justify-content: center; overflow: hidden; animation: glow 2s infinite ease-in-out; cursor: pointer; }
-        @keyframes glow { 0%, 100% { box-shadow: 0 0 10px var(--oro); } 50% { box-shadow: 0 0 20px var(--oro-luz), 0 0 35px var(--oro); } }
+        /* HEADER PREMIUM */
+        .header { background: var(--v-club); padding: 15px; text-align: center; border-radius: 0 0 40px 40px; box-shadow: 0 8px 25px rgba(0,0,0,0.3); z-index: 50; }
+        .logo-ring { width: 65px; height: 65px; background: white; margin: 0 auto 10px; border-radius: 50%; border: 2px solid var(--oro); display: flex; align-items: center; justify-content: center; overflow: hidden; animation: glow 2s infinite ease-in-out; cursor: pointer; }
+        @keyframes glow { 0%, 100% { box-shadow: 0 0 10px var(--oro); } 50% { box-shadow: 0 0 25px var(--oro-luz), 0 0 40px var(--oro); } }
         .logo-ring img { width: 100%; height: 100%; object-fit: cover; }
-        .logo-ring b { font-size: 20px; color: var(--v-club); }
-        .header h1 { font-family: 'Playfair Display', serif; color: var(--oro); margin: 0; font-size: 16px; text-transform: uppercase; letter-spacing: 2px; }
+        .logo-ring b { font-size: 24px; color: var(--v-club); }
+        .header h1 { font-family: 'Playfair Display', serif; color: var(--oro); margin: 0; font-size: 18px; text-transform: uppercase; letter-spacing: 2px; }
 
-        /* TABS */
-        .tabs { display: flex; padding: 0 20px; gap: 15px; margin-top: -20px; z-index: 10; }
+        /* TABS NAVEGACIÓN */
+        .tabs { display: flex; padding: 0 20px; gap: 15px; margin-top: -20px; z-index: 100; position: relative; }
         .tab { flex: 1; padding: 15px; border-radius: 18px; border: none; font-weight: 800; font-size: 11px; cursor: pointer; background: var(--crema); box-shadow: var(--f-fuera); color: #888; transition: 0.3s; }
         .tab.active { background: var(--v-club); color: var(--oro); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
 
-        .container { padding: 30px 20px; flex: 1; }
+        .container { padding: 35px 20px; flex: 1; }
         .card { background: var(--crema); border-radius: 25px; padding: 20px; margin-bottom: 20px; box-shadow: var(--f-fuera); }
         .card-label { font-size: 10px; font-weight: 900; color: #aa8507; text-transform: uppercase; margin-bottom: 12px; display: block; }
 
+        /* INPUTS & BISELADO */
         input, select { width: 100%; padding: 14px; border: none; border-radius: 15px; background: var(--crema); box-shadow: var(--f-dentro); margin-bottom: 12px; font-family: inherit; font-weight: 700; color: var(--v-club); }
         .btn { width: 100%; padding: 16px; border-radius: 18px; border: none; font-weight: 900; text-transform: uppercase; cursor: pointer; color: white; box-shadow: 4px 4px 10px rgba(0,0,0,0.2); transition: 0.2s; }
         .btn-oro { background: linear-gradient(145deg, var(--oro-luz), var(--oro)); }
         .btn-dark { background: var(--v-club); color: var(--oro); }
         .btn-green { background: #27ae60; margin-top: 20px; font-size: 16px; }
 
+        /* LOG DIARIO */
         .mov-item { display: flex; justify-content: space-between; align-items: center; padding: 12px; background: white; border-radius: 15px; margin-bottom: 10px; border-left: 4px solid var(--oro); }
         .btn-del { background: #fff1f0; color: #ff4d4d; border: none; padding: 5px 10px; border-radius: 8px; font-size: 10px; font-weight: 800; cursor: pointer; }
 
-        /* REPORTE BELLE VITA - EL WOW */
-        #reporte-area { background-color: var(--crema); background-image: url("data:image/svg+xml,%3Csvg width='120' height='120' viewBox='0 0 120 120' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M60 20c10 20 40 20 40 60s-30 20-40 20-40-20-40-60 30-40 40-20z' fill='%23d4af37' fill-opacity='0.04'/%3E%3C/svg%3E"); padding: 30px; border: 2px solid var(--oro); border-radius: 10px; min-height: 520px; position: relative; }
+        /* REPORTE BELLE VITA */
+        #reporte-area { background-color: var(--crema); background-image: url("data:image/svg+xml,%3Csvg width='120' height='120' viewBox='0 0 120 120' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M60 20c10 20 40 20 40 60s-30 20-40 20-40-20-40-60 30-40 40-20z' fill='%23d4af37' fill-opacity='0.04'/%3E%3C/svg%3E"); padding: 30px; border: 2px solid var(--oro); border-radius: 10px; min-height: 550px; position: relative; }
         .rep-title { font-weight: 900; font-size: 11px; text-transform: uppercase; margin-bottom: 2px; }
         .rep-date { font-family: 'Playfair Display', serif; font-size: 16px; color: var(--oro); font-style: italic; border-bottom: 1px solid rgba(212, 175, 55, 0.3); margin-bottom: 25px; padding-bottom: 5px; text-transform: capitalize; }
         
@@ -63,13 +66,13 @@
         .t-row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid rgba(212, 175, 55, 0.1); font-size: 10px; font-weight: 700; text-transform: uppercase; }
         .t-total { display: flex; justify-content: space-between; padding: 15px 0; border-top: 2px solid var(--oro); font-weight: 900; margin-top: 10px; font-size: 13px; }
         
-        /* Badge Consumos - CORRECCIÓN CRÍTICA */
+        /* Badge Consumos - AUTO-AJUSTABLE */
         .rep-badge-consumos { 
             background: white; border-radius: 50px; padding: 5px 12px; display: inline-flex; 
             justify-content: space-between; align-items: center; border: 1px solid #eee; 
             box-shadow: 0 4px 10px rgba(0,0,0,0.05); margin-bottom: 25px; min-width: 145px;
         }
-        .rep-badge-lbl { font-size: 11px; font-weight: 900; color: #888; padding-right: 8px; text-transform: none; font-family: 'Playfair Display', serif; }
+        .rep-badge-lbl { font-size: 11px; font-weight: 900; color: #888; padding-right: 8px; font-family: 'Playfair Display', serif; }
         .rep-badge-num { 
             background: #6b8e23; color: white; min-width: 50px; height: 50px; 
             padding: 0 12px; display: flex; align-items: center; justify-content: center; 
@@ -80,6 +83,7 @@
         .s-rojo { color: var(--rojo); border-color: rgba(176, 58, 46, 0.2); }
         .s-verde { color: var(--verde); border-color: rgba(30, 132, 73, 0.2); }
         
+        /* Vista Ejecutiva */
         .avg-container { text-align: center; margin: 40px 0; }
         .avg-circle { background: white; border: 2px solid var(--oro); width: 160px; height: 160px; border-radius: 50%; margin: 0 auto; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: var(--f-fuera); }
         .avg-label { font-size: 10px; font-weight: 900; color: #888; text-transform: uppercase; }
@@ -89,7 +93,7 @@
         .rep-logo img { width: 100%; height: 100%; object-fit: cover; }
 
         .hidden { display: none; }
-        #toast { position: fixed; bottom: 30px; background: var(--v-club); color: var(--oro); padding: 12px 25px; border-radius: 50px; font-weight: 700; font-size: 12px; opacity: 0; transition: 0.5s; z-index: 1000; border: 1px solid var(--oro); }
+        #toast { position: fixed; bottom: 30px; background: var(--v-club); color: var(--oro); padding: 12px 25px; border-radius: 50px; font-weight: 700; font-size: 12px; opacity: 0; transition: 0.4s; z-index: 1000; border: 1px solid var(--oro); }
     </style>
 </head>
 <body>
@@ -97,7 +101,7 @@
 <div class="app">
     <div class="header">
         <input type="file" id="upLogo" class="hidden" accept="image/*">
-        <div class="logo-ring" onclick="document.getElementById('upLogo').click()">
+        <div class="logo-ring" id="btnLogo" onclick="document.getElementById('upLogo').click()">
             <img id="logoDisp" class="hidden">
             <b id="logoTxt">BV</b>
         </div>
@@ -105,70 +109,70 @@
     </div>
 
     <div class="tabs">
-        <button class="tab active" id="btn-reg" onclick="view('reg')">OPERACIÓN</button>
-        <button class="tab" id="btn-rep" onclick="showReportView()">REPORTES</button>
+        <button class="tab active" id="tab-oper" onclick="switchTab('reg')">OPERACIÓN</button>
+        <button class="tab" id="tab-repo" onclick="switchTab('rep')">REPORTES</button>
     </div>
 
-    <!-- VISTA REGISTRO -->
+    <!-- SECCIÓN REGISTRO -->
     <div id="view-reg" class="container">
         <div class="card">
-            <span class="card-label">📅 Fecha</span>
+            <span class="card-label">📅 Fecha de Trabajo</span>
             <input type="date" id="inFecha">
         </div>
         <div class="card">
             <span class="card-label">🥤 Barra</span>
             <input id="inNombre" placeholder="Nombre Socio">
             <input type="number" id="inMonto" placeholder="Monto $">
-            <button class="btn btn-oro" onclick="saveRecord('normal')">Guardar en Barra</button>
+            <button class="btn btn-oro" onclick="handleSave('normal')">Guardar en Barra</button>
         </div>
         <div class="card">
             <span class="card-label">📦 Cerrado</span>
             <input id="inProd" placeholder="Venta Cerrada">
             <input type="number" id="inMontoP" placeholder="Monto $">
-            <button class="btn btn-dark" onclick="saveRecord('cerrado')">Registrar Producto</button>
+            <button class="btn btn-dark" onclick="handleSave('cerrado')">Registrar Venta</button>
         </div>
-        <span class="card-label">Log del Día</span>
-        <div id="lista"></div>
+        <span class="card-label">Bitácora Activa</span>
+        <div id="movList"></div>
     </div>
 
-    <!-- VISTA REPORTES -->
+    <!-- SECCIÓN REPORTES -->
     <div id="view-rep" class="container hidden">
         <div class="card">
-            <span class="card-label">Configurar Periodo</span>
-            <select id="selModo" onchange="toggleFiltros()">
+            <span class="card-label">Filtrar por Periodo</span>
+            <select id="selPeriodo" onchange="updateFilters()">
                 <option value="dia">Reporte Diario</option>
-                <option value="semana">Semana (Vie-Jue)</option>
+                <option value="semana">Reporte Semanal (Vie-Jue)</option>
                 <option value="mes">Reporte Mensual</option>
                 <option value="rango">Rango Personalizado</option>
             </select>
             
-            <div id="f-dia">
-                <span class="card-label">Seleccionar Día</span>
-                <input type="date" id="repRef" onchange="calculateAll()">
+            <div id="f-simple">
+                <span class="card-label">Fecha de Referencia</span>
+                <input type="date" id="dateRef" onchange="runCalculation()">
             </div>
             
             <div id="f-rango" class="hidden">
                 <span class="card-label">Desde</span>
-                <input type="date" id="rangoInicio" onchange="calculateAll()">
+                <input type="date" id="rangoDe" onchange="runCalculation()">
                 <span class="card-label">Hasta</span>
-                <input type="date" id="rangoFin" onchange="calculateAll()">
+                <input type="date" id="rangoA" onchange="runCalculation()">
             </div>
         </div>
 
         <div id="reporte-area">
-            <div id="rep-tit" class="rep-title">...</div>
-            <div id="rep-fecha" class="rep-date">...</div>
+            <div id="rep-titulo" class="rep-title">Cierre de Caja</div>
+            <div id="rep-periodo" class="rep-date">...</div>
             
-            <div id="layout-dia" class="rep-flex">
+            <div id="layout-diario" class="rep-flex">
                 <div class="rep-left">
                     <div class="t-head"><span style="margin-left:15px">Nombre</span><span style="margin-right:10px">$</span></div>
-                    <div id="rep-rows"></div>
+                    <div id="rep-filas"></div>
                     <div class="t-total"><span style="margin-left:15px">Total</span><span style="margin-right:10px" id="rep-t-barra">$0</span></div>
                 </div>
                 <div class="rep-stats">
                     <div class="rep-badge-consumos">
                         <span class="rep-badge-lbl">Consumos</span>
-                        <span class="rep-badge-num" id="rep-c-val">0.00</span>
+                        <span class="rep-badge-num" id="rep-consumos-val">0.00</span>
                     </div>
                     
                     <div class="stat-l"><span style="color:#aaa">P. Cerrado</span><span id="rep-v-cerrado">$0</span></div>
@@ -176,62 +180,62 @@
                     <div class="stat-l s-rojo"><span>Rojo</span><span id="rep-v-rojo">$0</span></div>
                     <div class="stat-l s-verde" style="background:#f6ffed; padding:4px; border-radius:5px"><span>Verde</span><span id="rep-v-verde">$0</span></div>
                     
-                    <div class="rep-logo">
-                        <img class="logo-f hidden">
-                        <b class="logo-t-f" style="font-size:30px;color:var(--oro)">BV</b>
-                    </div>
+                    <div class="rep-logo"><img class="logo-img-f hidden"><b class="logo-txt-f" style="font-size:30px;color:var(--oro)">BV</b></div>
                 </div>
             </div>
 
-            <div id="layout-ejec" class="hidden">
+            <div id="layout-ejecutivo" class="hidden">
                 <div class="avg-container">
                     <div class="avg-circle">
                         <span class="avg-label">Promedio</span>
-                        <div class="avg-number" id="rep-avg">0.00</div>
+                        <div class="avg-number" id="rep-avg-val">0.00</div>
                         <span class="avg-label">Consumos</span>
                     </div>
                 </div>
                 <div style="max-width:260px; margin: 0 auto;">
-                    <div class="stat-l s-verde" style="padding:12px; font-size:16px; border-radius:12px; border: 2px solid var(--verde); background: white;">
-                        <span>TOTAL VERDE</span>
-                        <span id="rep-v-total-verde">$0</span>
+                    <div class="stat-l s-verde" style="padding:15px; font-size:18px; border-radius:15px; border: 2px solid var(--verde); background: white; text-align:center;">
+                        <span style="display:block; font-size:10px; color:#888;">TOTAL VERDE ACUMULADO</span>
+                        <span id="rep-verde-acumulado" style="display:block; font-weight:900;">$0</span>
                     </div>
                 </div>
-                <div class="rep-logo" style="margin-top:40px"><img class="logo-f hidden"><b class="logo-t-f" style="font-size:30px;color:var(--oro)">BV</b></div>
+                <div class="rep-logo" style="margin-top:40px"><img class="logo-img-f hidden"><b class="logo-txt-f" style="font-size:30px;color:var(--oro)">BV</b></div>
             </div>
         </div>
-        <button class="btn btn-green" onclick="generateImage()">📸 GENERAR IMAGEN PARA WHATSAPP</button>
+        <button class="btn btn-green" onclick="handleCapture()">📸 GENERAR TICKET PARA WHATSAPP</button>
     </div>
 </div>
 
 <div id="toast"></div>
 
 <script>
-    let db = JSON.parse(localStorage.getItem('bv_final_v8')) || [];
-    let logoData = localStorage.getItem('bv_logo_v8') || null;
+    // --- DATOS ---
+    let clubDB = JSON.parse(localStorage.getItem('belle_vita_master_v9')) || [];
+    let savedLogo = localStorage.getItem('belle_vita_logo_v9') || null;
 
     const inFecha = document.getElementById('inFecha');
-    const repRef = document.getElementById('repRef');
-    const selModo = document.getElementById('selModo');
+    const dateRef = document.getElementById('dateRef');
+    const selPeriodo = document.getElementById('selPeriodo');
 
+    // --- INICIO ---
     window.onload = () => {
-        const hoy = new Date().toISOString().split('T')[0];
-        inFecha.value = hoy;
-        repRef.value = hoy;
-        document.getElementById('rangoInicio').value = hoy;
-        document.getElementById('rangoFin').value = hoy;
-        if(logoData) applyLogo(logoData);
-        renderDaily();
+        const today = new Date().toISOString().split('T')[0];
+        inFecha.value = today;
+        dateRef.value = today;
+        document.getElementById('rangoDe').value = today;
+        document.getElementById('rangoA').value = today;
+        if(savedLogo) applyLogo(savedLogo);
+        renderLog();
     };
 
+    // --- LOGO ---
     document.getElementById('upLogo').onchange = (e) => {
         const file = e.target.files[0];
         if(file) {
             const reader = new FileReader();
             reader.onload = (ev) => {
-                logoData = ev.target.result;
-                localStorage.setItem('bv_logo_v8', logoData);
-                applyLogo(logoData);
+                savedLogo = ev.target.result;
+                localStorage.setItem('belle_vita_logo_v9', savedLogo);
+                applyLogo(savedLogo);
             };
             reader.readAsDataURL(file);
         }
@@ -241,23 +245,22 @@
         document.getElementById('logoDisp').src = url; 
         document.getElementById('logoDisp').classList.remove('hidden');
         document.getElementById('logoTxt').classList.add('hidden');
-        document.querySelectorAll('.logo-f').forEach(img => { img.src = url; img.classList.remove('hidden'); });
-        document.querySelectorAll('.logo-t-f').forEach(txt => { txt.classList.add('hidden'); });
+        document.querySelectorAll('.logo-img-f').forEach(img => { img.src = url; img.classList.remove('hidden'); });
+        document.querySelectorAll('.logo-txt-f').forEach(txt => { txt.classList.add('hidden'); });
     }
 
-    function view(v) {
-        document.getElementById('view-reg').classList.toggle('hidden', v !== 'reg');
-        document.getElementById('view-rep').classList.toggle('hidden', v !== 'rep');
-        document.getElementById('btn-reg').classList.toggle('active', v === 'reg');
-        document.getElementById('btn-rep').classList.toggle('active', v === 'rep');
+    // --- NAVEGACIÓN (CORREGIDA) ---
+    function switchTab(target) {
+        const isRepo = target === 'rep';
+        document.getElementById('view-reg').classList.toggle('hidden', isRepo);
+        document.getElementById('view-rep').classList.toggle('hidden', !isRepo);
+        document.getElementById('tab-oper').classList.toggle('active', !isRepo);
+        document.getElementById('tab-repo').classList.toggle('active', isRepo);
+        if(isRepo) runCalculation();
     }
 
-    function showReportView() {
-        view('rep');
-        calculateAll();
-    }
-
-    function saveRecord(tipo) {
+    // --- OPERACIÓN ---
+    function handleSave(tipo) {
         let n, m;
         if(tipo === 'normal') {
             n = document.getElementById('inNombre').value || "Socio";
@@ -268,98 +271,88 @@
             m = parseFloat(document.getElementById('inMontoP').value);
             document.getElementById('inProd').value = ''; document.getElementById('inMontoP').value = '';
         }
-        if(isNaN(m)) return;
-        db.push({ id: Date.now(), fecha: inFecha.value, nombre: n, monto: m, tipo });
-        localStorage.setItem('bv_final_v8', JSON.stringify(db));
-        renderDaily();
-        popToast("✅ Guardado");
+        if(isNaN(m)) { toast("Monto inválido"); return; }
+        
+        clubDB.push({ id: Date.now(), fecha: inFecha.value, nombre: n, monto: m, tipo });
+        localStorage.setItem('belle_vita_master_v9', JSON.stringify(clubDB));
+        renderLog();
+        toast("✅ Registro Guardado");
     }
 
-    function delItem(id) {
-        db = db.filter(i => i.id !== id);
-        localStorage.setItem('bv_final_v8', JSON.stringify(db));
-        renderDaily();
+    function removeItem(id) {
+        clubDB = clubDB.filter(i => i.id !== id);
+        localStorage.setItem('belle_vita_master_v9', JSON.stringify(clubDB));
+        renderLog();
     }
 
-    function renderDaily() {
-        const list = document.getElementById('lista');
-        const hoy = inFecha.value;
-        const filtered = db.filter(d => d.fecha === hoy);
-        if(filtered.length === 0) { list.innerHTML = `<p style="text-align:center;color:#ccc;font-size:12px;">Sin registros hoy</p>`; return; }
-        list.innerHTML = filtered.map(i => `
+    function renderLog() {
+        const list = document.getElementById('movList');
+        const items = clubDB.filter(d => d.fecha === inFecha.value);
+        if(items.length === 0) { list.innerHTML = `<p style="text-align:center;color:#ccc;font-size:12px;">Sin ventas registradas</p>`; return; }
+        list.innerHTML = items.map(i => `
             <div class="mov-item">
                 <div><b>${i.tipo === 'cerrado' ? '📦' : '🥤'} ${i.nombre}</b><span>$ ${i.monto.toFixed(2)}</span></div>
-                <button class="btn-del" onclick="delItem(${i.id})">QUITAR</button>
+                <button class="btn-del" onclick="removeItem(${i.id})">QUITAR</button>
             </div>
         `).join('');
     }
 
-    function toggleFiltros() {
-        const modo = selModo.value;
-        document.getElementById('f-dia').classList.toggle('hidden', modo === 'rango');
+    // --- REPORTES ---
+    function updateFilters() {
+        const modo = selPeriodo.value;
+        document.getElementById('f-simple').classList.toggle('hidden', modo === 'rango');
         document.getElementById('f-rango').classList.toggle('hidden', modo !== 'rango');
-        calculateAll();
+        runCalculation();
     }
 
-    function calculateAll() {
-        const modo = selModo.value;
+    function runCalculation() {
+        const modo = selPeriodo.value;
         let filtrados = [];
-        let t = "Cierre Diario", s = "";
-        let diasConVenta = new Set();
+        let tLabel = "Cierre Diario", dLabel = "";
+        let activeDays = new Set();
 
         if(modo === 'rango') {
-            const ini = new Date(document.getElementById('rangoInicio').value + 'T12:00:00');
-            const fin = new Date(document.getElementById('rangoFin').value + 'T12:00:00');
-            filtrados = db.filter(d => {
+            const ini = new Date(document.getElementById('rangoDe').value + 'T12:00:00');
+            const fin = new Date(document.getElementById('rangoA').value + 'T12:00:00');
+            filtrados = clubDB.filter(d => {
                 let f = new Date(d.fecha + 'T12:00:00');
                 if(f >= ini && f <= fin) {
-                    if(d.tipo === 'normal') diasConVenta.add(d.fecha);
+                    if(d.tipo === 'normal') activeDays.add(d.fecha);
                     return true;
                 }
                 return false;
             });
-            t = "Reporte Personalizado";
-            s = `${ini.getDate()}/${ini.getMonth()+1} al ${fin.getDate()}/${fin.getMonth()+1}`;
+            tLabel = "Reporte Personalizado";
+            dLabel = `${ini.getDate()}/${ini.getMonth()+1} al ${fin.getDate()}/${fin.getMonth()+1}`;
         } else {
-            const ref = repRef.value;
+            const ref = dateRef.value;
             const dRef = new Date(ref + 'T12:00:00');
             if(modo === 'dia') {
-                filtrados = db.filter(d => d.fecha === ref);
-                s = dRef.toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+                filtrados = clubDB.filter(d => d.fecha === ref);
+                dLabel = dRef.toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
             } else if(modo === 'semana') {
-                let dia = dRef.getDay();
-                let diff = (dia >= 5) ? (dia - 5) : (dia + 2);
-                let ini = new Date(dRef); ini.setDate(dRef.getDate() - diff);
-                let fin = new Date(ini); fin.setDate(ini.getDate() + 6);
-                filtrados = db.filter(d => {
+                let d = dRef.getDay();
+                let diff = (d >= 5) ? (d - 5) : (d + 2);
+                let start = new Date(dRef); start.setDate(dRef.getDate() - diff);
+                let end = new Date(start); end.setDate(start.getDate() + 6);
+                filtrados = clubDB.filter(d => {
                     let f = new Date(d.fecha + 'T12:00:00');
-                    if(f >= ini && f <= fin) {
-                        if(d.tipo === 'normal') diasConVenta.add(d.fecha);
+                    if(f >= start && f <= end) {
+                        if(d.tipo === 'normal') activeDays.add(d.fecha);
                         return true;
                     }
                     return false;
                 });
-                t = "Reporte Semanal";
-                s = `${ini.getDate()}/${ini.getMonth()+1} al ${fin.getDate()}/${fin.getMonth()+1}`;
+                tLabel = "Reporte Semanal";
+                dLabel = `${start.getDate()}/${start.getMonth()+1} al ${end.getDate()}/${end.getMonth()+1}`;
             } else {
-                filtrados = db.filter(d => {
+                filtrados = clubDB.filter(d => {
                     let f = new Date(d.fecha + 'T12:00:00');
                     if(f.getMonth() === dRef.getMonth() && f.getFullYear() === dRef.getFullYear()) {
-                        if(d.tipo === 'normal') diasConVenta.add(d.fecha);
+                        if(d.tipo === 'normal') activeDays.add(d.fecha);
                         return true;
                     }
                     return false;
                 });
-                t = "Reporte Mensual";
-                s = dRef.toLocaleDateString('es-ES', { month: 'long', year: 'numeric' });
-            }
-        }
-
-        const barra = filtrados.filter(f => f.tipo === 'normal');
-        const cerrado = filtrados.filter(f => f.tipo === 'cerrado');
-        const sumBarra = barra.reduce((a, x) => a + x.monto, 0);
-        const sumCerrado = cerrado.reduce((a, x) => a + x.monto, 0);
-        const totalTotal = sumBarra + sumCerrado;
-        const totalConsumos = (sumBarra / 90).toFixed(2);
-        const prom = (totalConsumos / (diasConVenta.size || 1)).toFixed(2);
-     
+                tLabel = "Reporte Mensual";
+           
