@@ -1,9 +1,10 @@
+```html
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Nutrition Club - Belle Vita</title>
+    <title>Nutrition Club - Belle Vita Premium</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Playfair+Display:ital,wght@0,700;1,700&display=swap');
@@ -13,8 +14,8 @@
             --oro: #d4af37;
             --oro-luz: #f1d37a;
             --crema: #fdfaf5;
-            --rojo-sobre: #922b21;
-            --verde-sobre: #145a32;
+            --rojo-sobre: #b03a2e;
+            --verde-sobre: #1e8449;
             --bisel-fuera: 5px 5px 12px #d1cfca, -5px -5px 12px #ffffff;
             --bisel-dentro: inset 3px 3px 6px #d9d6d1, inset -3px -3px 6px #ffffff;
         }
@@ -39,7 +40,7 @@
             flex-direction: column;
         }
 
-        /* Encabezado Compacto con Neón */
+        /* Encabezado con Neón Pulsante */
         .header {
             background: var(--verde-club);
             padding: 15px;
@@ -113,9 +114,9 @@
             box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
 
-        /* Secciones */
         .content { padding: 30px 20px; flex: 1; }
 
+        /* Tarjetas Neumórficas */
         .card-premium {
             background: var(--crema);
             border-radius: 25px;
@@ -131,10 +132,9 @@
             text-transform: uppercase;
             margin-bottom: 12px;
             display: block;
-            letter-spacing: 1px;
         }
 
-        /* Inputs Hundidos */
+        /* Inputs con Efecto Hundido */
         input, select {
             width: 100%;
             padding: 14px;
@@ -149,7 +149,7 @@
             outline: none;
         }
 
-        /* Botones Premium */
+        /* Botones Biselados */
         .btn-action {
             width: 100%;
             padding: 16px;
@@ -169,7 +169,6 @@
 
         .btn-action:active { transform: scale(0.97); }
 
-        /* Lista de Movimientos */
         .log-item {
             display: flex;
             justify-content: space-between;
@@ -180,10 +179,9 @@
             margin-bottom: 10px;
             border-left: 4px solid var(--oro);
         }
-        .log-item b { font-size: 14px; }
         .btn-del { background: #fff1f0; color: #ff4d4d; border: none; padding: 5px 10px; border-radius: 8px; font-size: 10px; font-weight: 800; }
 
-        /* EL REPORTE ESTILO IMAGEN (BELLE VITA) */
+        /* DISEÑO DE REPORTE TIPO IMAGEN */
         #reporte-area {
             background-color: var(--crema);
             background-image: url("data:image/svg+xml,%3Csvg width='120' height='120' viewBox='0 0 120 120' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M60 20c10 20 40 20 40 60s-30 20-40 20-40-20-40-60 30-40 40-20z' fill='%23d4af37' fill-opacity='0.04'/%3E%3C/svg%3E");
@@ -196,27 +194,54 @@
 
         .rep-fecha { font-family: 'Playfair Display', serif; font-size: 18px; color: var(--oro); font-style: italic; border-bottom: 1px solid rgba(212, 175, 55, 0.3); margin-bottom: 20px; padding-bottom: 5px; text-transform: capitalize; }
         
-        .rep-cols { display: flex; gap: 20px; }
+        .rep-cols { display: flex; gap: 15px; }
         .rep-tabla { flex: 1; }
-        .rep-stats { width: 160px; text-align: right; }
+        .rep-stats { width: 155px; text-align: right; }
 
         .tabla-header { display: flex; justify-content: space-between; border-bottom: 2px solid var(--oro); padding-bottom: 5px; font-size: 12px; font-weight: 900; margin-bottom: 5px; }
         .tabla-row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid rgba(212, 175, 55, 0.1); font-size: 10px; font-weight: 700; text-transform: uppercase; }
         .tabla-total { display: flex; justify-content: space-between; padding: 15px 0; border-top: 2px solid var(--oro); font-weight: 900; margin-top: 10px; font-size: 14px; }
 
-        .rep-badge-consumos { background: white; border-radius: 50px; padding: 4px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #eee; box-shadow: 0 4px 10px rgba(0,0,0,0.05); margin-bottom: 30px; }
-        .rep-badge-lbl { font-size: 9px; font-weight: 800; color: var(--oro); margin-left: 10px; }
-        .rep-badge-num { background: #6b8e23; color: white; width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-size: 22px; font-weight: 900; }
+        /* Ajuste: Botón de consumos adaptable */
+        .rep-badge-consumos { 
+            background: white; 
+            border-radius: 50px; 
+            padding: 5px 12px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            border: 1px solid #eee; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05); 
+            margin-bottom: 30px;
+            min-width: 130px;
+        }
+        .rep-badge-lbl { font-size: 9px; font-weight: 900; color: var(--oro); }
+        .rep-badge-num { 
+            background: #6b8e23; 
+            color: white; 
+            min-width: 45px;
+            height: 45px; 
+            padding: 0 10px;
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            border-radius: 25px; 
+            font-size: 20px; 
+            font-weight: 900;
+            margin-left: 5px;
+        }
 
         .stat-line { display: flex; justify-content: space-between; font-size: 11px; font-weight: 900; margin-bottom: 12px; border-bottom: 1px dashed #ddd; padding-bottom: 4px; }
-        .stat-line.rojo { color: var(--rojo); border: none; }
-        .stat-line.verde { color: var(--verde); border: none; }
+        
+        /* Ajuste: Colores de Sobre Rojo y Sobre Verde */
+        .stat-line.rojo { color: var(--rojo-sobre); border-color: rgba(176, 58, 46, 0.2); }
+        .stat-line.verde { color: var(--verde-sobre); border-color: rgba(30, 132, 73, 0.2); }
 
         .rep-logo-final { width: 130px; height: 130px; background: white; border-radius: 50%; border: 4px solid var(--oro); margin: 30px auto 0; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: center; }
         .rep-logo-final img { width: 100%; height: 100%; object-fit: cover; }
 
         .hidden { display: none; }
-        #toast { position: fixed; bottom: 20px; background: var(--verde-club); color: var(--oro); padding: 12px 25px; border-radius: 50px; font-weight: 700; font-size: 12px; opacity: 0; transition: 0.5s; z-index: 1000; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+        #toast { position: fixed; bottom: 20px; background: var(--verde-club); color: var(--oro); padding: 12px 25px; border-radius: 50px; font-weight: 700; font-size: 12px; opacity: 0; transition: 0.5s; z-index: 1000; }
     </style>
 </head>
 <body>
@@ -236,35 +261,33 @@
         <button class="tab-btn" id="tab-rep" onclick="show('rep')">REPORTE</button>
     </div>
 
-    <!-- Vista Registro -->
     <div id="v-reg" class="content">
         <div class="card-premium">
-            <span class="label-gold">📅 Calendario de Trabajo</span>
+            <span class="label-gold">📅 Calendario</span>
             <input type="date" id="inputFecha">
         </div>
 
         <div class="card-premium">
             <span class="label-gold">🥤 Registro de Barra</span>
-            <input id="inNombre" placeholder="Nombre del Socio">
-            <input type="number" id="inMonto" placeholder="Monto total $">
-            <button class="btn-action btn-gold" onclick="guardar('normal')">Guardar en Barra</button>
+            <input id="inNombre" placeholder="Nombre Socio">
+            <input type="number" id="inMonto" placeholder="Total $">
+            <button class="btn-action btn-gold" onclick="guardar('normal')">Guardar Consumo</button>
         </div>
 
         <div class="card-premium">
             <span class="label-gold">📦 Venta Producto Cerrado</span>
             <input id="inCerrado" placeholder="Producto">
-            <input type="number" id="inMontoCerrado" placeholder="Monto total $">
+            <input type="number" id="inMontoCerrado" placeholder="Total $">
             <button class="btn-action btn-dark" onclick="guardar('cerrado')">Registrar Venta</button>
         </div>
 
-        <span class="label-gold">Bitácora de Hoy</span>
+        <span class="label-gold">Actividad de Hoy</span>
         <div id="listaMovs"></div>
     </div>
 
-    <!-- Vista Reporte -->
     <div id="v-rep" class="content hidden">
         <div id="reporte-area">
-            <div id="rep-fecha" class="rep-fecha">Lunes, 20 de Abril</div>
+            <div id="rep-fecha" class="rep-fecha">Día de Trabajo</div>
             
             <div class="rep-cols">
                 <div class="rep-tabla">
@@ -298,15 +321,15 @@
             </div>
         </div>
 
-        <button class="btn-action btn-green" onclick="generarImagen()">📸 GENERAR TICKET PARA WHATSAPP</button>
+        <button class="btn-action btn-green" onclick="generarImagen()">📸 GENERAR TICKET WHATSAPP</button>
     </div>
 </div>
 
-<div id="toast">¡Hecho! 🤘</div>
+<div id="toast">¡Hecho!</div>
 
 <script>
-    let db = JSON.parse(localStorage.getItem('belle_db_v1')) || [];
-    let logo = localStorage.getItem('belle_logo_v1') || null;
+    let db = JSON.parse(localStorage.getItem('bv_db_final')) || [];
+    let logo = localStorage.getItem('bv_logo_final') || null;
 
     const inFecha = document.getElementById('inputFecha');
 
@@ -317,14 +340,13 @@
         renderLista();
     };
 
-    // Manejo de Logo
     document.getElementById('upLogo').addEventListener('change', function(e) {
         const file = e.target.files[0];
         if(file) {
             const reader = new FileReader();
             reader.onload = (ev) => {
                 logo = ev.target.result;
-                localStorage.setItem('belle_logo_v1', logo);
+                localStorage.setItem('bv_logo_final', logo);
                 aplicarLogo(logo);
             };
             reader.readAsDataURL(file);
@@ -336,7 +358,6 @@
         const tL = document.getElementById('textLogo');
         const lR = document.getElementById('logoEnReporte');
         const tR = document.getElementById('logoTxtReporte');
-
         dL.src = url; dL.classList.remove('hidden');
         tL.classList.add('hidden');
         lR.src = url; lR.classList.remove('hidden');
@@ -364,30 +385,30 @@
             document.getElementById('inCerrado').value = '';
             document.getElementById('inMontoCerrado').value = '';
         }
-        if(isNaN(m)) return alert("Monto inválido");
+        if(isNaN(m)) return;
         db.push({ id: Date.now(), fecha: inFecha.value, nombre: n, monto: m, tipo });
-        localStorage.setItem('belle_db_v1', JSON.stringify(db));
+        localStorage.setItem('bv_db_final', JSON.stringify(db));
         renderLista();
-        popToast("Registrado ✅");
+        popToast("✅ Registrado");
     }
 
     function borrar(id) {
         db = db.filter(i => i.id !== id);
-        localStorage.setItem('belle_db_v1', JSON.stringify(db));
+        localStorage.setItem('bv_db_final', JSON.stringify(db));
         renderLista();
     }
 
     function renderLista() {
         const list = document.getElementById('listaMovs');
         const items = db.filter(d => d.fecha === inFecha.value);
-        if(items.length === 0) { list.innerHTML = `<p style="text-align:center; color:#ccc; font-size:12px;">Sin ventas aún</p>`; return; }
+        if(items.length === 0) { list.innerHTML = `<p style="text-align:center; color:#ccc; font-size:12px;">Sin registros hoy</p>`; return; }
         list.innerHTML = items.map(i => `
             <div class="log-item">
                 <div>
                     <b>${i.tipo === 'cerrado' ? '📦' : '🥤'} ${i.nombre}</b>
                     <span style="font-size:11px; color:#999;">$ ${i.monto.toFixed(2)}</span>
                 </div>
-                <button class="btn-del" onclick="borrar(${i.id})">QUITAR</button>
+                <button class="btn-del" onclick="borrar(${i.id})">BORRAR</button>
             </div>
         `).join('');
     }
@@ -397,7 +418,6 @@
         const filtrados = db.filter(d => d.fecha === fechaRef);
         const barra = filtrados.filter(f => f.tipo === 'normal');
         const cerrado = filtrados.filter(f => f.tipo === 'cerrado');
-
         const sumBarra = barra.reduce((a, b) => a + b.monto, 0);
         const sumCerrado = cerrado.reduce((a, b) => a + b.monto, 0);
         const totalVta = sumBarra + sumCerrado;
@@ -430,10 +450,10 @@
         popToast("Generando Ticket...");
         html2canvas(area, { scale: 3, backgroundColor: "#fdfaf5" }).then(canvas => {
             const link = document.createElement('a');
-            link.download = `Reporte_${inFecha.value}.png`;
+            link.download = `Cierre_${inFecha.value}.png`;
             link.href = canvas.toDataURL("image/png");
             link.click();
-            popToast("¡Imagen guardada! 🖼️");
+            popToast("📸 Ticket Guardado");
         });
     }
 
@@ -448,3 +468,5 @@
 
 </body>
 </html>
+
+```
