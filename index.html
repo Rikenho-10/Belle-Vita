@@ -1,492 +1,255 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Nutrition Club - Neon Luxury</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Playfair+Display:ital,wght@0,700;1,700&display=swap');
+```react
+import React, { useState, useEffect, useRef } from 'react';
+import { Camera, Plus, Package, Trash2, Share2, ChevronRight } from 'lucide-react';
 
-        :root {
-            --deep-green: #142d14;
-            --gold: #d4af37;
-            --gold-bright: #f1d37a;
-            --neon-glow: 0 0 10px #d4af37, 0 0 20px #d4af37, 0 0 30px #aa8507;
-            --cream: #fdfaf5;
-            --white: #ffffff;
-            --sobre-rojo: #922b21;
-            --sobre-verde: #145a32;
-            --shadow-bevel: 4px 4px 10px #d9d6d1, -4px -4px 10px #ffffff;
-            --inner-bevel: inset 3px 3px 6px #d9d6d1, inset -3px -3px 6px #ffffff;
-        }
+const App = () => {
+  const [tab, setTab] = useState('operacion');
+  const [db, setDb] = useState([]);
+  const [logo, setLogo] = useState(null);
+  const [fecha, setFecha] = useState(new Date().toISOString().split('T')[0]);
+  
+  const [nombre, setNombre] = useState('');
+  const [monto, setMonto] = useState('');
+  const [prodCerrado, setProdCerrado] = useState('');
+  const [montoCerrado, setMontoCerrado] = useState('');
 
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
-        
-        body {
-            margin: 0;
-            font-family: 'Montserrat', sans-serif;
-            background-color: var(--cream);
-            color: var(--deep-green);
-            display: flex;
-            justify-content: center;
-        }
+  const reportRef = useRef(null);
 
-        .app-container {
-            width: 100%;
-            max-width: 480px;
-            background: var(--cream);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
+  useEffect(() => {
+    const saved = localStorage.getItem('nutri_pro_v5_db');
+    const savedLogo = localStorage.getItem('nutri_pro_v5_logo');
+    if (saved) setDb(JSON.parse(saved));
+    if (savedLogo) setLogo(savedLogo);
+  }, []);
 
-        /* HEADER REDISEÑADO (Sin encimarse) */
-        .header {
-            background: var(--deep-green);
-            padding: 20px 15px;
-            text-align: center;
-            border-radius: 0 0 30px 30px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
-            z-index: 10;
-        }
+  useEffect(() => {
+    localStorage.setItem('nutri_pro_v5_db', JSON.stringify(db));
+    if (logo) localStorage.setItem('nutri_pro_v5_logo', logo);
+  }, [db, logo]);
 
-        .logo-neon-ring {
-            width: 75px;
-            height: 75px;
-            background: var(--white);
-            margin: 0 auto 12px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 2px solid var(--gold);
-            box-shadow: var(--neon-glow);
-            overflow: hidden;
-            cursor: pointer;
-            animation: pulse-neon 2s infinite;
-        }
+  const handleLogoUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => setLogo(reader.result);
+      reader.readAsDataURL(file);
+    }
+  };
 
-        @keyframes pulse-neon {
-            0% { box-shadow: 0 0 10px #d4af37, 0 0 20px #d4af37; }
-            50% { box-shadow: 0 0 15px #f1d37a, 0 0 30px #d4af37, 0 0 40px #aa8507; }
-            100% { box-shadow: 0 0 10px #d4af37, 0 0 20px #d4af37; }
-        }
-
-        .logo-neon-ring img { width: 100%; height: 100%; object-fit: cover; }
-        .logo-text { font-size: 24px; font-weight: 900; color: var(--deep-green); }
-
-        .header h1 { 
-            font-family: 'Playfair Display', serif;
-            color: var(--gold);
-            margin: 0;
-            font-size: 20px;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-        }
-
-        /* NAVEGACIÓN BISELADA */
-        .nav-bar {
-            display: flex;
-            padding: 15px;
-            gap: 12px;
-        }
-
-        .nav-item {
-            flex: 1;
-            padding: 14px;
-            text-align: center;
-            background: var(--cream);
-            border-radius: 15px;
-            font-weight: 700;
-            font-size: 12px;
-            color: #888;
-            box-shadow: var(--shadow-bevel);
-            cursor: pointer;
-            transition: 0.3s;
-            border: 1px solid rgba(212, 175, 55, 0.1);
-        }
-
-        .nav-item.active {
-            background: var(--deep-green);
-            color: var(--gold);
-            box-shadow: 4px 4px 15px rgba(0,0,0,0.2);
-            border-color: var(--gold);
-        }
-
-        /* CONTENIDO */
-        .view { padding: 0 20px 40px; }
-
-        .luxury-card {
-            background: var(--white);
-            border-radius: 20px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: var(--shadow-bevel);
-            border: 1px solid rgba(212, 175, 55, 0.1);
-        }
-
-        .label {
-            font-size: 10px;
-            font-weight: 900;
-            color: var(--gold-dark);
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            margin-bottom: 12px;
-            display: block;
-        }
-
-        input, select {
-            width: 100%;
-            padding: 14px;
-            border-radius: 12px;
-            border: none;
-            background: var(--cream);
-            box-shadow: var(--inner-bevel);
-            margin-bottom: 12px;
-            font-family: inherit;
-            font-weight: 600;
-            color: var(--deep-green);
-        }
-
-        button {
-            width: 100%;
-            padding: 16px;
-            border-radius: 15px;
-            border: none;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            cursor: pointer;
-            transition: 0.2s;
-            box-shadow: 4px 4px 10px rgba(0,0,0,0.1);
-        }
-
-        .btn-gold { background: linear-gradient(145deg, var(--gold-bright), var(--gold)); color: white; }
-        .btn-dark { background: var(--deep-green); color: var(--gold); }
-        .btn-share { background: #27ae60; color: white; margin-top: 15px; }
-
-        button:active { transform: scale(0.97); }
-
-        /* LISTA */
-        .log-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px;
-            background: white;
-            border-radius: 15px;
-            margin-bottom: 10px;
-            box-shadow: 2px 2px 5px rgba(0,0,0,0.03);
-            border-left: 4px solid var(--gold);
-        }
-        .log-item b { font-size: 14px; color: var(--deep-green); }
-        .log-item span { font-size: 12px; color: #999; display: block; }
-        .btn-del { background: #fff5f5; color: #ff4d4d; border: 1px solid #fee; font-size: 10px; padding: 5px 10px; width: auto; }
-
-        /* REPORTE PREMIUM */
-        .report-wrap {
-            background-color: var(--cream);
-            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M50 20c15 0 20 20 20 30s-5 30-20 30-20-20-20-30 5-30 20-30z' fill='%23d4af37' fill-opacity='0.04'/%3E%3C/svg%3E");
-            padding: 40px 25px;
-            border-radius: 30px;
-            text-align: center;
-            border: 2px solid var(--gold);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.05);
-            position: relative;
-        }
-
-        .rep-consumos { font-size: 65px; font-weight: 900; color: var(--deep-green); margin: 5px 0; letter-spacing: -2px; }
-        
-        .rep-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 20px 0; }
-        .rep-box { background: rgba(255,255,255,0.8); padding: 15px; border-radius: 18px; border: 1px solid white; }
-        .rep-val { font-weight: 700; font-size: 18px; }
-        .rep-lbl { font-size: 9px; font-weight: 800; color: #888; text-transform: uppercase; margin-top: 5px; }
-
-        .banner-total {
-            background: var(--deep-green);
-            color: var(--gold);
-            padding: 20px;
-            border-radius: 20px;
-            margin-bottom: 20px;
-        }
-
-        .red-label { color: var(--sobre-rojo); border-bottom: 2px solid var(--sobre-rojo); }
-        .green-label { color: var(--sobre-verde); border-bottom: 2px solid var(--sobre-verde); }
-
-        .hidden { display: none; }
-
-        #toast {
-            position: fixed;
-            bottom: 30px;
-            background: var(--deep-green);
-            color: white;
-            padding: 12px 25px;
-            border-radius: 50px;
-            font-size: 12px;
-            font-weight: 700;
-            opacity: 0;
-            transition: 0.4s;
-            z-index: 1000;
-            border: 1px solid var(--gold);
-        }
-    </style>
-</head>
-<body>
-
-<div class="app-container">
-    <!-- Header Fijo con Neón -->
-    <div class="header">
-        <input type="file" id="logoIn" class="hidden" accept="image/*">
-        <div class="logo-neon-ring" onclick="document.getElementById('logoIn').click()">
-            <img id="logoImg" class="hidden">
-            <div id="logoIco" class="logo-text">R</div>
-        </div>
-        <h1>NUTRITION CLUB</h1>
-    </div>
-
-    <!-- Navegación sin traslape -->
-    <div class="nav-bar">
-        <div class="nav-item active" id="btnReg" onclick="go('reg')">OPERACIÓN</div>
-        <div class="nav-item" id="btnRep" onclick="go('rep')">RESULTADOS</div>
-    </div>
-
-    <!-- Vista Registro -->
-    <div id="v-reg" class="view">
-        <div class="luxury-card">
-            <span class="label">📅 Fecha</span>
-            <input type="date" id="dateMain">
-        </div>
-
-        <div class="luxury-card">
-            <span class="label">🥤 Consumo Barra</span>
-            <input id="formName" placeholder="Nombre del Socio">
-            <input type="number" id="formAmt" placeholder="Monto $">
-            <button class="btn-gold" onclick="save('normal')">Añadir Consumo</button>
-        </div>
-
-        <div class="luxury-card">
-            <span class="label">📦 Venta Cerrada</span>
-            <input id="formCName" placeholder="Producto">
-            <input type="number" id="formCAmt" placeholder="Monto $">
-            <button class="btn-dark" onclick="save('cerrado')">Registrar Producto</button>
-        </div>
-
-        <span class="label">Actividad del Día</span>
-        <div id="logList"></div>
-    </div>
-
-    <!-- Vista Reporte -->
-    <div id="v-rep" class="view hidden">
-        <div class="luxury-card">
-            <span class="label">Configuración del Reporte</span>
-            <select id="repType" onchange="calcReport()">
-                <option value="dia">Cierre Diario</option>
-                <option value="semana">Resumen Semanal</option>
-                <option value="mes">Cierre Mensual</option>
-            </select>
-            <input type="date" id="repDate" onchange="calcReport()">
-            <input type="month" id="repMonth" class="hidden" onchange="calcReport()">
-        </div>
-
-        <div id="printArea" class="report-wrap">
-            <img id="logoRep" style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover; margin-bottom: 10px; border: 2px solid var(--gold); box-shadow: 0 0 10px var(--gold);" class="hidden">
-            <div style="font-family:'Playfair Display'; font-style:italic; font-size:12px; color:var(--gold)">Resumen de Operación</div>
-            <div class="rep-consumos" id="resCons">0.00</div>
-            <div class="rep-lbl" style="margin-top:-10px">Consumos Totales</div>
-
-            <div class="rep-grid">
-                <div class="rep-box">
-                    <div class="rep-val" id="resB">$0</div>
-                    <div class="rep-lbl">Barra</div>
-                </div>
-                <div class="rep-box">
-                    <div class="rep-val" id="resC">$0</div>
-                    <div class="rep-lbl">Cerrado</div>
-                </div>
-            </div>
-
-            <div class="banner-total">
-                <div class="rep-lbl" style="color:rgba(255,255,255,0.6)">Total Ingresos</div>
-                <div style="font-size: 30px; font-weight: 900;" id="resT">$0</div>
-            </div>
-
-            <div class="rep-grid">
-                <div class="rep-box red-label">
-                    <div class="rep-val" id="resR">$0</div>
-                    <div class="rep-lbl" style="color:inherit">Sobre Rojo (70%)</div>
-                </div>
-                <div class="rep-box green-label">
-                    <div class="rep-val" id="resV">$0</div>
-                    <div class="rep-lbl" style="color:inherit">Sobre Verde (30%)</div>
-                </div>
-            </div>
-            
-            <div id="resDet" style="font-size: 9px; color: #bbb; letter-spacing: 0.5px;"></div>
-        </div>
-
-        <button class="btn-share" onclick="capture()">📸 GENERAR IMAGEN PARA WHATSAPP</button>
-    </div>
-</div>
-
-<div id="toast"></div>
-
-<script>
-    let clubData = JSON.parse(localStorage.getItem('nutri_club_v4')) || [];
-    let clubLogo = localStorage.getItem('nutri_club_v4_logo') || null;
-
-    const dateMain = document.getElementById('dateMain');
-    const repDate = document.getElementById('repDate');
-    const repMonth = document.getElementById('repMonth');
-
-    window.onload = () => {
-        const today = new Date().toISOString().split('T')[0];
-        dateMain.value = today;
-        repDate.value = today;
-        repMonth.value = today.substring(0, 7);
-        if(clubLogo) applyLogo(clubLogo);
-        renderLog();
+  const registrar = (tipo) => {
+    const m = parseFloat(tipo === 'normal' ? monto : montoCerrado);
+    if (isNaN(m)) return;
+    const nuevo = {
+      id: Date.now(),
+      fecha,
+      nombre: tipo === 'normal' ? (nombre || "Socio") : (prodCerrado || "Producto"),
+      monto: m,
+      tipo
     };
+    setDb([...db, nuevo]);
+    if (tipo === 'normal') { setNombre(''); setMonto(''); }
+    else { setProdCerrado(''); setMontoCerrado(''); }
+  };
 
-    document.getElementById('logoIn').addEventListener('change', function(e) {
-        const file = e.target.files[0];
-        if(file) {
-            const reader = new FileReader();
-            reader.onload = (ev) => {
-                clubLogo = ev.target.result;
-                localStorage.setItem('nutri_club_v4_logo', clubLogo);
-                applyLogo(clubLogo);
-                showToast("Logotipo Actualizado ✨");
-            };
-            reader.readAsDataURL(file);
+  const eliminar = (id) => setDb(db.filter(i => i.id !== id));
+
+  const getStats = () => {
+    const hoy = db.filter(i => i.fecha === fecha);
+    const barra = hoy.filter(i => i.tipo === 'normal');
+    const cerrados = hoy.filter(i => i.tipo === 'cerrado');
+    const sumBarra = barra.reduce((a, b) => a + b.monto, 0);
+    const sumCerrado = cerrados.reduce((a, b) => a + b.monto, 0);
+    const vtaTotal = sumBarra + sumCerrado;
+    return {
+      barra, sumBarra, sumCerrado, vtaTotal,
+      consumos: (sumBarra / 90).toFixed(2),
+      sobreRojo: (vtaTotal * 0.7).toFixed(2),
+      sobreVerde: (vtaTotal * 0.3).toFixed(2),
+      fechaFormato: new Date(fecha + 'T12:00:00').toLocaleDateString('es-ES', { 
+        weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' 
+      })
+    };
+  };
+
+  const st = getStats();
+
+  const exportar = () => {
+    if (window.html2canvas) {
+      window.html2canvas(reportRef.current, { scale: 3, backgroundColor: '#fdfaf5' }).then(canvas => {
+        const link = document.createElement('a');
+        link.download = `Reporte_${fecha}.png`;
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+      });
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-[#fdfaf5] text-[#1b3a1b] font-sans pb-10">
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Playfair+Display:ital,wght@0,700;1,700&display=swap');
+        @keyframes neon-pulse {
+          0% { box-shadow: 0 0 10px #d4af37, 0 0 20px #d4af37; }
+          50% { box-shadow: 0 0 20px #f1d37a, 0 0 40px #d4af37; }
+          100% { box-shadow: 0 0 10px #d4af37, 0 0 20px #d4af37; }
         }
-    });
+        .neon-border { animation: neon-pulse 2s infinite; border: 2px solid #d4af37; }
+        .inset-shadow { box-shadow: inset 4px 4px 8px #d9d6d1, inset -4px -4px 8px #ffffff; }
+        .outset-shadow { box-shadow: 5px 5px 12px #d1cfca, -5px -5px 12px #ffffff; }
+        .btn-premium { background: linear-gradient(145deg, #d4af37, #aa8507); box-shadow: 4px 4px 10px rgba(0,0,0,0.2), inset 1px 1px 2px rgba(255,255,255,0.4); }
+        .btn-dark-premium { background: #1b3a1b; box-shadow: 4px 4px 10px rgba(0,0,0,0.3), inset 1px 1px 2px rgba(255,255,255,0.1); }
+      `}</style>
 
-    function applyLogo(url) {
-        document.getElementById('logoImg').src = url;
-        document.getElementById('logoImg').classList.remove('hidden');
-        document.getElementById('logoIco').classList.add('hidden');
-        document.getElementById('logoRep').src = url;
-        document.getElementById('logoRep').classList.remove('hidden');
-    }
+      {/* HEADER COMPACTO PARA EVITAR TRASLAPE */}
+      <div className="bg-[#1b3a1b] pt-6 pb-12 text-center rounded-b-[50px] shadow-2xl relative z-0">
+        <label className="relative inline-block cursor-pointer mb-2">
+          <div className="w-16 h-16 bg-white rounded-full mx-auto flex items-center justify-center overflow-hidden neon-border">
+            {logo ? <img src={logo} alt="Logo" className="w-full h-full object-cover" /> : <Camera className="text-[#1b3a1b] w-6 h-6" />}
+          </div>
+          <input type="file" className="hidden" onChange={handleLogoUpload} accept="image/*" />
+        </label>
+        <h1 className="text-[#d4af37] text-lg font-black tracking-widest uppercase" style={{ fontFamily: 'Playfair Display' }}>Belle Vita</h1>
+      </div>
 
-    function go(v) {
-        document.getElementById('v-reg').classList.toggle('hidden', v !== 'reg');
-        document.getElementById('v-rep').classList.toggle('hidden', v !== 'rep');
-        document.getElementById('btnReg').classList.toggle('active', v === 'reg');
-        document.getElementById('btnRep').classList.toggle('active', v === 'rep');
-        if(v === 'rep') calcReport();
-    }
+      {/* TABS CON MARGEN SUPERIOR PARA EVITAR EL HEADER */}
+      <div className="flex gap-3 px-6 -mt-7 relative z-10">
+        <button onClick={() => setTab('operacion')} 
+                className={`flex-1 py-4 rounded-2xl font-black text-[11px] transition-all outset-shadow ${tab === 'operacion' ? 'bg-[#d4af37] text-white' : 'bg-white text-slate-400'}`}>
+          OPERACIÓN
+        </button>
+        <button onClick={() => setTab('reporte')} 
+                className={`flex-1 py-4 rounded-2xl font-black text-[11px] transition-all outset-shadow ${tab === 'reporte' ? 'bg-[#d4af37] text-white' : 'bg-white text-slate-400'}`}>
+          RESULTADOS
+        </button>
+      </div>
 
-    function save(tipo) {
-        let n, m;
-        if(tipo === 'normal') {
-            n = document.getElementById('formName').value || "Socio";
-            m = parseFloat(document.getElementById('formAmt').value);
-            document.getElementById('formName').value = '';
-            document.getElementById('formAmt').value = '';
-        } else {
-            n = document.getElementById('formCName').value || "Producto";
-            m = parseFloat(document.getElementById('formCAmt').value);
-            document.getElementById('formCName').value = '';
-            document.getElementById('formCAmt').value = '';
-        }
-
-        if(isNaN(m)) return showToast("Monto Inválido");
-
-        clubData.push({ id: Date.now(), fecha: dateMain.value, nombre: n, monto: m, tipo });
-        localStorage.setItem('nutri_club_v4', JSON.stringify(clubData));
-        renderLog();
-        showToast("Registro Exitoso 🥤");
-    }
-
-    function del(id) {
-        clubData = clubData.filter(i => i.id !== id);
-        localStorage.setItem('nutri_club_v4', JSON.stringify(clubData));
-        renderLog();
-        calcReport();
-    }
-
-    function renderLog() {
-        const list = document.getElementById('logList');
-        const hoy = dateMain.value;
-        const filtered = clubData.filter(d => d.fecha === hoy);
-
-        if(filtered.length === 0) {
-            list.innerHTML = `<p style="text-align:center; color:#ccc; font-size:12px; padding:15px;">Sin movimientos hoy</p>`;
-            return;
-        }
-
-        list.innerHTML = filtered.map(i => `
-            <div class="log-item">
-                <div>
-                    <b>${i.tipo === 'cerrado' ? '📦' : '🥤'} ${i.nombre}</b>
-                    <span>$${i.monto.toFixed(2)}</span>
-                </div>
-                <button class="btn-del" onclick="del(${i.id})">QUITAR</button>
+      <div className="max-w-md mx-auto px-6 mt-8">
+        {tab === 'operacion' ? (
+          <div className="space-y-6">
+            <div className="space-y-1">
+              <label className="text-[10px] font-black text-[#aa8507] uppercase ml-2">Día de Trabajo</label>
+              <input type="date" value={fecha} onChange={(e) => setFecha(e.target.value)} 
+                     className="w-full p-4 rounded-2xl border-none outline-none inset-shadow bg-transparent font-bold" />
             </div>
-        `).join('');
-    }
 
-    function calcReport() {
-        const mode = document.getElementById('repType').value;
-        repMonth.classList.toggle('hidden', mode !== 'mes');
-        repDate.classList.toggle('hidden', mode === 'mes');
+            <div className="space-y-3">
+              <label className="text-[10px] font-black text-[#aa8507] uppercase ml-2">🥤 Consumo Barra</label>
+              <input value={nombre} onChange={(e) => setNombre(e.target.value)} placeholder="Nombre del Socio"
+                     className="w-full p-4 rounded-2xl border-none outline-none inset-shadow bg-transparent" />
+              <input type="number" value={monto} onChange={(e) => setMonto(e.target.value)} placeholder="Monto $"
+                     className="w-full p-4 rounded-2xl border-none outline-none inset-shadow bg-transparent" />
+              <button onClick={() => registrar('normal')} className="w-full py-4 rounded-2xl text-white font-black text-xs btn-premium">GUARDAR CONSUMO</button>
+            </div>
 
-        let bS = 0, cS = 0, det = "";
+            <div className="space-y-3">
+              <label className="text-[10px] font-black text-[#aa8507] uppercase ml-2">📦 Producto Cerrado</label>
+              <input value={prodCerrado} onChange={(e) => setProdCerrado(e.target.value)} placeholder="Producto"
+                     className="w-full p-4 rounded-2xl border-none outline-none inset-shadow bg-transparent" />
+              <input type="number" value={montoCerrado} onChange={(e) => setMontoCerrado(e.target.value)} placeholder="Monto $"
+                     className="w-full p-4 rounded-2xl border-none outline-none inset-shadow bg-transparent" />
+              <button onClick={() => registrar('cerrado')} className="w-full py-4 rounded-2xl text-[#d4af37] font-black text-xs btn-dark-premium">REGISTRAR PRODUCTO</button>
+            </div>
 
-        clubData.forEach(i => {
-            const iD = new Date(i.fecha + 'T12:00:00');
-            let ok = false;
-            if(mode === 'dia') ok = i.fecha === repDate.value;
-            if(mode === 'semana') {
-                const r = new Date(repDate.value + 'T12:00:00');
-                const s = new Date(r); s.setDate(r.getDate() - r.getDay());
-                const e = new Date(s); e.setDate(s.getDate() + 6);
-                ok = iD >= s && iD <= e;
-            }
-            if(mode === 'mes') {
-                const [y, m] = repMonth.value.split('-');
-                ok = iD.getFullYear() == y && (iD.getMonth() + 1) == m;
-            }
+            <div className="pt-4">
+                <span className="text-[10px] font-black text-[#aa8507] uppercase ml-2 mb-3 block">Bitácora Activa</span>
+                <div className="space-y-2">
+                  {db.filter(i => i.fecha === fecha).map(item => (
+                    <div key={item.id} className="flex justify-between items-center bg-white/40 p-4 rounded-2xl border border-white">
+                      <div>
+                        <p className="text-sm font-bold m-0 flex items-center gap-2">
+                            {item.tipo === 'cerrado' ? <Package size={12} className="text-[#aa8507]"/> : <ChevronRight size={12} className="text-[#1b3a1b]"/>}
+                            {item.nombre}
+                        </p>
+                        <p className="text-[10px] text-slate-400">$ {item.monto.toFixed(2)}</p>
+                      </div>
+                      <button onClick={() => eliminar(item.id)} className="p-2 text-red-400 bg-white rounded-xl shadow-sm"><Trash2 size={16}/></button>
+                    </div>
+                  ))}
+                </div>
+            </div>
+          </div>
+        ) : (
+          <div className="space-y-6">
+            <div ref={reportRef} className="bg-[#fdfaf5] p-8 rounded-sm relative min-h-[700px] border border-[#d4af37]" 
+                 style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg width=\'100\' height=\'100\' viewBox=\'0 0 100 100\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath d=\'M50 15c10 20 40 20 40 60s-30 20-40 20-40-20-40-60 30-40 40-20z\' fill=\'%23d4af37\' fill-opacity=\'0.04\'/%3E%3C/svg%3E")' }}>
+              
+              <div className="text-[#aa8507] font-serif text-xl border-b border-[#aa8507]/30 pb-3 mb-6 capitalize italic">
+                {st.fechaFormato}
+              </div>
 
-            if(ok) {
-                if(i.tipo === 'normal') bS += i.monto;
-                else cS += i.monto;
-                det += `${i.nombre} | `;
-            }
-        });
+              <div className="flex gap-6">
+                <div className="flex-1">
+                  <div className="flex justify-between border-b-2 border-[#aa8507] pb-1 mb-2 font-serif font-bold text-[#1b3a1b] text-sm">
+                    <span className="ml-8">Nombre</span>
+                    <span className="mr-6">$</span>
+                  </div>
+                  <div className="space-y-0 text-[11px] font-bold text-[#1b3a1b] uppercase">
+                    {st.barra.map((item, index) => (
+                      <div key={item.id} className="flex justify-between py-[6px] border-b border-[#aa8507]/10 items-center">
+                        <div className="flex gap-3">
+                          <span className="text-[#ccc] w-4 text-right font-normal">{index + 1}</span>
+                          <span>{item.nombre}</span>
+                        </div>
+                        <div className="flex gap-5">
+                          <span>$</span>
+                          <span className="w-12 text-right">{item.monto}</span>
+                        </div>
+                      </div>
+                    ))}
+                    <div className="flex justify-between py-4 border-t-2 border-[#aa8507] mt-3 font-serif text-sm">
+                      <span className="ml-8 uppercase">Total</span>
+                      <div className="flex gap-5">
+                        <span>$</span>
+                        <span className="w-12 text-right">{st.sumBarra.toLocaleString()}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
 
-        const total = bS + cS;
-        document.getElementById('resCons').innerText = (bS / 90).toFixed(2);
-        document.getElementById('resB').innerText = `$${bS.toFixed(2)}`;
-        document.getElementById('resC').innerText = `$${cS.toFixed(2)}`;
-        document.getElementById('resT').innerText = `$${total.toFixed(2)}`;
-        document.getElementById('resR').innerText = `$${(total * 0.7).toFixed(2)}`;
-        document.getElementById('resV').innerText = `$${(total * 0.3).toFixed(2)}`;
-        document.getElementById('resDet').innerText = det.slice(0, -3);
-    }
+                <div className="w-44 text-right">
+                  <div className="bg-white rounded-full border border-slate-100 flex items-center justify-between mb-8 pl-4 py-1 pr-1 border-l-4 border-[#aa8507] shadow-sm">
+                    <span className="text-[#aa8507] font-serif italic text-xs font-bold">Consumos</span>
+                    <span className="bg-[#6b8e23] text-white w-12 h-12 flex items-center justify-center rounded-full font-black text-2xl">{st.consumos}</span>
+                  </div>
 
-    function capture() {
-        const target = document.getElementById('printArea');
-        showToast("Generando Imagen...");
-        html2canvas(target, { scale: 3, backgroundColor: "#fdfaf5" }).then(canvas => {
-            const link = document.createElement('a');
-            link.download = `Cierre_Nutrition_${Date.now()}.png`;
-            link.href = canvas.toDataURL("image/png");
-            link.click();
-            showToast("Imagen Guardada ✅");
-        });
-    }
+                  <div className="space-y-3 text-sm font-black mb-12">
+                    <div className="flex justify-between items-end border-b border-dashed border-slate-200 pb-1">
+                      <span className="text-slate-400 text-[10px] uppercase">P. Cerrado</span>
+                      <span>$ {st.sumCerrado.toLocaleString()}</span>
+                    </div>
+                    <div className="flex justify-between items-end border-b border-dashed border-slate-200 pb-1">
+                      <span className="text-slate-400 text-[10px] uppercase">Vta total</span>
+                      <span>$ {st.vtaTotal.toLocaleString()}</span>
+                    </div>
+                    <div className="flex justify-between items-end pt-3">
+                      <span className="text-[#922b21] text-[10px] uppercase">Sobre Rojo</span>
+                      <span className="text-[#922b21]">$ {st.sobreRojo}</span>
+                    </div>
+                    <div className="flex justify-between items-end">
+                      <span className="text-[#145a32] text-[10px] uppercase">Sobre Verde</span>
+                      <span className="text-[#145a32]">$ {st.sobreVerde}</span>
+                    </div>
+                  </div>
 
-    function showToast(m) {
-        const t = document.getElementById('toast');
-        t.innerText = m; t.style.opacity = 1;
-        setTimeout(() => t.style.opacity = 0, 2500);
-    }
+                  <div className="w-36 h-36 bg-white rounded-full mx-auto border-4 border-[#d4af37] flex items-center justify-center overflow-hidden shadow-2xl">
+                    {logo ? <img src={logo} alt="Logo" className="w-full h-full object-cover" /> : <div className="text-4xl font-black text-[#d4af37]">BV</div>}
+                  </div>
+                </div>
+              </div>
+            </div>
 
-    dateMain.onchange = renderLog;
-</script>
+            <button onClick={exportar} className="w-full py-5 rounded-[30px] text-white font-black text-lg shadow-xl flex items-center justify-center gap-3 mt-6"
+                    style={{ background: 'linear-gradient(135deg, #2ecc71, #27ae60)' }}>
+              <Share2 size={24} /> GENERAR TICKET
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
 
-</body>
-</html>
+export default App;
+
+```
+                                
