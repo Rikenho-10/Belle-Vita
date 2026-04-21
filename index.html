@@ -13,95 +13,98 @@
 
 <style>
 
-/* FONDO PREMIUM */
+/* FONDO */
 body{
 margin:0;
 font-family: 'Segoe UI', sans-serif;
 color:white;
 background:
-radial-gradient(circle at top, rgba(255,215,0,0.15), transparent 40%),
+radial-gradient(circle at top, rgba(255,215,0,0.12), transparent 40%),
 #000;
 }
 
-/* CONTENEDOR */
+/* APP */
 .app{
-max-width:420px;
+max-width:380px;
 margin:auto;
-padding:15px;
-animation:fadeIn 0.6s ease;
-}
-
-/* ANIMACIÓN */
-@keyframes fadeIn{
-from{opacity:0; transform:translateY(10px);}
-to{opacity:1;}
+padding:12px;
 }
 
 /* TABS */
 .tabs{
 display:flex;
-gap:10px;
+gap:8px;
+margin-bottom:10px;
 }
 
 .tab{
 flex:1;
-padding:12px;
+padding:10px;
 text-align:center;
-border-radius:12px;
+border-radius:10px;
 background:#111;
 border:1px solid #333;
+font-size:14px;
 }
 
 .tab.active{
 background:linear-gradient(#ff3c3c,#7a0000);
-box-shadow:0 0 10px red;
+box-shadow:0 0 8px red;
 }
 
-/* LOGO PERFECTO */
+/* LOGO */
 .logo{
-width:120px;
-height:120px;
+width:110px;
+height:110px;
 object-fit:cover;
 display:block;
-margin:20px auto;
+margin:10px auto;
 border-radius:50%;
 border:2px solid gold;
-box-shadow:0 0 15px gold;
+box-shadow:0 0 12px gold;
 }
 
-/* TARJETAS */
+/* CARD */
 .card{
-background:#111;
-border-radius:18px;
-padding:15px;
-margin-top:15px;
-border:1px solid rgba(255,215,0,0.4);
-box-shadow:0 0 10px rgba(255,215,0,0.2);
+background:#0d0d0d;
+border-radius:16px;
+padding:12px;
+margin-top:12px;
+border:1px solid rgba(255,215,0,0.5);
+box-shadow:
+inset 0 0 10px rgba(255,215,0,0.1),
+0 0 10px rgba(255,215,0,0.15);
 }
 
-/* INPUTS */
+/* INPUTS FINOS */
 input{
 width:100%;
-padding:10px;
-margin-top:8px;
-border-radius:10px;
-border:none;
-background:#222;
+padding:8px;
+margin-top:6px;
+border-radius:8px;
+border:1px solid #333;
+background:#1a1a1a;
 color:white;
+font-size:14px;
 }
 
 /* BOTONES */
 button{
 width:100%;
-padding:10px;
-margin-top:10px;
+padding:9px;
+margin-top:8px;
 border:none;
-border-radius:10px;
+border-radius:8px;
 font-weight:bold;
+font-size:14px;
 }
 
 .btn-red{
 background:linear-gradient(#ff3c3c,#7a0000);
+}
+
+.btn-green{
+background:linear-gradient(#2ecc71,#145a32);
 }
 
 .btn-gold{
@@ -109,21 +112,18 @@ background:linear-gradient(#ffd700,#996600);
 color:black;
 }
 
-.btn-green{
-background:linear-gradient(#2ecc71,#145a32);
-}
-
 /* TEXTO */
 .big{
-font-size:32px;
+font-size:28px;
 text-align:center;
 color:gold;
-text-shadow:0 0 10px gold;
+text-shadow:0 0 8px gold;
 }
 
 .lista p{
 border-bottom:1px solid #333;
-padding:6px 0;
+padding:5px 0;
+font-size:14px;
 }
 
 .hidden{display:none;}
@@ -140,8 +140,9 @@ padding:6px 0;
 <div class="tab" onclick="tab('rep')">Reporte</div>
 </div>
 
-<img id="logo" class="logo" src="logo.png">
+<img class="logo" src="logo.png">
 
+<!-- REGISTRO -->
 <div id="reg">
 
 <div class="card">
@@ -163,6 +164,7 @@ padding:6px 0;
 
 </div>
 
+<!-- REPORTE -->
 <div id="rep" class="hidden">
 
 <div id="reporte" class="card"></div>
@@ -177,13 +179,12 @@ padding:6px 0;
 
 <script>
 
-/* DATOS */
 let datos=JSON.parse(localStorage.getItem("datos"))||[];
 
 function save(){localStorage.setItem("datos",JSON.stringify(datos));}
 function hoy(){return new Date().toLocaleDateString();}
 
-/* TAB */
+/* TABS */
 function tab(t){
 reg.classList.toggle("hidden",t!="reg");
 rep.classList.toggle("hidden",t!="rep");
@@ -253,8 +254,8 @@ if(f>=sem && d.tipo==="normal") s+=d.total;
 if(f>=mes && d.tipo==="normal") m+=d.total;
 });
 
+/* 🔥 SIN LOGO DUPLICADO */
 reporte.innerHTML=`
-<img src="logo.png" style="width:70px;display:block;margin:auto;">
 <h3 style="text-align:center;color:gold;">BELLE VITA</h3>
 
 <div class="big">$${h}</div>
@@ -274,7 +275,7 @@ reporte.innerHTML=`
 
 /* IMAGEN */
 function capturar(){
-html2canvas(reporte).then(c=>{
+html2canvas(reporte,{useCORS:true}).then(c=>{
 let a=document.createElement("a");
 a.href=c.toDataURL();
 a.download="reporte.png";
@@ -284,8 +285,7 @@ a.click();
 
 /* WHATSAPP */
 function whatsapp(){
-html2canvas(reporte).then(c=>{
-let img=c.toDataURL();
+html2canvas(reporte,{useCORS:true}).then(c=>{
 window.open(`https://wa.me/?text=Reporte Belle Vita listo 📊`);
 });
 }
