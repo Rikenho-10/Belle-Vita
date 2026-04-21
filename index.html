@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Belle Vita</title>
 
 <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
+
 body{
 margin:0;
 font-family:sans-serif;
@@ -16,7 +16,7 @@ background:radial-gradient(circle,#1a0000,#000);
 color:white;
 }
 
-.app{max-width:340px;margin:auto;padding:6px;}
+.app{max-width:330px;margin:auto;padding:6px;}
 
 .tabs{display:flex;gap:4px;}
 .tab{
@@ -30,7 +30,7 @@ box-shadow:0 0 8px red;
 }
 
 .logo{
-width:90px;height:90px;
+width:85px;height:85px;
 object-fit:contain;
 display:block;margin:8px auto;
 border-radius:50%;
@@ -39,24 +39,31 @@ cursor:pointer;
 }
 
 .card{
-background:#111;padding:7px;
+background:#111;padding:6px;
 border-radius:8px;margin-top:6px;
 border:1px solid gold;
 }
 
 input,select{
 width:100%;
-padding:4px;margin-top:3px;
-border-radius:5px;border:none;
-background:#1a1a1a;color:white;
-font-size:11px;
+padding:4px;
+margin-top:3px;
+border-radius:5px;
+border:none;
+background:#1a1a1a;
+color:white;
+font-size:10px;
 box-sizing:border-box;
 }
 
 button{
-width:100%;padding:5px;margin-top:4px;
-border:none;border-radius:5px;
-font-size:11px;font-weight:bold;
+width:100%;
+padding:5px;
+margin-top:4px;
+border:none;
+border-radius:5px;
+font-size:10px;
+font-weight:bold;
 }
 
 .btn-red{background:#e60000;}
@@ -64,18 +71,18 @@ font-size:11px;font-weight:bold;
 .btn-green{background:#2ecc71;}
 
 .lista p{
-font-size:11px;margin:2px 0;
+font-size:10px;
+margin:2px 0;
 border-bottom:1px solid #333;
 }
 
 .consumos{
-font-size:22px;color:gold;
-text-shadow:0 0 10px gold;
+font-size:22px;
+color:gold;
+text-shadow:0 0 12px gold;
 }
 
 .hidden{display:none;}
-
-canvas{background:#000;border-radius:8px;}
 
 </style>
 </head>
@@ -143,16 +150,9 @@ canvas{background:#000;border-radius:8px;}
 
 <!-- GRAFICAS -->
 <div id="graf" class="hidden">
-
 <div class="card">
 <canvas id="chartVentas"></canvas>
 </div>
-
-<div class="card">
-<p id="resumenSemanal"></p>
-<p id="resumenMensual"></p>
-</div>
-
 </div>
 
 </div>
@@ -160,7 +160,6 @@ canvas{background:#000;border-radius:8px;}
 <script>
 
 let datos=JSON.parse(localStorage.getItem("datos"))||[];
-let chart;
 
 /* LOGO */
 logo.onclick=()=>fileLogo.click();
@@ -188,7 +187,6 @@ document.querySelectorAll(".tab")[1].classList.toggle("active",t=="rep");
 document.querySelectorAll(".tab")[2].classList.toggle("active",t=="graf");
 
 if(t=="rep") generar();
-if(t=="graf") generarGrafica();
 }
 
 /* AGREGAR */
@@ -230,99 +228,51 @@ lista.innerHTML=html;
 cerrados.innerHTML=html2;
 }
 
-/* SEMANA */
-function inicioSemana(f){
-let d=new Date(f);
-let day=d.getDay();
-let diff=d.getDate()-day+5;
-return new Date(d.setDate(diff));
-}
-
 /* REPORTE */
 function generar(){
-let tipo=tipoReporte.value;
-let fSel=new Date(filtro.value||hoy());
+
+let fSel=filtro.value||hoy();
+
 let total=0;
+let listaClientes="";
+let listaCerrados="";
 
 datos.forEach(d=>{
-let fd=new Date(d.fecha);
-
-if(tipo==="dia" && d.fecha===fSel.toISOString().split("T")[0] && d.tipo==="normal") total+=d.total;
-
-if(tipo==="semana"){
-let ini=inicioSemana(fSel);
-let fin=new Date(ini); fin.setDate(ini.getDate()+6);
-if(fd>=ini && fd<=fin && d.tipo==="normal") total+=d.total;
+if(d.fecha===fSel){
+if(d.tipo==="normal"){
+total+=d.total;
+listaClientes+=`<p>🥤 ${d.cliente} - $${d.total}</p>`;
 }
-
-if(tipo==="mes"){
-if(fd.getMonth()===fSel.getMonth() && fd.getFullYear()===fSel.getFullYear() && d.tipo==="normal") total+=d.total;
+if(d.tipo==="cerrado"){
+listaCerrados+=`<p>📦 ${d.cliente} - $${d.total}</p>`;
+}
 }
 });
 
 let consumos=(total/90).toFixed(2);
-let rojo=(total*0.7).toFixed(2);
-let verde=(total*0.3).toFixed(2);
 
 reporte.innerHTML=`
-<div style="text-align:center;">
+<div style="text-align:center;position:relative;padding:10px;background:
+radial-gradient(circle at center, rgba(255,215,0,0.1), black),
+url('https://i.imgur.com/8QfQZ9P.png');
+background-size:cover; border-radius:10px;">
+
 <img src="${logo.src}" style="width:60px;">
 <h3 style="color:gold;">BELLE VITA</h3>
+
 <div class="consumos">${consumos} 🥤</div>
+
 <p>Total: $${total}</p>
-<p>🔴 $${rojo}</p>
-<p>🟢 $${verde}</p>
+
+<hr>
+
+<div style="text-align:left">
+${listaClientes}
+${listaCerrados}
+</div>
+
 </div>
 `;
-}
-
-/* GRAFICAS */
-function generarGrafica(){
-
-let dias={};
-let semanal=0;
-let mensual=0;
-let hoyF=new Date();
-
-datos.forEach(d=>{
-if(d.tipo==="normal"){
-dias[d.fecha]=(dias[d.fecha]||0)+d.total;
-
-let fd=new Date(d.fecha);
-
-// semana
-let ini=inicioSemana(hoyF);
-let fin=new Date(ini); fin.setDate(ini.getDate()+6);
-if(fd>=ini && fd<=fin) semanal+=d.total;
-
-// mes
-if(fd.getMonth()===hoyF.getMonth()) mensual+=d.total;
-}
-});
-
-let labels=Object.keys(dias);
-let valores=Object.values(dias);
-
-if(chart) chart.destroy();
-
-chart=new Chart(document.getElementById('chartVentas'),{
-type:'bar',
-data:{
-labels:labels,
-datasets:[{data:valores}]
-},
-options:{
-plugins:{legend:{display:false}},
-scales:{
-x:{ticks:{color:'white'}},
-y:{ticks:{color:'white'}}
-}
-}
-});
-
-resumenSemanal.innerHTML="📆 Semana: $"+semanal;
-resumenMensual.innerHTML="📊 Mes: $"+mensual;
-
 }
 
 /* IMAGEN */
