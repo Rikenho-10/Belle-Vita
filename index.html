@@ -21,7 +21,6 @@ flex:1;padding:8px;text-align:center;
 border-radius:10px;
 background:#111;
 border:1px solid #500;
-color:#ccc;
 }
 .active{
 background:linear-gradient(45deg,#ffd700,#b8860b);
@@ -43,7 +42,7 @@ background:#111;
 padding:10px;
 margin:10px;
 border-radius:12px;
-border:1px solid #ffd700;
+border:1px solid gold;
 box-shadow:0 0 10px rgba(255,215,0,0.2);
 }
 
@@ -72,11 +71,7 @@ font-size:12px;
 .red{background:#b30000;}
 .gold{background:#ffd700;color:black;}
 .green{background:#2ecc71;}
-.del{
-background:#333;
-font-size:10px;
-margin-top:2px;
-}
+.del{background:#333;font-size:10px;margin-top:2px;}
 
 /* LISTA */
 .lista p{
@@ -150,9 +145,11 @@ text-shadow:0 0 12px gold;
 
 let datos = JSON.parse(localStorage.getItem("datos")) || [];
 
-/* FECHA */
+/* FECHA CORREGIDA */
 function hoy(){
-return new Date().toISOString().split("T")[0];
+let d = new Date();
+d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
+return d.toISOString().split("T")[0];
 }
 
 fecha.value = hoy();
@@ -201,29 +198,32 @@ clienteC.value=""; cerrado.value="";
 
 /* ELIMINAR */
 function borrar(id){
-datos = datos.filter(d=>d.id!==id);
-save(); update();
+datos = datos.filter(d => d.id != id);
+save();
+update();
+generar();
 }
 
 /* LISTA */
 function update(){
-let f=fecha.value||hoy();
+let f = fecha.value || hoy();
 let html="";
 
 datos.forEach(d=>{
-if(d.fecha==f){
+if(d.fecha === f){
 html+=`
 <p>
 ${d.cliente||"—"} - $${d.total} (${d.tipo})
-<br><button class="del" onclick="borrar(${d.id})">Eliminar</button>
+<br>
+<button class="del" onclick="borrar(${d.id})">Eliminar</button>
 </p>`;
 }
 });
 
-lista.innerHTML=html;
+lista.innerHTML = html;
 }
 
-/* SEMANA */
+/* SEMANA (VIERNES A JUEVES) */
 function semana(fecha){
 let d=new Date(fecha);
 let dia=d.getDay();
@@ -240,18 +240,18 @@ return {inicio,fin};
 /* REPORTE */
 function generar(){
 
-let tipo=tipo.value;
-let f=fechaRep.value||hoy();
+let tipo = document.getElementById("tipo").value;
+let f = fechaRep.value ? fechaRep.value : hoy();
 
-let ventas=0,cerrado=0;
-let listaC="",listaCe="";
+let ventas=0, cerrado=0;
+let listaC="", listaCe="";
 
 datos.forEach(d=>{
 
 let fd=new Date(d.fecha);
 let incluir=false;
 
-if(tipo=="dia") incluir=d.fecha==f;
+if(tipo=="dia") incluir=d.fecha===f;
 
 if(tipo=="semana"){
 let {inicio,fin}=semana(f);
@@ -300,11 +300,10 @@ ${listaCe}
 `;
 }
 
-/* IMAGEN (FIX ANDROID) */
+/* IMAGEN */
 function descargar(){
 
 html2canvas(reporte,{
-backgroundColor:null,
 scale:2,
 useCORS:true
 }).then(canvas=>{
