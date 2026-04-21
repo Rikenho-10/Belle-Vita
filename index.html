@@ -14,7 +14,6 @@ background:radial-gradient(circle,#1a1a1a,#000);
 color:white;
 }
 
-/* TABS */
 .tabs{display:flex;gap:5px;padding:10px;}
 .tab{
 flex:1;padding:8px;text-align:center;
@@ -67,10 +66,10 @@ border-bottom:1px solid #333;
 }
 
 .consumos{
-font-size:26px;
+font-size:28px;
 color:gold;
 text-align:center;
-text-shadow:0 0 10px gold;
+text-shadow:0 0 12px gold;
 margin:10px 0;
 }
 
@@ -123,7 +122,7 @@ margin:10px 0;
 
 <div class="card" id="reporte"></div>
 
-<button class="green" onclick="whatsapp()">📤 WhatsApp</button>
+<button class="green" onclick="descargar()">📸 Generar imagen</button>
 
 </div>
 
@@ -230,16 +229,14 @@ datos.forEach(d=>{
 let fd = new Date(d.fecha);
 let incluir=false;
 
-if(tipo=="dia"){
-incluir = d.fecha == f;
-}
+if(tipo=="dia") incluir = d.fecha == f;
 
 if(tipo=="semana"){
 let {inicio,fin} = semana(f);
 incluir = fd>=inicio && fd<=fin;
 }
 
-if(tipo=="mes"){
+if(tipo=="mes" && mesRep.value){
 let [y,m] = mesRep.value.split("-");
 incluir = (fd.getFullYear()==y && (fd.getMonth()+1)==m);
 }
@@ -263,7 +260,9 @@ listaCerrados+=`<p>📦 ${d.cliente} - $${d.total}</p>`;
 let total = ventas + cerrado;
 let rojo = (total*0.7).toFixed(2);
 let verde = (total*0.3).toFixed(2);
-let consumos = (total/90).toFixed(2);
+
+/* ✅ CONSUMOS CORREGIDOS */
+let consumos = (ventas/90).toFixed(2);
 
 reporte.innerHTML=`
 <div class="consumos">${consumos} 🥤</div>
@@ -282,8 +281,8 @@ ${listaCerrados}
 `;
 }
 
-/* WHATSAPP */
-function whatsapp(){
+/* IMAGEN */
+function descargar(){
 
 let div = reporte.cloneNode(true);
 
@@ -291,7 +290,7 @@ div.style.background="#000";
 div.style.padding="20px";
 div.style.border="2px solid gold";
 
-/* ROSAS */
+/* 🌹 ROSAS */
 div.style.backgroundImage=`
 radial-gradient(circle at 20% 20%, rgba(255,0,80,0.2), transparent 40%),
 radial-gradient(circle at 80% 80%, rgba(255,0,80,0.15), transparent 40%)
@@ -310,8 +309,6 @@ let link=document.createElement("a");
 link.href=canvas.toDataURL();
 link.download="reporte.png";
 link.click();
-
-window.open("https://wa.me/");
 });
 }
 
