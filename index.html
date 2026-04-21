@@ -8,55 +8,103 @@
 <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 
 <style>
+
 body{
 margin:0;
 font-family:sans-serif;
-background:radial-gradient(circle,#1a1a1a,#000);
+background:radial-gradient(circle at top,#1a0000,#000);
 color:white;
 }
 
-.app{max-width:360px;margin:auto;padding:10px;}
+/* CONTENEDOR */
+.app{max-width:350px;margin:auto;padding:8px;}
 
-.tabs{display:flex;gap:6px;}
-.tab{flex:1;padding:8px;text-align:center;border-radius:10px;background:#111;border:1px solid #333;font-size:13px;}
-.tab.active{background:red;}
+/* TABS */
+.tabs{display:flex;gap:5px;}
+.tab{
+flex:1;padding:6px;text-align:center;
+border-radius:8px;
+background:#111;
+border:1px solid #500;
+font-size:12px;
+}
+.tab.active{
+background:linear-gradient(#ff0000,#400000);
+box-shadow:0 0 10px red;
+}
 
+/* LOGO */
 .logo{
-width:110px;height:110px;object-fit:contain;
-display:block;margin:12px auto;border-radius:50%;
-box-shadow:0 0 15px gold;cursor:pointer;
+width:100px;height:100px;
+object-fit:contain;
+display:block;margin:10px auto;
+border-radius:50%;
+box-shadow:0 0 15px gold;
+cursor:pointer;
 }
 
+/* CARDS */
 .card{
-background:#111;padding:10px;border-radius:10px;
-margin-top:8px;border:1px solid gold;
+background:linear-gradient(145deg,#111,#1a0000);
+padding:8px;
+border-radius:10px;
+margin-top:6px;
+border:1px solid gold;
+box-shadow:0 0 8px rgba(255,215,0,.3);
 }
 
+/* INPUTS MÁS PEQUEÑOS */
 input,select{
-width:100%;padding:6px;margin-top:5px;
-border-radius:6px;border:none;background:#222;color:white;font-size:13px;
+width:100%;
+padding:5px;
+margin-top:4px;
+border-radius:5px;
+border:none;
+background:#1a1a1a;
+color:white;
+font-size:12px;
 }
 
+/* BOTONES */
 button{
-width:100%;padding:7px;margin-top:6px;
-border:none;border-radius:7px;font-weight:bold;font-size:13px;
+width:100%;
+padding:6px;
+margin-top:5px;
+border:none;
+border-radius:6px;
+font-weight:bold;
+font-size:12px;
 }
 
-.btn-red{background:#e60000;}
-.btn-gold{background:gold;color:black;}
-.btn-green{background:#2ecc71;}
+.btn-red{
+background:linear-gradient(#ff0000,#600000);
+color:white;
+}
+.btn-gold{
+background:linear-gradient(#ffd700,#a67c00);
+color:black;
+}
+.btn-green{
+background:linear-gradient(#2ecc71,#145a32);
+}
 
-.lista p{margin:3px 0;font-size:13px;border-bottom:1px solid #333;padding:3px;}
+/* LISTA */
+.lista p{
+margin:2px 0;
+padding:2px 0;
+font-size:12px;
+border-bottom:1px solid #333;
+}
+
+/* CONSUMOS PRO */
+.consumos{
+font-size:26px;
+color:gold;
+text-shadow:0 0 15px gold;
+margin:8px 0;
+}
 
 .hidden{display:none;}
-
-/* 🔥 CONSUMOS RESALTADOS */
-.consumos{
-font-size:28px;
-color:gold;
-text-shadow:0 0 10px gold;
-margin:10px 0;
-}
 
 </style>
 </head>
@@ -84,7 +132,8 @@ margin:10px 0;
 </div>
 
 <div class="card">
-<input id="cerrado" type="number" placeholder="Producto cerrado">
+<input id="clienteCerrado" placeholder="Cliente (cerrado)">
+<input id="cerrado" type="number" placeholder="Producto cerrado $">
 <button class="btn-red" onclick="addCerrado()">Agregar</button>
 </div>
 
@@ -123,7 +172,7 @@ margin:10px 0;
 
 <script>
 
-let datos = JSON.parse(localStorage.getItem("datos")) || [];
+let datos=JSON.parse(localStorage.getItem("datos"))||[];
 
 /* LOGO */
 logo.onclick=()=>fileLogo.click();
@@ -160,12 +209,15 @@ save();update();
 cliente.value="";total.value="";
 }
 
+/* CERRADO CON CLIENTE */
 function addCerrado(){
 let f=fecha.value||hoy();
+let c=clienteCerrado.value||"Sin nombre";
 let m=parseFloat(cerrado.value);
 if(!m)return;
-datos.push({fecha:f,total:m,tipo:"cerrado"});
+datos.push({fecha:f,cliente:c,total:m,tipo:"cerrado"});
 save();update();
+clienteCerrado.value="";
 cerrado.value="";
 }
 
@@ -179,7 +231,7 @@ let html="",html2="";
 datos.forEach(d=>{
 if(d.fecha===fSel){
 if(d.tipo==="normal") html+=`<p>🥤 ${d.cliente} - $${d.total}</p>`;
-if(d.tipo==="cerrado") html2+=`<p>📦 $${d.total}</p>`;
+if(d.tipo==="cerrado") html2+=`<p>📦 ${d.cliente} - $${d.total}</p>`;
 }
 });
 
@@ -187,7 +239,7 @@ lista.innerHTML=html;
 cerrados.innerHTML=html2;
 }
 
-/* SEMANA VIERNES A JUEVES */
+/* SEMANA */
 function inicioSemana(fecha){
 let d=new Date(fecha);
 let day=d.getDay();
@@ -199,7 +251,6 @@ return new Date(d.setDate(diff));
 function generar(){
 let tipo=tipoReporte.value;
 let fSel=new Date(filtro.value||hoy());
-
 let total=0;
 
 datos.forEach(d=>{
@@ -216,7 +267,6 @@ if(fd>=ini && fd<=fin && d.tipo==="normal") total+=d.total;
 if(tipo==="mes"){
 if(fd.getMonth()===fSel.getMonth() && fd.getFullYear()===fSel.getFullYear() && d.tipo==="normal") total+=d.total;
 }
-
 });
 
 let consumos=(total/90).toFixed(2);
@@ -224,10 +274,8 @@ let rojo=(total*0.7).toFixed(2);
 let verde=(total*0.3).toFixed(2);
 
 reporte.innerHTML=`
-<h3 style="color:gold;">REPORTE</h3>
-
+<h3 style="color:gold;">BELLE VITA</h3>
 <div class="consumos">${consumos} 🥤</div>
-
 <p>Total: $${total}</p>
 <p>🔴 $${rojo}</p>
 <p>🟢 $${verde}</p>
