@@ -1,9 +1,10 @@
+```html
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Belle Vita - Custom Premium</title>
+    <title>Belle Vita - Premium Fix</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Playfair+Display:ital,wght@0,700;1,700&display=swap');
@@ -64,16 +65,16 @@
         .t-row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid rgba(212, 175, 55, 0.1); font-size: 10px; font-weight: 700; text-transform: uppercase; }
         .t-total { display: flex; justify-content: space-between; padding: 15px 0; border-top: 2px solid var(--oro); font-weight: 900; margin-top: 10px; font-size: 13px; }
         
-        /* Badge Consumos Auto-ajustable */
+        /* Badge Consumos Auto-ajustable - REVISADO */
         .rep-badge-consumos { 
             background: white; border-radius: 50px; padding: 5px 12px; display: inline-flex; 
             justify-content: space-between; align-items: center; border: 1px solid #eee; 
             box-shadow: 0 4px 10px rgba(0,0,0,0.05); margin-bottom: 25px; min-width: 145px;
         }
-        .rep-badge-lbl { font-size: 9px; font-weight: 900; color: var(--oro); padding-right: 8px; }
+        .rep-badge-lbl { font-size: 9px; font-weight: 900; color: var(--oro); padding-right: 8px; text-transform: uppercase; }
         .rep-badge-num { 
             background: #6b8e23; color: white; min-width: 45px; height: 45px; 
-            padding: 0 10px; display: flex; align-items: center; justify-content: center; 
+            padding: 0 12px; display: flex; align-items: center; justify-content: center; 
             border-radius: 25px; font-size: 19px; font-weight: 900; 
         }
         
@@ -114,29 +115,29 @@
     <!-- REGISTRO -->
     <div id="view-reg" class="container">
         <div class="card">
-            <span class="card-label">📅 Fecha</span>
+            <span class="card-label">📅 Fecha de Trabajo</span>
             <input type="date" id="inFecha">
         </div>
         <div class="card">
-            <span class="card-label">🥤 Barra</span>
+            <span class="card-label">🥤 Consumo en Barra</span>
             <input id="inNombre" placeholder="Nombre Socio">
-            <input type="number" id="inMonto" placeholder="Monto $">
-            <button class="btn btn-oro" onclick="add('normal')">Guardar Consumo</button>
+            <input type="number" id="inMonto" placeholder="Total $">
+            <button class="btn btn-oro" onclick="add('normal')">Guardar en Barra</button>
         </div>
         <div class="card">
-            <span class="card-label">📦 Cerrado</span>
-            <input id="inProd" placeholder="Venta Cerrada">
-            <input type="number" id="inMontoP" placeholder="Monto $">
-            <button class="btn btn-dark" onclick="add('cerrado')">Registrar Producto</button>
+            <span class="card-label">📦 Venta Cerrada</span>
+            <input id="inProd" placeholder="Producto">
+            <input type="number" id="inMontoP" placeholder="Total $">
+            <button class="btn btn-dark" onclick="add('cerrado')">Registrar Venta</button>
         </div>
-        <span class="card-label">Bitácora</span>
+        <span class="card-label">Actividad</span>
         <div id="lista"></div>
     </div>
 
     <!-- RESULTADOS -->
     <div id="view-rep" class="container hidden">
         <div class="card">
-            <span class="card-label">Tipo de Reporte</span>
+            <span class="card-label">Seleccionar Periodo</span>
             <select id="selModo" onchange="toggleFiltros()">
                 <option value="dia">Reporte Diario</option>
                 <option value="semana">Semana (Vie-Jue)</option>
@@ -145,7 +146,7 @@
             </select>
             
             <div id="f-dia">
-                <span class="card-label">Seleccionar Día</span>
+                <span class="card-label">Elegir Día</span>
                 <input type="date" id="repRef" onchange="calc()">
             </div>
             
@@ -158,7 +159,7 @@
         </div>
 
         <div id="reporte-area">
-            <div id="rep-tit" class="rep-title">Cierre Diario</div>
+            <div id="rep-tit" class="rep-title">Cierre de Operación</div>
             <div id="rep-fecha" class="rep-date">...</div>
             
             <div id="layout-dia" class="rep-flex">
@@ -168,10 +169,12 @@
                     <div class="t-total"><span style="margin-left:15px">TOTAL</span><span style="margin-right:10px" id="rep-t-barra">$0</span></div>
                 </div>
                 <div class="rep-stats">
+                    <!-- BOTÓN VERDE CORREGIDO AQUÍ -->
                     <div class="rep-badge-consumos">
-                        <span class="rep-badge-lbl">CONSUMOS</span>
+                        <span class="rep-badge-lbl">Consumos</span>
                         <span class="rep-badge-num" id="rep-c-val">0</span>
                     </div>
+                    
                     <div class="stat-l"><span style="color:#aaa">P. Cerrado</span><span id="rep-v-cerrado">$0</span></div>
                     <div class="stat-l"><span style="color:#aaa">Vta Total</span><span id="rep-v-total">$0</span></div>
                     <div class="stat-l s-rojo"><span>ROJO</span><span id="rep-v-rojo">$0</span></div>
@@ -197,14 +200,14 @@
                 <div class="rep-logo" style="margin-top:40px"><img class="logo-f hidden"><b class="logo-t-f" style="font-size:30px;color:var(--oro)">BV</b></div>
             </div>
         </div>
-        <button class="btn btn-green" onclick="capturar()">📸 GENERAR PARA WHATSAPP</button>
+        <button class="btn btn-green" onclick="capturar()">📸 COMPARTIR REPORTE POR WHATSAPP</button>
     </div>
 </div>
 
 <div id="toast"></div>
 
 <script>
-    let db = JSON.parse(localStorage.getItem('bv_pro_db_v7')) || [];
+    let db = JSON.parse(localStorage.getItem('bv_pro_db_final')) || [];
     let logo = localStorage.getItem('bv_logo_v7') || null;
 
     const inFecha = document.getElementById('inFecha');
@@ -256,20 +259,20 @@
             m = parseFloat(document.getElementById('inMonto').value);
             document.getElementById('inNombre').value = ''; document.getElementById('inMonto').value = '';
         } else {
-            n = document.getElementById('inProd').value || "Venta";
+            n = document.getElementById('inProd').value || "Producto";
             m = parseFloat(document.getElementById('inMontoP').value);
             document.getElementById('inProd').value = ''; document.getElementById('inMontoP').value = '';
         }
         if(isNaN(m)) return;
         db.push({ id: Date.now(), fecha: inFecha.value, nombre: n, monto: m, tipo });
-        localStorage.setItem('bv_pro_db_v7', JSON.stringify(db));
+        localStorage.setItem('bv_pro_db_final', JSON.stringify(db));
         render();
-        pop("✅ Registrado");
+        pop("✅ Guardado");
     }
 
     function del(id) {
         db = db.filter(i => i.id !== id);
-        localStorage.setItem('bv_pro_db_v7', JSON.stringify(db));
+        localStorage.setItem('bv_pro_db_final', JSON.stringify(db));
         render();
     }
 
@@ -295,7 +298,7 @@
     function calc() {
         const modo = selModo.value;
         let filtrados = [];
-        let t = "Cierre Diario", s = "";
+        let t = "Reporte Diario", s = "";
         let diasAbiertos = new Set();
 
         if(modo === 'rango') {
@@ -309,7 +312,7 @@
                 }
                 return false;
             });
-            t = "Cierre Personalizado";
+            t = "Reporte Personalizado";
             s = `${ini.getDate()}/${ini.getMonth()+1} al ${fin.getDate()}/${fin.getMonth()+1}`;
         } else {
             const ref = repRef.value;
@@ -330,7 +333,7 @@
                     }
                     return false;
                 });
-                t = "Cierre Semanal";
+                t = "Reporte Semanal";
                 s = `${ini.getDate()}/${ini.getMonth()+1} al ${fin.getDate()}/${fin.getMonth()+1}`;
             } else {
                 filtrados = db.filter(d => {
@@ -341,7 +344,7 @@
                     }
                     return false;
                 });
-                t = "Cierre Mensual";
+                t = "Reporte Mensual";
                 s = dRef.toLocaleDateString('es-ES', { month: 'long', year: 'numeric' });
             }
         }
@@ -351,7 +354,7 @@
         const sb = b.reduce((a, x) => a + x.monto, 0);
         const sc = c.reduce((a, x) => a + x.monto, 0);
         const tot = sb + sc;
-        const cTot = sb / 90;
+        const cTot = (sb / 90).toFixed(2);
         const prom = (cTot / (diasAbiertos.size || 1)).toFixed(2);
         const verde = (tot * 0.3).toFixed(2);
 
@@ -360,39 +363,4 @@
 
         const esDiario = modo === 'dia';
         document.getElementById('layout-dia').classList.toggle('hidden', !esDiario);
-        document.getElementById('layout-ejec').classList.toggle('hidden', esDiario);
-
-        if(esDiario) {
-            document.getElementById('rep-rows').innerHTML = b.map((i, idx) => `
-                <div class="t-row"><div style="display:flex;gap:10px"><span style="color:#bbb;width:15px;text-align:right">${idx + 1}</span><span>${i.nombre}</span></div><div style="display:flex;gap:15px"><span>$</span><span style="width:35px;text-align:right">${i.monto}</span></div></div>
-            `).join('');
-            document.getElementById('rep-t-barra').innerText = `$ ${sb.toLocaleString()}`;
-            document.getElementById('rep-c-val').innerText = cTot.toFixed(2);
-            document.getElementById('rep-v-cerrado').innerText = `$ ${sc.toLocaleString()}`;
-            document.getElementById('rep-v-total').innerText = `$ ${tot.toLocaleString()}`;
-            document.getElementById('rep-v-rojo').innerText = `$ ${(tot * 0.7).toFixed(2)}`;
-            document.getElementById('rep-v-verde').innerText = `$ ${verde}`;
-        } else {
-            document.getElementById('rep-avg').innerText = prom;
-            document.getElementById('rep-v-total-verde').innerText = `$ ${verde}`;
-        }
-    }
-
-    function capturar() {
-        const a = document.getElementById('reporte-area');
-        pop("Generando...");
-        html2canvas(a, { scale: 3, backgroundColor: "#fdfaf5" }).then(c => {
-            const l = document.createElement('a'); l.download = `Reporte_${Date.now()}.png`;
-            l.href = c.toDataURL("image/png"); l.click();
-            pop("📸 Guardado");
-        });
-    }
-
-    function pop(m) {
-        const t = document.getElementById('toast'); t.innerText = m; t.style.opacity = 1;
-        setTimeout(() => t.style.opacity = 0, 2000);
-    }
-    inFecha.onchange = render;
-</script>
-</body>
-</html>
+        document.getElementById('layout-ejec').classList.
