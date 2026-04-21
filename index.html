@@ -1,9 +1,10 @@
+```html
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Nutrition Club Premium - Ricardo</title>
+    <title>Nutrition Club - Belle Vita Solo Éxitos</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Playfair+Display:ital,wght@0,700;1,700&display=swap');
@@ -19,18 +20,18 @@
             --f-dentro: inset 3px 3px 6px #d9d6d1, inset -3px -3px 6px #ffffff;
         }
 
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
         body { margin: 0; font-family: 'Montserrat', sans-serif; background-color: var(--crema); color: var(--v-club); display: flex; justify-content: center; }
         
         .app { width: 100%; max-width: 480px; background: var(--crema); min-height: 100vh; display: flex; flex-direction: column; }
 
-        /* HEADER */
+        /* HEADER PREMIUM */
         .header { background: var(--v-club); padding: 15px; text-align: center; border-radius: 0 0 40px 40px; box-shadow: 0 8px 25px rgba(0,0,0,0.3); z-index: 5; }
-        .logo-ring { width: 65px; height: 65px; background: white; margin: 0 auto 10px; border-radius: 50%; border: 2px solid var(--oro); display: flex; align-items: center; justify-content: center; overflow: hidden; animation: glow 2s infinite ease-in-out; cursor: pointer; }
+        .logo-ring { width: 60px; height: 60px; background: white; margin: 0 auto 10px; border-radius: 50%; border: 2px solid var(--oro); display: flex; align-items: center; justify-content: center; overflow: hidden; animation: glow 2s infinite ease-in-out; cursor: pointer; }
         @keyframes glow { 0%, 100% { box-shadow: 0 0 10px var(--oro); } 50% { box-shadow: 0 0 25px var(--oro-luz), 0 0 40px var(--oro); } }
         .logo-ring img { width: 100%; height: 100%; object-fit: cover; }
-        .logo-ring b { font-size: 24px; color: var(--v-club); }
-        .header h1 { font-family: 'Playfair Display', serif; color: var(--oro); margin: 0; font-size: 18px; text-transform: uppercase; letter-spacing: 2px; }
+        .logo-ring b { font-size: 20px; color: var(--v-club); }
+        .header h1 { font-family: 'Playfair Display', serif; color: var(--oro); margin: 0; font-size: 16px; text-transform: uppercase; letter-spacing: 2px; }
 
         /* TABS */
         .tabs { display: flex; padding: 0 20px; gap: 15px; margin-top: -20px; z-index: 10; }
@@ -41,34 +42,43 @@
         .card { background: var(--crema); border-radius: 25px; padding: 20px; margin-bottom: 20px; box-shadow: var(--f-fuera); }
         .card-label { font-size: 10px; font-weight: 900; color: #aa8507; text-transform: uppercase; margin-bottom: 12px; display: block; }
 
-        /* INPUTS & BUTTONS */
-        input, select { width: 100%; padding: 14px; border: none; border-radius: 15px; background: var(--crema); box-shadow: var(--f-dentro); margin-bottom: 12px; font-family: inherit; font-weight: 700; color: var(--v-club); outline: none; }
+        /* INPUTS & BISELADO */
+        input, select { width: 100%; padding: 14px; border: none; border-radius: 15px; background: var(--crema); box-shadow: var(--f-dentro); margin-bottom: 12px; font-family: inherit; font-weight: 700; color: var(--v-club); }
         .btn { width: 100%; padding: 16px; border-radius: 18px; border: none; font-weight: 900; text-transform: uppercase; cursor: pointer; color: white; box-shadow: 4px 4px 10px rgba(0,0,0,0.2); transition: 0.2s; }
         .btn-oro { background: linear-gradient(145deg, var(--oro-luz), var(--oro)); }
         .btn-dark { background: var(--v-club); color: var(--oro); }
         .btn-green { background: #27ae60; margin-top: 20px; font-size: 16px; }
-        .btn:active { transform: scale(0.97); }
 
-        /* LISTA */
+        /* LOG DIARIO */
         .mov-item { display: flex; justify-content: space-between; align-items: center; padding: 12px; background: white; border-radius: 15px; margin-bottom: 10px; border-left: 4px solid var(--oro); }
         .btn-del { background: #fff1f0; color: #ff4d4d; border: none; padding: 5px 10px; border-radius: 8px; font-size: 10px; font-weight: 800; cursor: pointer; }
 
-        /* REPORTE BELLE VITA */
-        #reporte-area { background-color: var(--crema); background-image: url("data:image/svg+xml,%3Csvg width='120' height='120' viewBox='0 0 120 120' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M60 20c10 20 40 20 40 60s-30 20-40 20-40-20-40-60 30-40 40-20z' fill='%23d4af37' fill-opacity='0.04'/%3E%3C/svg%3E"); padding: 30px; border: 2px solid var(--oro); border-radius: 10px; min-height: 600px; position: relative; }
+        /* REPORTE RECONFIGURADO */
+        #reporte-area { background-color: var(--crema); background-image: url("data:image/svg+xml,%3Csvg width='120' height='120' viewBox='0 0 120 120' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M60 20c10 20 40 20 40 60s-30 20-40 20-40-20-40-60 30-40 40-20z' fill='%23d4af37' fill-opacity='0.04'/%3E%3C/svg%3E"); padding: 30px; border: 2px solid var(--oro); border-radius: 10px; min-height: 500px; position: relative; }
         .rep-title { font-weight: 900; font-size: 11px; text-transform: uppercase; margin-bottom: 2px; }
-        .rep-date { font-family: 'Playfair Display', serif; font-size: 16px; color: var(--oro); font-style: italic; border-bottom: 1px solid rgba(212, 175, 55, 0.3); margin-bottom: 20px; padding-bottom: 5px; text-transform: capitalize; }
+        .rep-date { font-family: 'Playfair Display', serif; font-size: 16px; color: var(--oro); font-style: italic; border-bottom: 1px solid rgba(212, 175, 55, 0.3); margin-bottom: 25px; padding-bottom: 5px; text-transform: capitalize; }
+        
         .rep-flex { display: flex; gap: 15px; }
-        .rep-table { flex: 1; }
-        .rep-stats { width: 160px; text-align: right; }
+        .rep-left { flex: 1; }
+        .rep-stats { width: 170px; text-align: right; }
+        
+        /* Estilos Tabla Diario */
         .t-head { display: flex; justify-content: space-between; border-bottom: 2px solid var(--oro); padding-bottom: 5px; font-size: 11px; font-weight: 900; margin-bottom: 5px; }
         .t-row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid rgba(212, 175, 55, 0.1); font-size: 10px; font-weight: 700; text-transform: uppercase; }
         .t-total { display: flex; justify-content: space-between; padding: 15px 0; border-top: 2px solid var(--oro); font-weight: 900; margin-top: 10px; font-size: 13px; }
-        .rep-consumos { background: white; border-radius: 50px; padding: 5px 12px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #eee; box-shadow: 0 4px 10px rgba(0,0,0,0.05); margin-bottom: 25px; min-width: 140px; }
-        .rep-c-num { background: #6b8e23; color: white; min-width: 45px; height: 45px; padding: 0 8px; display: flex; align-items: center; justify-content: center; border-radius: 25px; font-size: 18px; font-weight: 900; margin-left: 5px; }
+        
+        /* Stats Reporte */
         .stat-l { display: flex; justify-content: space-between; font-size: 11px; font-weight: 900; margin-bottom: 12px; border-bottom: 1px dashed #ddd; padding-bottom: 4px; }
         .s-rojo { color: var(--rojo); border-color: rgba(176, 58, 46, 0.2); }
         .s-verde { color: var(--verde); border-color: rgba(30, 132, 73, 0.2); }
-        .rep-logo { width: 120px; height: 120px; background: white; border-radius: 50%; border: 4px solid var(--oro); margin: 30px auto 0; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+        
+        /* Promedio Semanal/Mensual Style */
+        .avg-container { text-align: center; margin: 40px 0; }
+        .avg-circle { background: white; border: 2px solid var(--oro); width: 160px; height: 160px; border-radius: 50%; margin: 0 auto; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: var(--f-fuera); }
+        .avg-label { font-size: 10px; font-weight: 900; color: #888; text-transform: uppercase; }
+        .avg-number { font-size: 40px; font-weight: 900; color: var(--v-club); margin-top: -5px; }
+        
+        .rep-logo { width: 100px; height: 100px; background: white; border-radius: 50%; border: 3px solid var(--oro); margin: 30px auto 0; overflow: hidden; display: flex; align-items: center; justify-content: center; }
         .rep-logo img { width: 100%; height: 100%; object-fit: cover; }
 
         .hidden { display: none; }
@@ -88,36 +98,36 @@
     </div>
 
     <div class="tabs">
-        <button class="tab active" id="tab-reg-btn" onclick="showView('reg')">OPERACIÓN</button>
-        <button class="tab" id="tab-rep-btn" onclick="showView('rep')">REPORTES</button>
+        <button class="tab active" id="btn-reg" onclick="show('reg')">OPERACIÓN</button>
+        <button class="tab" id="btn-rep" onclick="show('rep')">RESULTADOS</button>
     </div>
 
-    <!-- REGISTRO -->
+    <!-- VISTA REGISTRO -->
     <div id="view-reg" class="container">
         <div class="card">
-            <span class="card-label">📅 Fecha</span>
+            <span class="card-label">📅 Operación del día</span>
             <input type="date" id="inFecha">
         </div>
         <div class="card">
-            <span class="card-label">🥤 Barra</span>
+            <span class="card-label">🥤 Consumo Barra</span>
             <input id="inNombre" placeholder="Nombre Socio">
             <input type="number" id="inMonto" placeholder="Total $">
-            <button class="btn btn-oro" onclick="add('normal')">Guardar Consumo</button>
+            <button class="btn btn-oro" onclick="add('normal')">Guardar en Barra</button>
         </div>
         <div class="card">
             <span class="card-label">📦 Producto Cerrado</span>
-            <input id="inProd" placeholder="Producto">
+            <input id="inProd" placeholder="Venta Cerrada">
             <input type="number" id="inMontoP" placeholder="Total $">
             <button class="btn btn-dark" onclick="add('cerrado')">Registrar Venta</button>
         </div>
-        <span class="card-label">Hoy</span>
+        <span class="card-label">Movimientos</span>
         <div id="lista"></div>
     </div>
 
-    <!-- REPORTE -->
+    <!-- VISTA REPORTES -->
     <div id="view-rep" class="container hidden">
         <div class="card">
-            <span class="card-label">Filtro de Periodo</span>
+            <span class="card-label">Periodo de Reporte</span>
             <select id="selModo" onchange="calc()">
                 <option value="dia">Reporte Diario</option>
                 <option value="semana">Reporte Semanal (Vie-Jue)</option>
@@ -127,33 +137,57 @@
         </div>
 
         <div id="reporte-area">
-            <div id="rep-tit" class="rep-title">Reporte Diario</div>
+            <div id="rep-tit" class="rep-title">Cierre de Caja</div>
             <div id="rep-fecha" class="rep-date">...</div>
-            <div class="rep-flex">
-                <div class="rep-table">
-                    <div class="t-head"><span style="margin-left:20px">Nombre</span><span style="margin-right:15px">$</span></div>
+            
+            <div id="layout-dia" class="rep-flex">
+                <div class="rep-left">
+                    <div class="t-head"><span style="margin-left:15px">Nombre</span><span style="margin-right:10px">$</span></div>
                     <div id="rep-rows"></div>
-                    <div class="t-total"><span style="margin-left:20px">TOTAL</span><span style="margin-right:15px" id="rep-t-barra">$0</span></div>
+                    <div class="t-total"><span style="margin-left:15px">TOTAL</span><span style="margin-right:10px" id="rep-t-barra">$0</span></div>
                 </div>
                 <div class="rep-stats">
-                    <div class="rep-consumos"><span style="font-size:9px;font-weight:900;color:var(--oro)">CONSUMOS</span><span class="rep-c-num" id="rep-c-val">0</span></div>
+                    <div class="stat-l"><span style="color:#aaa">Consumos</span><span id="rep-c-val">0</span></div>
                     <div class="stat-l"><span style="color:#aaa">P. Cerrado</span><span id="rep-v-cerrado">$0</span></div>
                     <div class="stat-l"><span style="color:#aaa">Vta Total</span><span id="rep-v-total">$0</span></div>
                     <div class="stat-l s-rojo"><span>SOBRE ROJO</span><span id="rep-v-rojo">$0</span></div>
-                    <div class="stat-l s-verde"><span>SOBRE VERDE</span><span id="rep-v-verde">$0</span></div>
-                    <div class="rep-logo"><img id="logoRep" class="hidden"><b id="logoRepTxt" style="font-size:35px;color:var(--oro)">BV</b></div>
+                    <div class="stat-l s-verde" style="background:#f6ffed; padding:4px; border-radius:5px"><span>SOBRE VERDE</span><span id="rep-v-verde">$0</span></div>
+                    <div class="rep-logo"><img class="logo-final hidden"><b class="logo-txt-final" style="font-size:30px;color:var(--oro)">BV</b></div>
+                </div>
+            </div>
+
+            <!-- VISTA EJECUTIVA (SEMANAL/MENSUAL) -->
+            <div id="layout-ejecutivo" class="hidden">
+                <div class="avg-container">
+                    <div class="avg-circle">
+                        <span class="avg-label">Promedio de</span>
+                        <span class="avg-label">Consumos</span>
+                        <div class="avg-number" id="rep-avg">0.00</div>
+                    </div>
+                </div>
+                
+                <div style="max-width:250px; margin: 0 auto;">
+                    <div class="stat-l s-verde" style="padding:10px; font-size:16px; border-radius:10px; border: 1px solid var(--verde);">
+                        <span>TOTAL VERDE</span>
+                        <span id="rep-v-total-verde">$0</span>
+                    </div>
+                </div>
+
+                <div class="rep-logo" style="margin-top:40px">
+                    <img class="logo-final hidden">
+                    <b class="logo-txt-final" style="font-size:30px;color:var(--oro)">BV</b>
                 </div>
             </div>
         </div>
-        <button class="btn btn-green" onclick="capturar()">📸 GENERAR TICKET WHATSAPP</button>
+        <button class="btn btn-green" onclick="capturar()">📸 GENERAR PARA WHATSAPP</button>
     </div>
 </div>
 
 <div id="toast"></div>
 
 <script>
-    let db = JSON.parse(localStorage.getItem('belle_final_v6')) || [];
-    let logo = localStorage.getItem('belle_logo_v6') || null;
+    let db = JSON.parse(localStorage.getItem('belle_final_ex_v2')) || [];
+    let logo = localStorage.getItem('belle_logo_v1') || null;
 
     const inFecha = document.getElementById('inFecha');
     const repRef = document.getElementById('repRef');
@@ -173,7 +207,7 @@
             const reader = new FileReader();
             reader.onload = (ev) => {
                 logo = ev.target.result;
-                localStorage.setItem('belle_logo_v6', logo);
+                localStorage.setItem('belle_logo_v1', logo);
                 setLogo(logo);
             };
             reader.readAsDataURL(file);
@@ -183,15 +217,15 @@
     function setLogo(url) {
         document.getElementById('logoDisp').src = url; document.getElementById('logoDisp').classList.remove('hidden');
         document.getElementById('logoTxt').classList.add('hidden');
-        document.getElementById('logoRep').src = url; document.getElementById('logoRep').classList.remove('hidden');
-        document.getElementById('logoRepTxt').classList.add('hidden');
+        document.querySelectorAll('.logo-final').forEach(img => { img.src = url; img.classList.remove('hidden'); });
+        document.querySelectorAll('.logo-txt-final').forEach(txt => { txt.classList.add('hidden'); });
     }
 
-    function showView(v) {
+    function show(v) {
         document.getElementById('view-reg').classList.toggle('hidden', v !== 'reg');
         document.getElementById('view-rep').classList.toggle('hidden', v !== 'rep');
-        document.getElementById('tab-reg-btn').classList.toggle('active', v === 'reg');
-        document.getElementById('tab-rep-btn').classList.toggle('active', v === 'rep');
+        document.getElementById('btn-reg').classList.toggle('active', v === 'reg');
+        document.getElementById('btn-rep').classList.toggle('active', v === 'rep');
         if(v === 'rep') calc();
     }
 
@@ -202,20 +236,20 @@
             m = parseFloat(document.getElementById('inMonto').value);
             document.getElementById('inNombre').value = ''; document.getElementById('inMonto').value = '';
         } else {
-            n = document.getElementById('inProd').value || "Producto";
+            n = document.getElementById('inProd').value || "Venta";
             m = parseFloat(document.getElementById('inMontoP').value);
             document.getElementById('inProd').value = ''; document.getElementById('inMontoP').value = '';
         }
         if(isNaN(m)) return;
         db.push({ id: Date.now(), fecha: inFecha.value, nombre: n, monto: m, tipo });
-        localStorage.setItem('belle_final_v6', JSON.stringify(db));
+        localStorage.setItem('belle_final_ex_v2', JSON.stringify(db));
         render();
-        pop("✅ Guardado");
+        pop("✅ Registrado");
     }
 
     function del(id) {
         db = db.filter(i => i.id !== id);
-        localStorage.setItem('belle_final_v6', JSON.stringify(db));
+        localStorage.setItem('belle_final_ex_v2', JSON.stringify(db));
         render();
     }
 
@@ -236,11 +270,14 @@
         const ref = repRef.value;
         const dRef = new Date(ref + 'T12:00:00');
         let filtrados = [];
-        let t = "Reporte Diario", s = "";
+        let t = "Cierre Diario", s = "";
+        let diasAbiertos = new Set();
 
         if(modo === 'dia') {
             filtrados = db.filter(d => d.fecha === ref);
             s = dRef.toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+            document.getElementById('layout-dia').classList.remove('hidden');
+            document.getElementById('layout-ejecutivo').classList.add('hidden');
         } else if(modo === 'semana') {
             let dia = dRef.getDay();
             let diffToFri = (dia >= 5) ? (dia - 5) : (dia + 2);
@@ -248,17 +285,29 @@
             let fin = new Date(ini); fin.setDate(ini.getDate() + 6);
             filtrados = db.filter(d => {
                 let f = new Date(d.fecha + 'T12:00:00');
-                return f >= ini && f <= fin;
+                if(f >= ini && f <= fin) {
+                    if(d.tipo === 'normal') diasAbiertos.add(d.fecha);
+                    return true;
+                }
+                return false;
             });
-            t = "Reporte Semanal";
+            t = "Cierre Semanal";
             s = `${ini.getDate()}/${ini.getMonth()+1} al ${fin.getDate()}/${fin.getMonth()+1}`;
+            document.getElementById('layout-dia').classList.add('hidden');
+            document.getElementById('layout-ejecutivo').classList.remove('hidden');
         } else {
             filtrados = db.filter(d => {
                 let f = new Date(d.fecha + 'T12:00:00');
-                return f.getMonth() === dRef.getMonth() && f.getFullYear() === dRef.getFullYear();
+                if(f.getMonth() === dRef.getMonth() && f.getFullYear() === dRef.getFullYear()) {
+                    if(d.tipo === 'normal') diasAbiertos.add(d.fecha);
+                    return true;
+                }
+                return false;
             });
-            t = "Reporte Mensual";
+            t = "Cierre Mensual";
             s = dRef.toLocaleDateString('es-ES', { month: 'long', year: 'numeric' });
+            document.getElementById('layout-dia').classList.add('hidden');
+            document.getElementById('layout-ejecutivo').classList.remove('hidden');
         }
 
         const b = filtrados.filter(f => f.tipo === 'normal');
@@ -266,27 +315,37 @@
         const sb = b.reduce((a, x) => a + x.monto, 0);
         const sc = c.reduce((a, x) => a + x.monto, 0);
         const tot = sb + sc;
+        const consumosTotales = sb / 90;
+        const promedio = (consumosTotales / (diasAbiertos.size || 1)).toFixed(2);
+        const verdeTotal = (tot * 0.3).toFixed(2);
 
         document.getElementById('rep-tit').innerText = t;
         document.getElementById('rep-fecha').innerText = s;
-        document.getElementById('rep-rows').innerHTML = b.map((i, index) => `
-            <div class="t-row"><div style="display:flex;gap:10px"><span style="color:#bbb;width:15px;text-align:right">${index + 1}</span><span>${i.nombre}</span></div><div style="display:flex;gap:15px"><span>$</span><span style="width:35px;text-align:right">${i.monto}</span></div></div>
-        `).join('');
-
-        document.getElementById('rep-t-barra').innerText = `$ ${sb.toLocaleString()}`;
-        document.getElementById('rep-c-val').innerText = (sb / 90).toFixed(2);
-        document.getElementById('rep-v-cerrado').innerText = `$ ${sc.toLocaleString()}`;
-        document.getElementById('rep-v-total').innerText = `$ ${tot.toLocaleString()}`;
-        document.getElementById('rep-v-rojo').innerText = `$ ${(tot * 0.7).toFixed(2)}`;
-        document.getElementById('rep-v-verde').innerText = `$ ${(tot * 0.3).toFixed(2)}`;
+        
+        if(modo === 'dia') {
+            document.getElementById('rep-rows').innerHTML = b.map((i, idx) => `
+                <div class="t-row"><div style="display:flex;gap:10px"><span style="color:#bbb;width:15px;text-align:right">${idx + 1}</span><span>${i.nombre}</span></div><div style="display:flex;gap:15px"><span>$</span><span style="width:35px;text-align:right">${i.monto}</span></div></div>
+            `).join('');
+            document.getElementById('rep-t-barra').innerText = `$ ${sb.toLocaleString()}`;
+            document.getElementById('rep-c-val').innerText = consumosTotales.toFixed(2);
+            document.getElementById('rep-v-cerrado').innerText = `$ ${sc.toLocaleString()}`;
+            document.getElementById('rep-v-total').innerText = `$ ${tot.toLocaleString()}`;
+            document.getElementById('rep-v-rojo').innerText = `$ ${(tot * 0.7).toFixed(2)}`;
+            document.getElementById('rep-v-verde').innerText = `$ ${verdeTotal}`;
+        } else {
+            document.getElementById('rep-avg').innerText = promedio;
+            document.getElementById('rep-v-total-verde').innerText = `$ ${verdeTotal}`;
+        }
     }
 
     function capturar() {
         const a = document.getElementById('reporte-area');
         pop("Generando...");
         html2canvas(a, { scale: 3, backgroundColor: "#fdfaf5" }).then(c => {
-            const l = document.createElement('a'); l.download = `Cierre_${Date.now()}.png`;
-            l.href = c.toDataURL("image/png"); l.click();
+            const l = document.createElement('a');
+            l.download = `BelleVita_Cierre_${Date.now()}.png`;
+            l.href = c.toDataURL("image/png");
+            l.click();
             pop("📸 Guardado");
         });
     }
@@ -299,3 +358,5 @@
 </script>
 </body>
 </html>
+
+```
