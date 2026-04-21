@@ -3,128 +3,109 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<title>Belle Vita PRO</title>
 
 <style>
-
 body{
 margin:0;
 font-family:sans-serif;
-background:radial-gradient(circle,#1a0000,#000);
-color:white;
+background:radial-gradient(circle,#1a1a1a,#000);
+color:#fff;
 }
 
-.app{max-width:330px;margin:auto;padding:6px;}
-
-.tabs{display:flex;gap:4px;}
+/* TABS */
+.tabs{display:flex;gap:5px;padding:10px;}
 .tab{
-flex:1;padding:5px;text-align:center;
-border-radius:6px;background:#111;
-border:1px solid #400;font-size:11px;
-}
-.tab.active{
-background:linear-gradient(#ff0000,#400000);
-box-shadow:0 0 8px red;
-}
-
-.logo{
-width:85px;height:85px;
-object-fit:contain;
-display:block;margin:8px auto;
-border-radius:50%;
-box-shadow:0 0 12px gold;
-cursor:pointer;
-}
-
-.card{
-background:#111;padding:6px;
-border-radius:8px;margin-top:6px;
+flex:1;
+padding:8px;
+text-align:center;
+border-radius:10px;
+background:#111;
 border:1px solid gold;
 }
+.active{background:linear-gradient(gold,#5a3d00);color:#000;}
 
-input,select{
-width:100%;
-padding:4px;
-margin-top:3px;
-border-radius:5px;
-border:none;
-background:#1a1a1a;
-color:white;
-font-size:10px;
-box-sizing:border-box;
+/* LOGO */
+.logo{
+width:100px;
+display:block;
+margin:10px auto;
 }
 
+/* CARDS */
+.card{
+background:rgba(0,0,0,0.7);
+border:1px solid gold;
+border-radius:15px;
+padding:10px;
+margin:10px;
+box-shadow:0 0 10px gold;
+}
+
+/* INPUTS */
+input{
+width:95%;
+padding:6px;
+margin-top:5px;
+border-radius:6px;
+border:none;
+background:#222;
+color:white;
+font-size:13px;
+}
+
+/* BOTONES */
 button{
 width:100%;
-padding:5px;
-margin-top:4px;
+padding:7px;
+margin-top:6px;
 border:none;
-border-radius:5px;
-font-size:10px;
+border-radius:8px;
 font-weight:bold;
 }
+.red{background:#ff2e2e;}
+.gold{background:gold;color:black;}
+.green{background:#2ecc71;}
 
-.btn-red{background:#e60000;}
-.btn-gold{background:gold;color:black;}
-.btn-green{background:#2ecc71;}
-
+/* LISTA */
 .lista p{
-font-size:10px;
-margin:2px 0;
+margin:3px 0;
 border-bottom:1px solid #333;
+padding:3px;
 }
 
-.consumos{
-font-size:22px;
-color:gold;
-text-shadow:0 0 12px gold;
-}
-
+/* HIDDEN */
 .hidden{display:none;}
-
 </style>
 </head>
 
 <body>
 
-<div class="app">
-
 <div class="tabs">
 <div class="tab active" onclick="tab('reg')">Registro</div>
 <div class="tab" onclick="tab('rep')">Reporte</div>
-<div class="tab" onclick="tab('graf')">Gráficas</div>
 </div>
 
 <img id="logo" class="logo">
-<input type="file" id="fileLogo" hidden>
 
 <!-- REGISTRO -->
 <div id="reg">
 
 <div class="card">
-<input id="fecha" type="date">
+<h3>Registrar venta</h3>
 <input id="cliente" placeholder="Cliente">
-<input id="total" type="number" placeholder="Total $">
-<button class="btn-red" onclick="add()">Guardar</button>
+<input id="total" placeholder="Total $">
+<button class="red" onclick="add()">Guardar</button>
 </div>
 
 <div class="card">
-<input id="clienteCerrado" placeholder="Cliente cerrado">
-<input id="cerrado" type="number" placeholder="Monto">
-<button class="btn-red" onclick="addCerrado()">Agregar</button>
+<h3>Producto cerrado</h3>
+<input id="clienteC" placeholder="Cliente">
+<input id="cerrado" placeholder="Monto $">
+<button class="gold" onclick="addCerrado()">Agregar</button>
 </div>
 
-<div class="card">
-<h4>Clientes</h4>
-<div id="lista"></div>
-</div>
-
-<div class="card">
-<h4>Cerrados</h4>
-<div id="cerrados"></div>
-</div>
+<div class="card lista" id="lista"></div>
 
 </div>
 
@@ -132,185 +113,148 @@ text-shadow:0 0 12px gold;
 <div id="rep" class="hidden">
 
 <div class="card">
-<select id="tipoReporte" onchange="generar()">
-<option value="dia">Diario</option>
-<option value="semana">Semanal</option>
-<option value="mes">Mensual</option>
+<h3>Seleccionar reporte</h3>
+<select id="tipoRep" onchange="generar()">
+<option value="dia">Día</option>
+<option value="semana">Semana</option>
+<option value="mes">Mes</option>
 </select>
-
-<input id="filtro" type="date" onchange="generar()">
 </div>
 
-<div id="reporte" class="card"></div>
+<div class="card" id="reporte"></div>
 
-<button class="btn-gold" onclick="capturar()">📸 Imagen</button>
-<button class="btn-green" onclick="enviarWhats()">📤 WhatsApp</button>
+<button class="green" onclick="whatsapp()">Enviar a WhatsApp</button>
 
 </div>
 
-<!-- GRAFICAS -->
-<div id="graf" class="hidden">
-<div class="card">
-<canvas id="chartVentas"></canvas>
-</div>
-</div>
-
-</div>
+<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 
 <script>
+let datos = JSON.parse(localStorage.getItem("datos"))||[];
 
-let datos=JSON.parse(localStorage.getItem("datos"))||[];
+function save(){
+localStorage.setItem("datos",JSON.stringify(datos));
+}
 
-/* LOGO */
-logo.onclick=()=>fileLogo.click();
-fileLogo.onchange=e=>{
-let r=new FileReader();
-r.onload=()=>{
-localStorage.setItem("logo",r.result);
-logo.src=r.result;
-};
-r.readAsDataURL(e.target.files[0]);
-};
-logo.src=localStorage.getItem("logo")||"logo.png";
+function hoy(){
+return new Date().toISOString().split("T")[0];
+}
 
-/* FECHA */
-function hoy(){return new Date().toISOString().split("T")[0];}
-
-/* TABS */
 function tab(t){
 reg.classList.toggle("hidden",t!="reg");
 rep.classList.toggle("hidden",t!="rep");
-graf.classList.toggle("hidden",t!="graf");
 
 document.querySelectorAll(".tab")[0].classList.toggle("active",t=="reg");
 document.querySelectorAll(".tab")[1].classList.toggle("active",t=="rep");
-document.querySelectorAll(".tab")[2].classList.toggle("active",t=="graf");
 
 if(t=="rep") generar();
 }
 
-/* AGREGAR */
 function add(){
-let f=fecha.value||hoy();
 let c=cliente.value;
 let t=parseFloat(total.value);
 if(!t)return;
-datos.push({fecha:f,cliente:c,total:t,tipo:"normal"});
-save();update();
-cliente.value="";total.value="";
+
+datos.push({fecha:hoy(),cliente:c,total:t,tipo:"normal"});
+save();
+update();
+
+cliente.value="";
+total.value="";
 }
 
 function addCerrado(){
-let f=fecha.value||hoy();
-let c=clienteCerrado.value||"Sin nombre";
-let m=parseFloat(cerrado.value);
-if(!m)return;
-datos.push({fecha:f,cliente:c,total:m,tipo:"cerrado"});
-save();update();
-clienteCerrado.value="";cerrado.value="";
+let c=clienteC.value;
+let t=parseFloat(cerrado.value);
+if(!t)return;
+
+datos.push({fecha:hoy(),cliente:c,total:t,tipo:"cerrado"});
+save();
+update();
+
+clienteC.value="";
+cerrado.value="";
 }
 
-function save(){localStorage.setItem("datos",JSON.stringify(datos));}
-
-/* LISTAS */
 function update(){
-let fSel=fecha.value||hoy();
-let html="",html2="";
-
-datos.forEach(d=>{
-if(d.fecha===fSel){
-if(d.tipo==="normal") html+=`<p>🥤 ${d.cliente} - $${d.total}</p>`;
-if(d.tipo==="cerrado") html2+=`<p>📦 ${d.cliente} - $${d.total}</p>`;
-}
+let html="";
+datos.filter(d=>d.fecha==hoy()).forEach(d=>{
+html+=`<p>${d.cliente||"—"} - $${d.total} (${d.tipo})</p>`;
 });
-
 lista.innerHTML=html;
-cerrados.innerHTML=html2;
 }
 
-/* REPORTE */
 function generar(){
-
-let fSel=filtro.value||hoy();
-
-let total=0;
+let tipo=tipoRep.value;
+let h=0,c=0;
 let listaClientes="";
-let listaCerrados="";
 
 datos.forEach(d=>{
-if(d.fecha===fSel){
-if(d.tipo==="normal"){
-total+=d.total;
-listaClientes+=`<p>🥤 ${d.cliente} - $${d.total}</p>`;
-}
-if(d.tipo==="cerrado"){
-listaCerrados+=`<p>📦 ${d.cliente} - $${d.total}</p>`;
+if(d.fecha==hoy()){
+if(d.tipo=="normal"){
+h+=d.total;
+listaClientes+=`<p>${d.cliente} - $${d.total}</p>`;
+}else{
+c+=d.total;
 }
 }
 });
-
-let consumos=(total/90).toFixed(2);
 
 reporte.innerHTML=`
-<div style="text-align:center;position:relative;padding:10px;background:
-radial-gradient(circle at center, rgba(255,215,0,0.1), black),
-url('https://i.imgur.com/8QfQZ9P.png');
-background-size:cover; border-radius:10px;">
-
-<img src="${logo.src}" style="width:60px;">
-<h3 style="color:gold;">BELLE VITA</h3>
-
-<div class="consumos">${consumos} 🥤</div>
-
-<p>Total: $${total}</p>
-
-<hr>
-
-<div style="text-align:left">
+<h3>Reporte ${tipo}</h3>
+<p>💰 Ventas: $${h}</p>
+<p>📦 Producto cerrado: $${c}</p>
+<h4>Clientes:</h4>
 ${listaClientes}
-${listaCerrados}
-</div>
-
-</div>
 `;
 }
 
-/* IMAGEN */
-function capturar(){
-html2canvas(reporte).then(c=>{
-let link=document.createElement("a");
-link.download="reporte.png";
-link.href=c.toDataURL();
-link.click();
-});
+function whatsapp(){
+
+let div=document.createElement("div");
+
+div.style.padding="20px";
+div.style.background="radial-gradient(#111,#000)";
+div.style.color="white";
+div.style.textAlign="center";
+div.style.borderRadius="20px";
+div.style.border="2px solid gold";
+
+/* ROSAS SUTIL */
+div.style.backgroundImage="radial-gradient(circle at 20% 20%, rgba(255,0,80,0.15), transparent 40%), radial-gradient(circle at 80% 80%, rgba(255,0,80,0.1), transparent 40%)";
+
+let h=0,c=0;
+
+datos.forEach(d=>{
+if(d.fecha==hoy()){
+if(d.tipo=="normal") h+=d.total;
+else c+=d.total;
 }
+});
 
-/* WHATSAPP */
-function enviarWhats(){
-html2canvas(reporte).then(c=>{
-let img=c.toDataURL("image/png");
+div.innerHTML=`
+<img src="${logo.src}" style="width:80px"><br>
+<h2>BELLE VITA</h2>
+<h3>${hoy()}</h3>
 
-navigator.share?.({
-files:[new File([dataURLtoBlob(img)],"reporte.png",{type:"image/png"})],
-title:"Reporte Belle Vita"
-}).catch(()=>{
+<p>💰 Ventas: $${h}</p>
+<p>📦 Cerrado: $${c}</p>
+`;
+
+html2canvas(div).then(canvas=>{
+let link=document.createElement("a");
+link.href=canvas.toDataURL();
+link.download="reporte.png";
+link.click();
+
 window.open("https://wa.me/");
 });
-});
 }
 
-function dataURLtoBlob(dataurl){
-let arr=dataurl.split(','), mime=arr[0].match(/:(.*?);/)[1],
-bstr=atob(arr[1]), n=bstr.length, u8arr=new Uint8Array(n);
-while(n--){u8arr[n]=bstr.charCodeAt(n);}
-return new Blob([u8arr],{type:mime});
-}
+/* LOGO LOCAL */
+logo.src="logo.png";
 
-/* INIT */
-fecha.value=hoy();
-filtro.value=hoy();
 update();
-
 </script>
 
 </body>
