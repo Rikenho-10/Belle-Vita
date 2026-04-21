@@ -10,67 +10,87 @@
 body{
 margin:0;
 font-family:sans-serif;
-background:radial-gradient(circle,#1a1a1a,#000);
+background:radial-gradient(circle,#0d0000,#000);
 color:white;
 }
 
+/* TABS */
 .tabs{display:flex;gap:5px;padding:10px;}
 .tab{
 flex:1;padding:8px;text-align:center;
-border-radius:10px;background:#111;
-border:1px solid gold;
+border-radius:10px;
+background:#111;
+border:1px solid #500;
+color:#ccc;
 }
-.active{background:gold;color:black;}
+.active{
+background:linear-gradient(45deg,#ffd700,#b8860b);
+color:black;
+box-shadow:0 0 10px gold;
+}
 
+/* LOGO */
 .logo{
-width:90px;
+width:80px;
 display:block;
 margin:10px auto;
+filter:drop-shadow(0 0 8px gold);
 }
 
+/* CARDS */
 .card{
 background:#111;
 padding:10px;
 margin:10px;
 border-radius:12px;
-border:1px solid gold;
+border:1px solid #ffd700;
+box-shadow:0 0 10px rgba(255,215,0,0.2);
 }
 
+/* INPUTS */
 input,select{
-width:92%;
-padding:6px;
-margin-top:5px;
+width:95%;
+padding:5px;
+margin-top:4px;
 border-radius:6px;
 border:none;
-background:#222;
+background:#1a1a1a;
 color:white;
-font-size:13px;
+font-size:12px;
 }
 
+/* BOTONES */
 button{
 width:100%;
-padding:7px;
-margin-top:6px;
+padding:6px;
+margin-top:5px;
 border:none;
 border-radius:8px;
 font-weight:bold;
+font-size:12px;
 }
-.red{background:#ff2e2e;}
-.gold{background:gold;color:black;}
+.red{background:#b30000;}
+.gold{background:#ffd700;color:black;}
 .green{background:#2ecc71;}
-.del{background:#555;font-size:11px;}
+.del{
+background:#333;
+font-size:10px;
+margin-top:2px;
+}
 
+/* LISTA */
 .lista p{
 margin:3px 0;
 border-bottom:1px solid #333;
+padding-bottom:3px;
 }
 
+/* CONSUMOS */
 .consumos{
-font-size:28px;
-color:gold;
+font-size:30px;
+color:#ffd700;
 text-align:center;
 text-shadow:0 0 12px gold;
-margin:10px 0;
 }
 
 .hidden{display:none;}
@@ -92,7 +112,7 @@ margin:10px 0;
 <div class="card">
 <input type="date" id="fecha">
 <input id="cliente" placeholder="Cliente">
-<input id="total" placeholder="Total $">
+<input id="total" placeholder="Total">
 <button class="red" onclick="add()">Guardar</button>
 </div>
 
@@ -130,16 +150,18 @@ margin:10px 0;
 
 let datos = JSON.parse(localStorage.getItem("datos")) || [];
 
-function save(){
-localStorage.setItem("datos", JSON.stringify(datos));
-}
-
+/* FECHA */
 function hoy(){
 return new Date().toISOString().split("T")[0];
 }
 
 fecha.value = hoy();
 fechaRep.value = hoy();
+
+/* GUARDAR */
+function save(){
+localStorage.setItem("datos", JSON.stringify(datos));
+}
 
 /* TABS */
 function tab(t){
@@ -154,115 +176,113 @@ if(t=="rep") generar();
 
 /* AGREGAR */
 function add(){
-let f = fecha.value || hoy();
-let c = cliente.value;
-let t = parseFloat(total.value);
-if(!t) return;
+let f=fecha.value||hoy();
+let c=cliente.value;
+let t=parseFloat(total.value);
+if(!t)return;
 
-datos.push({fecha:f, cliente:c, total:t, tipo:"normal"});
+datos.push({id:Date.now(),fecha:f,cliente:c,total:t,tipo:"normal"});
 save(); update();
 
 cliente.value=""; total.value="";
 }
 
 function addCerrado(){
-let f = fecha.value || hoy();
-let c = clienteC.value || "Sin nombre";
-let t = parseFloat(cerrado.value);
-if(!t) return;
+let f=fecha.value||hoy();
+let c=clienteC.value||"Sin nombre";
+let t=parseFloat(cerrado.value);
+if(!t)return;
 
-datos.push({fecha:f, cliente:c, total:t, tipo:"cerrado"});
+datos.push({id:Date.now(),fecha:f,cliente:c,total:t,tipo:"cerrado"});
 save(); update();
 
 clienteC.value=""; cerrado.value="";
 }
 
 /* ELIMINAR */
-function borrar(i){
-datos.splice(i,1);
+function borrar(id){
+datos = datos.filter(d=>d.id!==id);
 save(); update();
 }
 
 /* LISTA */
 function update(){
-let f = fecha.value || hoy();
+let f=fecha.value||hoy();
 let html="";
 
-datos.forEach((d,i)=>{
+datos.forEach(d=>{
 if(d.fecha==f){
 html+=`
 <p>
 ${d.cliente||"—"} - $${d.total} (${d.tipo})
-<br><button class="del" onclick="borrar(${i})">Eliminar</button>
+<br><button class="del" onclick="borrar(${d.id})">Eliminar</button>
 </p>`;
 }
 });
 
-lista.innerHTML = html;
+lista.innerHTML=html;
 }
 
-/* SEMANA (VIERNES A JUEVES) */
+/* SEMANA */
 function semana(fecha){
-let d = new Date(fecha);
-let dia = d.getDay();
-let diff = (dia >= 5) ? dia - 5 : dia + 2;
-let inicio = new Date(d);
-inicio.setDate(d.getDate() - diff);
+let d=new Date(fecha);
+let dia=d.getDay();
+let diff=(dia>=5)?dia-5:dia+2;
+let inicio=new Date(d);
+inicio.setDate(d.getDate()-diff);
 
-let fin = new Date(inicio);
-fin.setDate(inicio.getDate() + 6);
+let fin=new Date(inicio);
+fin.setDate(inicio.getDate()+6);
 
-return {inicio, fin};
+return {inicio,fin};
 }
 
 /* REPORTE */
 function generar(){
 
-let tipo = document.getElementById("tipo").value;
-let f = fechaRep.value || hoy();
+let tipo=tipo.value;
+let f=fechaRep.value||hoy();
 
-let ventas=0, cerrado=0;
-let listaClientes="", listaCerrados="";
+let ventas=0,cerrado=0;
+let listaC="",listaCe="";
 
 datos.forEach(d=>{
 
-let fd = new Date(d.fecha);
+let fd=new Date(d.fecha);
 let incluir=false;
 
-if(tipo=="dia") incluir = d.fecha == f;
+if(tipo=="dia") incluir=d.fecha==f;
 
 if(tipo=="semana"){
-let {inicio,fin} = semana(f);
-incluir = fd>=inicio && fd<=fin;
+let {inicio,fin}=semana(f);
+incluir=fd>=inicio && fd<=fin;
 }
 
 if(tipo=="mes" && mesRep.value){
-let [y,m] = mesRep.value.split("-");
-incluir = (fd.getFullYear()==y && (fd.getMonth()+1)==m);
+let [y,m]=mesRep.value.split("-");
+incluir=(fd.getFullYear()==y && (fd.getMonth()+1)==m);
 }
 
 if(incluir){
 
 if(d.tipo=="normal"){
 ventas+=d.total;
-listaClientes+=`<p>🥤 ${d.cliente} - $${d.total}</p>`;
+listaC+=`<p>🥤 ${d.cliente} - $${d.total}</p>`;
 }
 
 if(d.tipo=="cerrado"){
 cerrado+=d.total;
-listaCerrados+=`<p>📦 ${d.cliente} - $${d.total}</p>`;
+listaCe+=`<p>📦 ${d.cliente} - $${d.total}</p>`;
 }
 
 }
 
 });
 
-let total = ventas + cerrado;
-let rojo = (total*0.7).toFixed(2);
-let verde = (total*0.3).toFixed(2);
-
-/* ✅ CONSUMOS CORREGIDOS */
-let consumos = (ventas/90).toFixed(2);
+let total=ventas+cerrado;
+let rojo=(total*0.7).toFixed(2);
+let verde=(total*0.3).toFixed(2);
+let consumos=(ventas/90).toFixed(2);
 
 reporte.innerHTML=`
 <div class="consumos">${consumos} 🥤</div>
@@ -275,41 +295,25 @@ reporte.innerHTML=`
 <p>🟢 $${verde}</p>
 
 <hr>
-
-${listaClientes}
-${listaCerrados}
+${listaC}
+${listaCe}
 `;
 }
 
-/* IMAGEN */
+/* IMAGEN (FIX ANDROID) */
 function descargar(){
 
-let div = reporte.cloneNode(true);
-
-div.style.background="#000";
-div.style.padding="20px";
-div.style.border="2px solid gold";
-
-/* 🌹 ROSAS */
-div.style.backgroundImage=`
-radial-gradient(circle at 20% 20%, rgba(255,0,80,0.2), transparent 40%),
-radial-gradient(circle at 80% 80%, rgba(255,0,80,0.15), transparent 40%)
-`;
-
-let logoImg=document.createElement("img");
-logoImg.src="logo.png";
-logoImg.style.width="80px";
-logoImg.style.display="block";
-logoImg.style.margin="auto";
-
-div.prepend(logoImg);
-
-html2canvas(div).then(canvas=>{
+html2canvas(reporte,{
+backgroundColor:null,
+scale:2,
+useCORS:true
+}).then(canvas=>{
 let link=document.createElement("a");
-link.href=canvas.toDataURL();
 link.download="reporte.png";
+link.href=canvas.toDataURL("image/png");
 link.click();
 });
+
 }
 
 update();
