@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Belle Vita</title>
 
 <link rel="manifest" href="manifest.json">
@@ -11,51 +12,74 @@
 <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 
 <style>
+
+/* FONDO PREMIUM */
 body{
 margin:0;
-font-family:Arial;
+font-family: 'Segoe UI', sans-serif;
 color:white;
 background:
-radial-gradient(circle at 50% 0%, rgba(255,215,0,0.15), transparent 40%),
+radial-gradient(circle at top, rgba(255,215,0,0.15), transparent 40%),
 #000;
 }
 
-.app{max-width:420px;margin:auto;padding:12px;}
+/* CONTENEDOR */
+.app{
+max-width:420px;
+margin:auto;
+padding:15px;
+animation:fadeIn 0.6s ease;
+}
 
-.tabs{display:flex;gap:10px;}
+/* ANIMACIÓN */
+@keyframes fadeIn{
+from{opacity:0; transform:translateY(10px);}
+to{opacity:1;}
+}
+
+/* TABS */
+.tabs{
+display:flex;
+gap:10px;
+}
+
 .tab{
 flex:1;
 padding:12px;
 text-align:center;
-border-radius:14px;
+border-radius:12px;
 background:#111;
-border:1px solid #444;
+border:1px solid #333;
 }
-.active{background:red;}
 
+.tab.active{
+background:linear-gradient(#ff3c3c,#7a0000);
+box-shadow:0 0 10px red;
+}
+
+/* LOGO PERFECTO */
 .logo{
-  width:130px;
-  height:130px;
-  object-fit:cover;
-  display:block;
-  margin:15px auto;
-  border-radius:50%;
-  border:2px solid gold;
-  box-shadow:
-    0 0 10px gold,
-    0 0 25px rgba(255,215,0,0.5);
-}
-}
+width:120px;
+height:120px;
+object-fit:cover;
+display:block;
+margin:20px auto;
+border-radius:50%;
+border:2px solid gold;
+box-shadow:0 0 15px gold;
 }
 
+/* TARJETAS */
 .card{
 background:#111;
-border-radius:20px;
+border-radius:18px;
 padding:15px;
 margin-top:15px;
-border:1px solid gold;
+border:1px solid rgba(255,215,0,0.4);
+box-shadow:0 0 10px rgba(255,215,0,0.2);
 }
 
+/* INPUTS */
 input{
 width:100%;
 padding:10px;
@@ -66,6 +90,7 @@ background:#222;
 color:white;
 }
 
+/* BOTONES */
 button{
 width:100%;
 padding:10px;
@@ -75,17 +100,34 @@ border-radius:10px;
 font-weight:bold;
 }
 
-.btn-red{background:red;}
-.btn-gold{background:gold;color:black;}
-.btn-green{background:green;}
+.btn-red{
+background:linear-gradient(#ff3c3c,#7a0000);
+}
 
+.btn-gold{
+background:linear-gradient(#ffd700,#996600);
+color:black;
+}
+
+.btn-green{
+background:linear-gradient(#2ecc71,#145a32);
+}
+
+/* TEXTO */
 .big{
-font-size:30px;
+font-size:32px;
 text-align:center;
 color:gold;
+text-shadow:0 0 10px gold;
+}
+
+.lista p{
+border-bottom:1px solid #333;
+padding:6px 0;
 }
 
 .hidden{display:none;}
+
 </style>
 </head>
 
@@ -98,13 +140,12 @@ color:gold;
 <div class="tab" onclick="tab('rep')">Reporte</div>
 </div>
 
-<img id="logo" src="logo.png">
-<input type="file" id="fileInput" hidden accept="image/*">
+<img id="logo" class="logo" src="logo.png">
 
 <div id="reg">
 
 <div class="card">
-    <input id="fecha" type="date">
+<input id="fecha" type="date">
 <input id="cliente" placeholder="Cliente">
 <input id="total" type="number" placeholder="Total $">
 <button class="btn-red" onclick="add()">Guardar</button>
@@ -116,7 +157,8 @@ color:gold;
 </div>
 
 <div class="card">
-<div id="lista"></div>
+<h3>Clientes del día</h3>
+<div id="lista" class="lista"></div>
 </div>
 
 </div>
@@ -135,63 +177,48 @@ color:gold;
 
 <script>
 
-// PWA
-if('serviceWorker' in navigator){
-navigator.serviceWorker.register('service-worker.js');
-}
-
-// LOGO editable
-logo.onclick=()=>fileInput.click();
-
-fileInput.onchange=e=>{
-let r=new FileReader();
-r.onload=()=>{
-localStorage.setItem("logoCustom",r.result);
-logo.src=r.result;
-}
-r.readAsDataURL(e.target.files[0]);
-};
-
-if(localStorage.getItem("logoCustom")){
-logo.src=localStorage.getItem("logoCustom");
-}
-
-// DATOS
+/* DATOS */
 let datos=JSON.parse(localStorage.getItem("datos"))||[];
 
 function save(){localStorage.setItem("datos",JSON.stringify(datos));}
 function hoy(){return new Date().toLocaleDateString();}
 
-// TABS
+/* TAB */
 function tab(t){
 reg.classList.toggle("hidden",t!="reg");
 rep.classList.toggle("hidden",t!="rep");
+
 document.querySelectorAll(".tab")[0].classList.toggle("active",t=="reg");
 document.querySelectorAll(".tab")[1].classList.toggle("active",t=="rep");
+
 if(t=="rep") generar();
 }
 
-// ADD
+/* AGREGAR */
 function add(){
+let f=fecha.value?new Date(fecha.value).toLocaleDateString():hoy();
 let c=cliente.value;
 let t=parseFloat(total.value);
 if(!t)return;
 
-datos.push({fecha:hoy(),cliente:c,total:t,tipo:"normal"});
+datos.push({fecha:f,cliente:c,total:t,tipo:"normal"});
 save(); update();
+
 cliente.value=""; total.value="";
 }
 
 function addCerrado(){
+let f=fecha.value?new Date(fecha.value).toLocaleDateString():hoy();
 let m=parseFloat(cerrado.value);
 if(!m)return;
 
-datos.push({fecha:hoy(),cliente:"CERRADO",total:m,tipo:"cerrado"});
+datos.push({fecha:f,cliente:"CERRADO",total:m,tipo:"cerrado"});
 save(); update();
+
 cerrado.value="";
 }
 
-// LISTA
+/* LISTA */
 function update(){
 let html="";
 datos.forEach(d=>{
@@ -203,7 +230,7 @@ if(d.tipo==="cerrado") html+=`<p>📦 $${d.total}</p>`;
 lista.innerHTML=html;
 }
 
-// SEMANA
+/* SEMANA */
 function inicioSemana(){
 let d=new Date();
 let day=d.getDay();
@@ -211,8 +238,9 @@ let diff=d.getDate()-day+(day===5?0:(day<5?-7:0))+5;
 return new Date(d.setDate(diff));
 }
 
-// REPORTE
+/* REPORTE */
 function generar(){
+
 let h=0,s=0,m=0;
 let hoyStr=hoy();
 let sem=inicioSemana();
@@ -226,42 +254,44 @@ if(f>=mes && d.tipo==="normal") m+=d.total;
 });
 
 reporte.innerHTML=`
+<img src="logo.png" style="width:70px;display:block;margin:auto;">
 <h3 style="text-align:center;color:gold;">BELLE VITA</h3>
+
 <div class="big">$${h}</div>
 <p style="text-align:center;">🥤 ${(h/90).toFixed(2)} consumos</p>
+
 <hr>
+
 <p>🔴 $${(h*0.7).toFixed(2)}</p>
 <p>🟢 $${(h*0.3).toFixed(2)}</p>
+
 <hr>
+
 <p>Semana 🔴 $${(s*0.7).toFixed(2)} | 🟢 $${(s*0.3).toFixed(2)}</p>
 <p>Mes 🔴 $${(m*0.7).toFixed(2)} | 🟢 $${(m*0.3).toFixed(2)}</p>
 `;
 }
 
-// IMAGEN
+/* IMAGEN */
 function capturar(){
 html2canvas(reporte).then(c=>{
-let img=c.toDataURL();
 let a=document.createElement("a");
-a.href=img;
+a.href=c.toDataURL();
 a.download="reporte.png";
 a.click();
 });
 }
 
-// WHATSAPP
+/* WHATSAPP */
 function whatsapp(){
 html2canvas(reporte).then(c=>{
-let img=c.toDataURL("image/png");
-let a=document.createElement("a");
-a.href=img;
-a.download="reporte.png";
-a.click();
-alert("Imagen lista, envíala en WhatsApp 📲");
+let img=c.toDataURL();
+window.open(`https://wa.me/?text=Reporte Belle Vita listo 📊`);
 });
 }
 
 update();
+
 </script>
 
 </body>
