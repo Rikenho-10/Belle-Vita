@@ -14,7 +14,6 @@ background:radial-gradient(circle,#0d0000,#000);
 color:white;
 }
 
-/* TABS */
 .tabs{display:flex;gap:5px;padding:10px;}
 .tab{
 flex:1;padding:8px;text-align:center;
@@ -28,7 +27,6 @@ color:black;
 box-shadow:0 0 10px gold;
 }
 
-/* LOGO */
 .logo{
 width:80px;
 display:block;
@@ -36,17 +34,14 @@ margin:10px auto;
 filter:drop-shadow(0 0 8px gold);
 }
 
-/* CARDS */
 .card{
 background:#111;
 padding:10px;
 margin:10px;
 border-radius:12px;
 border:1px solid gold;
-box-shadow:0 0 10px rgba(255,215,0,0.2);
 }
 
-/* INPUTS */
 input,select{
 width:95%;
 padding:5px;
@@ -58,7 +53,6 @@ color:white;
 font-size:12px;
 }
 
-/* BOTONES */
 button{
 width:100%;
 padding:6px;
@@ -73,14 +67,17 @@ font-size:12px;
 .green{background:#2ecc71;}
 .del{background:#333;font-size:10px;margin-top:2px;}
 
-/* LISTA */
 .lista p{
 margin:3px 0;
 border-bottom:1px solid #333;
 padding-bottom:3px;
 }
 
-/* CONSUMOS */
+.titulo{
+color:gold;
+margin-top:10px;
+}
+
 .consumos{
 font-size:30px;
 color:#ffd700;
@@ -117,7 +114,13 @@ text-shadow:0 0 12px gold;
 <button class="gold" onclick="addCerrado()">Agregar</button>
 </div>
 
-<div class="card lista" id="lista"></div>
+<div class="card lista">
+<div class="titulo">🥤 Clientes</div>
+<div id="listaClientes"></div>
+
+<div class="titulo">📦 Producto cerrado</div>
+<div id="listaCerrados"></div>
+</div>
 
 </div>
 
@@ -204,26 +207,43 @@ update();
 generar();
 }
 
-/* LISTA */
+/* LISTA SEPARADA */
 function update(){
+
 let f = fecha.value || hoy();
-let html="";
+
+let htmlClientes="";
+let htmlCerrados="";
 
 datos.forEach(d=>{
+
 if(d.fecha === f){
-html+=`
+
+if(d.tipo=="normal"){
+htmlClientes+=`
 <p>
-${d.cliente||"—"} - $${d.total} (${d.tipo})
-<br>
-<button class="del" onclick="borrar(${d.id})">Eliminar</button>
+${d.cliente||"—"} - $${d.total}
+<br><button class="del" onclick="borrar(${d.id})">Eliminar</button>
 </p>`;
 }
-});
 
-lista.innerHTML = html;
+if(d.tipo=="cerrado"){
+htmlCerrados+=`
+<p>
+${d.cliente||"—"} - $${d.total}
+<br><button class="del" onclick="borrar(${d.id})">Eliminar</button>
+</p>`;
 }
 
-/* SEMANA (VIERNES A JUEVES) */
+}
+
+});
+
+listaClientes.innerHTML = htmlClientes || "<p>Sin registros</p>";
+listaCerrados.innerHTML = htmlCerrados || "<p>Sin registros</p>";
+}
+
+/* SEMANA */
 function semana(fecha){
 let d=new Date(fecha);
 let dia=d.getDay();
@@ -240,11 +260,11 @@ return {inicio,fin};
 /* REPORTE */
 function generar(){
 
-let tipo = document.getElementById("tipo").value;
-let f = fechaRep.value ? fechaRep.value : hoy();
+let tipo = tipo.value;
+let f = fechaRep.value || hoy();
 
-let ventas=0, cerrado=0;
-let listaC="", listaCe="";
+let ventas=0,cerrado=0;
+let listaC="",listaCe="";
 
 datos.forEach(d=>{
 
@@ -302,17 +322,12 @@ ${listaCe}
 
 /* IMAGEN */
 function descargar(){
-
-html2canvas(reporte,{
-scale:2,
-useCORS:true
-}).then(canvas=>{
+html2canvas(reporte,{scale:2}).then(canvas=>{
 let link=document.createElement("a");
 link.download="reporte.png";
-link.href=canvas.toDataURL("image/png");
+link.href=canvas.toDataURL();
 link.click();
 });
-
 }
 
 update();
