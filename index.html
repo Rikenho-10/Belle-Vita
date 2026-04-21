@@ -6,105 +6,76 @@
 <title>Belle Vita</title>
 
 <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
-
 body{
 margin:0;
 font-family:sans-serif;
-background:radial-gradient(circle at top,#1a0000,#000);
+background:radial-gradient(circle,#1a0000,#000);
 color:white;
 }
 
-/* CONTENEDOR */
-.app{max-width:350px;margin:auto;padding:8px;}
+.app{max-width:340px;margin:auto;padding:6px;}
 
-/* TABS */
-.tabs{display:flex;gap:5px;}
+.tabs{display:flex;gap:4px;}
 .tab{
-flex:1;padding:6px;text-align:center;
-border-radius:8px;
-background:#111;
-border:1px solid #500;
-font-size:12px;
+flex:1;padding:5px;text-align:center;
+border-radius:6px;background:#111;
+border:1px solid #400;font-size:11px;
 }
 .tab.active{
 background:linear-gradient(#ff0000,#400000);
-box-shadow:0 0 10px red;
+box-shadow:0 0 8px red;
 }
 
-/* LOGO */
 .logo{
-width:100px;height:100px;
+width:90px;height:90px;
 object-fit:contain;
-display:block;margin:10px auto;
+display:block;margin:8px auto;
 border-radius:50%;
-box-shadow:0 0 15px gold;
+box-shadow:0 0 12px gold;
 cursor:pointer;
 }
 
-/* CARDS */
 .card{
-background:linear-gradient(145deg,#111,#1a0000);
-padding:8px;
-border-radius:10px;
-margin-top:6px;
+background:#111;padding:7px;
+border-radius:8px;margin-top:6px;
 border:1px solid gold;
-box-shadow:0 0 8px rgba(255,215,0,.3);
 }
 
-/* INPUTS MÁS PEQUEÑOS */
 input,select{
 width:100%;
-padding:5px;
-margin-top:4px;
-border-radius:5px;
-border:none;
-background:#1a1a1a;
-color:white;
-font-size:12px;
+padding:4px;margin-top:3px;
+border-radius:5px;border:none;
+background:#1a1a1a;color:white;
+font-size:11px;
+box-sizing:border-box;
 }
 
-/* BOTONES */
 button{
-width:100%;
-padding:6px;
-margin-top:5px;
-border:none;
-border-radius:6px;
-font-weight:bold;
-font-size:12px;
+width:100%;padding:5px;margin-top:4px;
+border:none;border-radius:5px;
+font-size:11px;font-weight:bold;
 }
 
-.btn-red{
-background:linear-gradient(#ff0000,#600000);
-color:white;
-}
-.btn-gold{
-background:linear-gradient(#ffd700,#a67c00);
-color:black;
-}
-.btn-green{
-background:linear-gradient(#2ecc71,#145a32);
-}
+.btn-red{background:#e60000;}
+.btn-gold{background:gold;color:black;}
+.btn-green{background:#2ecc71;}
 
-/* LISTA */
 .lista p{
-margin:2px 0;
-padding:2px 0;
-font-size:12px;
+font-size:11px;margin:2px 0;
 border-bottom:1px solid #333;
 }
 
-/* CONSUMOS PRO */
 .consumos{
-font-size:26px;
-color:gold;
-text-shadow:0 0 15px gold;
-margin:8px 0;
+font-size:22px;color:gold;
+text-shadow:0 0 10px gold;
 }
 
 .hidden{display:none;}
+
+canvas{background:#000;border-radius:8px;}
 
 </style>
 </head>
@@ -116,6 +87,7 @@ margin:8px 0;
 <div class="tabs">
 <div class="tab active" onclick="tab('reg')">Registro</div>
 <div class="tab" onclick="tab('rep')">Reporte</div>
+<div class="tab" onclick="tab('graf')">Gráficas</div>
 </div>
 
 <img id="logo" class="logo">
@@ -132,18 +104,18 @@ margin:8px 0;
 </div>
 
 <div class="card">
-<input id="clienteCerrado" placeholder="Cliente (cerrado)">
-<input id="cerrado" type="number" placeholder="Producto cerrado $">
+<input id="clienteCerrado" placeholder="Cliente cerrado">
+<input id="cerrado" type="number" placeholder="Monto">
 <button class="btn-red" onclick="addCerrado()">Agregar</button>
 </div>
 
 <div class="card">
-<h4>Clientes del día</h4>
+<h4>Clientes</h4>
 <div id="lista"></div>
 </div>
 
 <div class="card">
-<h4>Producto cerrado</h4>
+<h4>Cerrados</h4>
 <div id="cerrados"></div>
 </div>
 
@@ -165,6 +137,21 @@ margin:8px 0;
 <div id="reporte" class="card"></div>
 
 <button class="btn-gold" onclick="capturar()">📸 Imagen</button>
+<button class="btn-green" onclick="enviarWhats()">📤 WhatsApp</button>
+
+</div>
+
+<!-- GRAFICAS -->
+<div id="graf" class="hidden">
+
+<div class="card">
+<canvas id="chartVentas"></canvas>
+</div>
+
+<div class="card">
+<p id="resumenSemanal"></p>
+<p id="resumenMensual"></p>
+</div>
 
 </div>
 
@@ -173,6 +160,7 @@ margin:8px 0;
 <script>
 
 let datos=JSON.parse(localStorage.getItem("datos"))||[];
+let chart;
 
 /* LOGO */
 logo.onclick=()=>fileLogo.click();
@@ -193,9 +181,14 @@ function hoy(){return new Date().toISOString().split("T")[0];}
 function tab(t){
 reg.classList.toggle("hidden",t!="reg");
 rep.classList.toggle("hidden",t!="rep");
+graf.classList.toggle("hidden",t!="graf");
+
 document.querySelectorAll(".tab")[0].classList.toggle("active",t=="reg");
 document.querySelectorAll(".tab")[1].classList.toggle("active",t=="rep");
+document.querySelectorAll(".tab")[2].classList.toggle("active",t=="graf");
+
 if(t=="rep") generar();
+if(t=="graf") generarGrafica();
 }
 
 /* AGREGAR */
@@ -209,7 +202,6 @@ save();update();
 cliente.value="";total.value="";
 }
 
-/* CERRADO CON CLIENTE */
 function addCerrado(){
 let f=fecha.value||hoy();
 let c=clienteCerrado.value||"Sin nombre";
@@ -217,8 +209,7 @@ let m=parseFloat(cerrado.value);
 if(!m)return;
 datos.push({fecha:f,cliente:c,total:m,tipo:"cerrado"});
 save();update();
-clienteCerrado.value="";
-cerrado.value="";
+clienteCerrado.value="";cerrado.value="";
 }
 
 function save(){localStorage.setItem("datos",JSON.stringify(datos));}
@@ -240,8 +231,8 @@ cerrados.innerHTML=html2;
 }
 
 /* SEMANA */
-function inicioSemana(fecha){
-let d=new Date(fecha);
+function inicioSemana(f){
+let d=new Date(f);
 let day=d.getDay();
 let diff=d.getDate()-day+5;
 return new Date(d.setDate(diff));
@@ -274,12 +265,64 @@ let rojo=(total*0.7).toFixed(2);
 let verde=(total*0.3).toFixed(2);
 
 reporte.innerHTML=`
+<div style="text-align:center;">
+<img src="${logo.src}" style="width:60px;">
 <h3 style="color:gold;">BELLE VITA</h3>
 <div class="consumos">${consumos} 🥤</div>
 <p>Total: $${total}</p>
 <p>🔴 $${rojo}</p>
 <p>🟢 $${verde}</p>
+</div>
 `;
+}
+
+/* GRAFICAS */
+function generarGrafica(){
+
+let dias={};
+let semanal=0;
+let mensual=0;
+let hoyF=new Date();
+
+datos.forEach(d=>{
+if(d.tipo==="normal"){
+dias[d.fecha]=(dias[d.fecha]||0)+d.total;
+
+let fd=new Date(d.fecha);
+
+// semana
+let ini=inicioSemana(hoyF);
+let fin=new Date(ini); fin.setDate(ini.getDate()+6);
+if(fd>=ini && fd<=fin) semanal+=d.total;
+
+// mes
+if(fd.getMonth()===hoyF.getMonth()) mensual+=d.total;
+}
+});
+
+let labels=Object.keys(dias);
+let valores=Object.values(dias);
+
+if(chart) chart.destroy();
+
+chart=new Chart(document.getElementById('chartVentas'),{
+type:'bar',
+data:{
+labels:labels,
+datasets:[{data:valores}]
+},
+options:{
+plugins:{legend:{display:false}},
+scales:{
+x:{ticks:{color:'white'}},
+y:{ticks:{color:'white'}}
+}
+}
+});
+
+resumenSemanal.innerHTML="📆 Semana: $"+semanal;
+resumenMensual.innerHTML="📊 Mes: $"+mensual;
+
 }
 
 /* IMAGEN */
@@ -290,6 +333,27 @@ link.download="reporte.png";
 link.href=c.toDataURL();
 link.click();
 });
+}
+
+/* WHATSAPP */
+function enviarWhats(){
+html2canvas(reporte).then(c=>{
+let img=c.toDataURL("image/png");
+
+navigator.share?.({
+files:[new File([dataURLtoBlob(img)],"reporte.png",{type:"image/png"})],
+title:"Reporte Belle Vita"
+}).catch(()=>{
+window.open("https://wa.me/");
+});
+});
+}
+
+function dataURLtoBlob(dataurl){
+let arr=dataurl.split(','), mime=arr[0].match(/:(.*?);/)[1],
+bstr=atob(arr[1]), n=bstr.length, u8arr=new Uint8Array(n);
+while(n--){u8arr[n]=bstr.charCodeAt(n);}
+return new Blob([u8arr],{type:mime});
 }
 
 /* INIT */
