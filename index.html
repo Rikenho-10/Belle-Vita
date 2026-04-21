@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Belle Vita PRO</title>
 
 <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 
@@ -15,6 +14,7 @@ background:radial-gradient(circle,#1a1a1a,#000);
 color:white;
 }
 
+/* TABS */
 .tabs{display:flex;gap:5px;padding:10px;}
 .tab{
 flex:1;padding:8px;text-align:center;
@@ -24,26 +24,36 @@ border:1px solid gold;
 .active{background:gold;color:black;}
 
 .logo{
-width:90px;display:block;margin:10px auto;
+width:90px;
+display:block;
+margin:10px auto;
 }
 
 .card{
-background:#111;padding:10px;
-margin:10px;border-radius:12px;
+background:#111;
+padding:10px;
+margin:10px;
+border-radius:12px;
 border:1px solid gold;
 }
 
 input,select{
 width:92%;
-padding:6px;margin-top:5px;
-border-radius:6px;border:none;
-background:#222;color:white;
+padding:6px;
+margin-top:5px;
+border-radius:6px;
+border:none;
+background:#222;
+color:white;
 font-size:13px;
 }
 
 button{
-width:100%;padding:7px;margin-top:6px;
-border:none;border-radius:8px;
+width:100%;
+padding:7px;
+margin-top:6px;
+border:none;
+border-radius:8px;
 font-weight:bold;
 }
 .red{background:#ff2e2e;}
@@ -54,6 +64,14 @@ font-weight:bold;
 .lista p{
 margin:3px 0;
 border-bottom:1px solid #333;
+}
+
+.consumos{
+font-size:26px;
+color:gold;
+text-align:center;
+text-shadow:0 0 10px gold;
+margin:10px 0;
 }
 
 .hidden{display:none;}
@@ -93,12 +111,19 @@ border-bottom:1px solid #333;
 <div id="rep" class="hidden">
 
 <div class="card">
-<h3>Reporte del día</h3>
+<select id="tipo" onchange="generar()">
+<option value="dia">Diario</option>
+<option value="semana">Semanal</option>
+<option value="mes">Mensual</option>
+</select>
+
+<input type="date" id="fechaRep" onchange="generar()">
+<input type="month" id="mesRep" onchange="generar()">
 </div>
 
 <div class="card" id="reporte"></div>
 
-<button class="green" onclick="whatsapp()">Enviar a WhatsApp</button>
+<button class="green" onclick="whatsapp()">📤 WhatsApp</button>
 
 </div>
 
@@ -115,6 +140,7 @@ return new Date().toISOString().split("T")[0];
 }
 
 fecha.value = hoy();
+fechaRep.value = hoy();
 
 /* TABS */
 function tab(t){
@@ -135,11 +161,9 @@ let t = parseFloat(total.value);
 if(!t) return;
 
 datos.push({fecha:f, cliente:c, total:t, tipo:"normal"});
-save();
-update();
+save(); update();
 
-cliente.value="";
-total.value="";
+cliente.value=""; total.value="";
 }
 
 function addCerrado(){
@@ -149,18 +173,15 @@ let t = parseFloat(cerrado.value);
 if(!t) return;
 
 datos.push({fecha:f, cliente:c, total:t, tipo:"cerrado"});
-save();
-update();
+save(); update();
 
-clienteC.value="";
-cerrado.value="";
+clienteC.value=""; cerrado.value="";
 }
 
 /* ELIMINAR */
 function borrar(i){
 datos.splice(i,1);
-save();
-update();
+save(); update();
 }
 
 /* LISTA */
@@ -181,19 +202,49 @@ ${d.cliente||"—"} - $${d.total} (${d.tipo})
 lista.innerHTML = html;
 }
 
+/* SEMANA (VIERNES A JUEVES) */
+function semana(fecha){
+let d = new Date(fecha);
+let dia = d.getDay();
+let diff = (dia >= 5) ? dia - 5 : dia + 2;
+let inicio = new Date(d);
+inicio.setDate(d.getDate() - diff);
+
+let fin = new Date(inicio);
+fin.setDate(inicio.getDate() + 6);
+
+return {inicio, fin};
+}
+
 /* REPORTE */
 function generar(){
 
-let f = hoy();
+let tipo = document.getElementById("tipo").value;
+let f = fechaRep.value || hoy();
 
-let ventas=0;
-let cerrado=0;
-
-let listaClientes="";
-let listaCerrados="";
+let ventas=0, cerrado=0;
+let listaClientes="", listaCerrados="";
 
 datos.forEach(d=>{
-if(d.fecha==f){
+
+let fd = new Date(d.fecha);
+let incluir=false;
+
+if(tipo=="dia"){
+incluir = d.fecha == f;
+}
+
+if(tipo=="semana"){
+let {inicio,fin} = semana(f);
+incluir = fd>=inicio && fd<=fin;
+}
+
+if(tipo=="mes"){
+let [y,m] = mesRep.value.split("-");
+incluir = (fd.getFullYear()==y && (fd.getMonth()+1)==m);
+}
+
+if(incluir){
 
 if(d.tipo=="normal"){
 ventas+=d.total;
@@ -206,85 +257,16 @@ listaCerrados+=`<p>📦 ${d.cliente} - $${d.total}</p>`;
 }
 
 }
+
 });
 
 let total = ventas + cerrado;
-
-let rojo = (total * 0.7).toFixed(2);
-let verde = (total * 0.3).toFixed(2);
+let rojo = (total*0.7).toFixed(2);
+let verde = (total*0.3).toFixed(2);
+let consumos = (total/90).toFixed(2);
 
 reporte.innerHTML=`
-<h3>📊 REPORTE</h3>
-
-<p>💰 Total: $${total}</p>
-<p>🥤 Ventas: $${ventas}</p>
-<p>📦 Cerrado: $${cerrado}</p>
-
-<p>🔴 Rojo: $${rojo}</p>
-<p>🟢 Verde: $${verde}</p>
-
-<hr>
-
-<h4>Clientes</h4>
-${listaClientes}
-
-<h4>Cerrados</h4>
-${listaCerrados}
-`;
-}
-
-/* WHATSAPP */
-function whatsapp(){
-
-let f = hoy();
-
-let ventas=0;
-let cerrado=0;
-
-let listaClientes="";
-let listaCerrados="";
-
-datos.forEach(d=>{
-if(d.fecha==f){
-
-if(d.tipo=="normal"){
-ventas+=d.total;
-listaClientes+=`<p>🥤 ${d.cliente} - $${d.total}</p>`;
-}
-
-if(d.tipo=="cerrado"){
-cerrado+=d.total;
-listaCerrados+=`<p>📦 ${d.cliente} - $${d.total}</p>`;
-}
-
-}
-});
-
-let total = ventas + cerrado;
-
-let rojo = (total * 0.7).toFixed(2);
-let verde = (total * 0.3).toFixed(2);
-
-let div=document.createElement("div");
-
-div.style.padding="20px";
-div.style.background="#000";
-div.style.color="white";
-div.style.textAlign="center";
-div.style.borderRadius="20px";
-div.style.border="2px solid gold";
-
-/* 🌹 ROSAS */
-div.style.backgroundImage=`
-radial-gradient(circle at 20% 20%, rgba(255,0,80,0.2), transparent 40%),
-radial-gradient(circle at 80% 80%, rgba(255,0,80,0.15), transparent 40%)
-`;
-
-div.innerHTML=`
-<img src="logo.png" style="width:80px"><br>
-
-<h2 style="color:gold;">BELLE VITA</h2>
-<h3>${f}</h3>
+<div class="consumos">${consumos} 🥤</div>
 
 <p>💰 Total: $${total}</p>
 <p>🥤 Ventas: $${ventas}</p>
@@ -295,17 +277,37 @@ div.innerHTML=`
 
 <hr>
 
-<div style="text-align:left">
 ${listaClientes}
 ${listaCerrados}
-</div>
+`;
+}
+
+/* WHATSAPP */
+function whatsapp(){
+
+let div = reporte.cloneNode(true);
+
+div.style.background="#000";
+div.style.padding="20px";
+div.style.border="2px solid gold";
+
+/* ROSAS */
+div.style.backgroundImage=`
+radial-gradient(circle at 20% 20%, rgba(255,0,80,0.2), transparent 40%),
+radial-gradient(circle at 80% 80%, rgba(255,0,80,0.15), transparent 40%)
 `;
 
-html2canvas(div).then(canvas=>{
-let url=canvas.toDataURL("image/png");
+let logoImg=document.createElement("img");
+logoImg.src="logo.png";
+logoImg.style.width="80px";
+logoImg.style.display="block";
+logoImg.style.margin="auto";
 
+div.prepend(logoImg);
+
+html2canvas(div).then(canvas=>{
 let link=document.createElement("a");
-link.href=url;
+link.href=canvas.toDataURL();
 link.download="reporte.png";
 link.click();
 
