@@ -1,338 +1,431 @@
+```html
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Nutrition Club Premium</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        :root {
+            --verde: #2d5a27;
+            --crema: #fdfaf5;
+            --oro: #c5a059;
+            --oro-dark: #9a7b41;
+            --texto: #2c3e50;
+            --blanco: #ffffff;
+            --rojo: #e74c3c;
+            --verde-claro: #e9f5db;
+        }
 
-<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--crema);
+            color: var(--texto);
+            display: flex;
+            justify-content: center;
+        }
 
-<style>
-body{
-margin:0;
-font-family:sans-serif;
-background:radial-gradient(circle,#0d0000,#000);
-color:white;
-}
+        .app {
+            width: 100%;
+            max-width: 480px;
+            background: var(--blanco);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
 
-.tabs{display:flex;gap:5px;padding:10px;}
-.tab{
-flex:1;padding:8px;text-align:center;
-border-radius:10px;
-background:#111;
-border:1px solid #500;
-}
-.active{
-background:linear-gradient(45deg,#ffd700,#b8860b);
-color:black;
-box-shadow:0 0 10px gold;
-}
+        /* Header Compacto - Ricardo, aquí ajusté lo que se encimaba */
+        .header {
+            background: linear-gradient(135deg, var(--verde), #1b3a18);
+            padding: 12px;
+            text-align: center;
+            color: white;
+            position: relative;
+        }
 
-.logo{
-width:80px;
-display:block;
-margin:10px auto;
-filter:drop-shadow(0 0 8px gold);
-}
+        .logo-container {
+            width: 55px;
+            height: 55px;
+            background: white;
+            margin: 0 auto 5px;
+            border-radius: 50%;
+            border: 2px solid var(--oro);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            cursor: pointer;
+        }
 
-.card{
-background:#111;
-padding:10px;
-margin:10px;
-border-radius:12px;
-border:1px solid gold;
-}
+        .logo-container img { width: 100%; height: 100%; object-fit: cover; }
+        .logo-placeholder { color: var(--verde); font-size: 20px; font-weight: bold; }
 
-input,select{
-width:95%;
-padding:5px;
-margin-top:4px;
-border-radius:6px;
-border:none;
-background:#1a1a1a;
-color:white;
-font-size:12px;
-}
+        .header h1 { margin: 0; font-size: 14px; letter-spacing: 2px; font-weight: 800; }
 
-button{
-width:100%;
-padding:6px;
-margin-top:5px;
-border:none;
-border-radius:8px;
-font-weight:bold;
-font-size:12px;
-}
-.red{background:#b30000;}
-.gold{background:#ffd700;color:black;}
-.green{background:#2ecc71;}
-.del{background:#333;font-size:10px;margin-top:2px;}
+        /* Tabs */
+        .tabs {
+            display: flex;
+            background: var(--verde);
+            padding: 0 10px 10px;
+        }
 
-.lista p{
-margin:3px 0;
-border-bottom:1px solid #333;
-padding-bottom:3px;
-}
+        .tab {
+            flex: 1;
+            padding: 10px;
+            text-align: center;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            font-size: 13px;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+        }
 
-.titulo{
-color:gold;
-margin-top:10px;
-}
+        .tab-left { border-radius: 10px 0 0 10px; }
+        .tab-right { border-radius: 0 10px 10px 0; }
 
-.consumos{
-font-size:30px;
-color:#ffd700;
-text-align:center;
-text-shadow:0 0 12px gold;
-}
+        .tab.active { background: var(--oro); }
 
-.hidden{display:none;}
-</style>
+        /* Contenido */
+        .content { padding: 15px; flex: 1; }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            border-left: 4px solid var(--oro);
+        }
+
+        .card-title {
+            font-size: 11px;
+            font-weight: bold;
+            color: var(--verde);
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 8px;
+            border-radius: 8px;
+            border: 1px solid #eee;
+            background: #f9f9f9;
+            font-size: 14px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .btn-add { background: var(--verde); color: white; }
+        .btn-gold { background: var(--oro); color: white; }
+        .btn-share { background: #27ae60; color: white; margin-top: 10px; }
+        .btn-del { background: #fff1f0; color: var(--rojo); font-size: 10px; width: auto; padding: 4px 8px; }
+
+        /* Lista */
+        .item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #f5f5f5;
+        }
+        .item-info b { display: block; font-size: 14px; }
+        .item-info span { font-size: 12px; color: #7f8c8d; }
+
+        /* Reporte Estilo Ticket */
+        .report-preview {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .consumos-count { font-size: 45px; font-weight: 900; color: var(--verde); margin: 5px 0; }
+        
+        .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 15px 0; }
+        .stat-item { background: var(--verde-claro); padding: 10px; border-radius: 8px; }
+        .stat-val { font-weight: bold; font-size: 16px; }
+        .stat-lbl { font-size: 9px; text-transform: uppercase; color: #666; }
+
+        .total-box { background: #fff4e0; padding: 15px; border-radius: 10px; border: 1px solid var(--oro); margin: 10px 0; }
+
+        .hidden { display: none; }
+
+        #toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #333;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            opacity: 0;
+            transition: 0.5s;
+            z-index: 100;
+        }
+    </style>
 </head>
-
 <body>
 
-<div class="tabs">
-<div class="tab active" onclick="tab('reg')">Registro</div>
-<div class="tab" onclick="tab('rep')">Reporte</div>
+<div class="app">
+    <div class="header">
+        <input type="file" id="logoInput" class="hidden" accept="image/*">
+        <div class="logo-container" onclick="document.getElementById('logoInput').click()">
+            <img id="logoDisplay" class="hidden">
+            <div id="logoLabel" class="logo-placeholder">N</div>
+        </div>
+        <h1>NUTRITION CLUB</h1>
+    </div>
+
+    <div class="tabs">
+        <button class="tab tab-left active" id="tabReg" onclick="setTab('reg')">REGISTRO</button>
+        <button class="tab tab-right" id="tabRep" onclick="setTab('rep')">REPORTE</button>
+    </div>
+
+    <div class="content" id="view-reg">
+        <div class="card">
+            <div class="card-title">📅 Día de Trabajo</div>
+            <input type="date" id="inputFecha">
+        </div>
+
+        <div class="card">
+            <div class="card-title">🥤 Cliente Barra</div>
+            <input id="regNombre" placeholder="Nombre">
+            <input type="number" id="regMonto" placeholder="Monto $">
+            <button class="btn-add" onclick="saveRecord('normal')">Guardar Consumo</button>
+        </div>
+
+        <div class="card">
+            <div class="card-title">📦 Venta Cerrada</div>
+            <input id="regCerradoNombre" placeholder="Producto/Cliente">
+            <input type="number" id="regCerradoMonto" placeholder="Monto $">
+            <button class="btn-gold" onclick="saveRecord('cerrado')">Guardar Producto</button>
+        </div>
+
+        <div class="card">
+            <div class="card-title">📝 Movimientos</div>
+            <div id="listado"></div>
+        </div>
+    </div>
+
+    <div class="content hidden" id="view-rep">
+        <div class="card">
+            <div class="card-title">🔍 Filtrar por</div>
+            <select id="repTipo" onchange="updateReport()">
+                <option value="dia">Vista Diaria</option>
+                <option value="semana">Vista Semanal</option>
+                <option value="mes">Vista Mensual</option>
+            </select>
+            <input type="date" id="repFecha" onchange="updateReport()">
+            <input type="month" id="repMes" class="hidden" onchange="updateReport()">
+        </div>
+
+        <div id="reporteParaImagen" class="report-preview">
+            <img id="logoReporte" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover; margin-bottom: 5px;" class="hidden">
+            <div class="stat-lbl">Consumos de hoy</div>
+            <div class="consumos-count" id="resConsumos">0.00</div>
+            
+            <div class="stat-grid">
+                <div class="stat-item">
+                    <div class="stat-lbl">En Barra</div>
+                    <div class="stat-val" id="resBarra">$0</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-lbl">P. Cerrado</div>
+                    <div class="stat-val" id="resCerrado">$0</div>
+                </div>
+            </div>
+
+            <div class="total-box">
+                <div class="stat-lbl">Venta Total</div>
+                <div class="stat-val" style="font-size: 24px; color: var(--oro-dark)" id="resTotal">$0</div>
+            </div>
+
+            <div class="stat-grid">
+                <div class="stat-item" style="background:#fff1f0">
+                    <div class="stat-lbl">Inversión (70%)</div>
+                    <div class="stat-val" style="color:var(--rojo)" id="resRojo">$0</div>
+                </div>
+                <div class="stat-item" style="background:#f6ffed">
+                    <div class="stat-lbl">Ganancia (30%)</div>
+                    <div class="stat-val" style="color:#27ae60" id="resVerde">$0</div>
+                </div>
+            </div>
+            
+            <div id="listaDetalle" style="text-align: left; font-size: 10px; margin-top: 10px; color: #999;"></div>
+        </div>
+
+        <button class="btn-share" onclick="downloadReport()">📸 COMPARTIR REPORTE (IMAGEN)</button>
+    </div>
 </div>
 
-<img src="logo.png" class="logo">
-
-<!-- REGISTRO -->
-<div id="reg">
-
-<div class="card">
-<input type="date" id="fecha">
-<input id="cliente" placeholder="Cliente">
-<input id="total" placeholder="Total">
-<button class="red" onclick="add()">Guardar</button>
-</div>
-
-<div class="card">
-<input id="clienteC" placeholder="Cliente cerrado">
-<input id="cerrado" placeholder="Monto">
-<button class="gold" onclick="addCerrado()">Agregar</button>
-</div>
-
-<div class="card lista">
-<div class="titulo">🥤 Clientes</div>
-<div id="listaClientes"></div>
-
-<div class="titulo">📦 Producto cerrado</div>
-<div id="listaCerrados"></div>
-</div>
-
-</div>
-
-<!-- REPORTE -->
-<div id="rep" class="hidden">
-
-<div class="card">
-<select id="tipo" onchange="generar()">
-<option value="dia">Diario</option>
-<option value="semana">Semanal</option>
-<option value="mes">Mensual</option>
-</select>
-
-<input type="date" id="fechaRep" onchange="generar()">
-<input type="month" id="mesRep" onchange="generar()">
-</div>
-
-<div class="card" id="reporte"></div>
-
-<button class="green" onclick="descargar()">📸 Generar imagen</button>
-
-</div>
+<div id="toast"></div>
 
 <script>
+    let data = JSON.parse(localStorage.getItem('nutri_db')) || [];
+    let currentLogo = localStorage.getItem('nutri_logo') || null;
 
-let datos = JSON.parse(localStorage.getItem("datos")) || [];
+    const inputFecha = document.getElementById('inputFecha');
+    const repFecha = document.getElementById('repFecha');
+    const repMes = document.getElementById('repMes');
 
-/* FECHA CORREGIDA */
-function hoy(){
-let d = new Date();
-d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
-return d.toISOString().split("T")[0];
-}
+    window.onload = () => {
+        const hoy = new Date().toISOString().split('T')[0];
+        inputFecha.value = hoy;
+        repFecha.value = hoy;
+        repMes.value = hoy.substring(0, 7);
+        if(currentLogo) applyLogo(currentLogo);
+        renderList();
+    };
 
-fecha.value = hoy();
-fechaRep.value = hoy();
+    document.getElementById('logoInput').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if(file) {
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                currentLogo = event.target.result;
+                localStorage.setItem('nutri_logo', currentLogo);
+                applyLogo(currentLogo);
+            };
+            reader.readAsDataURL(file);
+        }
+    });
 
-/* GUARDAR */
-function save(){
-localStorage.setItem("datos", JSON.stringify(datos));
-}
+    function applyLogo(url) {
+        document.getElementById('logoDisplay').src = url;
+        document.getElementById('logoDisplay').classList.remove('hidden');
+        document.getElementById('logoLabel').classList.add('hidden');
+        document.getElementById('logoReporte').src = url;
+        document.getElementById('logoReporte').classList.remove('hidden');
+    }
 
-/* TABS */
-function tab(t){
-reg.classList.toggle("hidden", t!="reg");
-rep.classList.toggle("hidden", t!="rep");
+    function setTab(t) {
+        document.getElementById('view-reg').classList.toggle('hidden', t !== 'reg');
+        document.getElementById('view-rep').classList.toggle('hidden', t !== 'rep');
+        document.getElementById('tabReg').classList.toggle('active', t === 'reg');
+        document.getElementById('tabRep').classList.toggle('active', t === 'rep');
+        if(t === 'rep') updateReport();
+    }
 
-document.querySelectorAll(".tab")[0].classList.toggle("active", t=="reg");
-document.querySelectorAll(".tab")[1].classList.toggle("active", t=="rep");
+    function saveRecord(tipo) {
+        let nombre, monto;
+        if(tipo === 'normal') {
+            nombre = document.getElementById('regNombre').value || "Cliente";
+            monto = parseFloat(document.getElementById('regMonto').value);
+            document.getElementById('regNombre').value = '';
+            document.getElementById('regMonto').value = '';
+        } else {
+            nombre = document.getElementById('regCerradoNombre').value || "Producto";
+            monto = parseFloat(document.getElementById('regCerradoMonto').value);
+            document.getElementById('regCerradoNombre').value = '';
+            document.getElementById('regCerradoMonto').value = '';
+        }
+        if(isNaN(monto)) return;
+        data.push({ id: Date.now(), fecha: inputFecha.value, nombre, monto, tipo });
+        localStorage.setItem('nutri_db', JSON.stringify(data));
+        renderList();
+        showToast("✅ Registrado");
+    }
 
-if(t=="rep") generar();
-}
+    function deleteItem(id) {
+        data = data.filter(i => i.id !== id);
+        localStorage.setItem('nutri_db', JSON.stringify(data));
+        renderList();
+        updateReport();
+    }
 
-/* AGREGAR */
-function add(){
-let f=fecha.value||hoy();
-let c=cliente.value;
-let t=parseFloat(total.value);
-if(!t)return;
+    function renderList() {
+        const container = document.getElementById('listado');
+        const hoy = inputFecha.value;
+        const filtrados = data.filter(d => d.fecha === hoy);
+        if(filtrados.length === 0) {
+            container.innerHTML = `<p style="text-align:center; color:#ccc; font-size:12px;">Sin registros hoy</p>`;
+            return;
+        }
+        container.innerHTML = filtrados.map(i => `
+            <div class="item">
+                <div class="item-info">
+                    <b>${i.tipo === 'cerrado' ? '📦' : '🥤'} ${i.nombre}</b>
+                    <span>$${i.monto.toFixed(2)}</span>
+                </div>
+                <button class="btn-del" onclick="deleteItem(${i.id})">Borrar</button>
+            </div>
+        `).join('');
+    }
 
-datos.push({id:Date.now(),fecha:f,cliente:c,total:t,tipo:"normal"});
-save(); update();
+    function updateReport() {
+        const tipo = document.getElementById('repTipo').value;
+        repMes.classList.toggle('hidden', tipo !== 'mes');
+        repFecha.classList.toggle('hidden', tipo === 'mes');
+        let vBarra = 0, vCerrado = 0, htmlDetalle = "";
+        data.forEach(i => {
+            const fItem = new Date(i.fecha + 'T12:00:00');
+            let incluir = false;
+            if(tipo === 'dia') incluir = i.fecha === repFecha.value;
+            if(tipo === 'semana') {
+                const d = new Date(repFecha.value + 'T12:00:00');
+                const inicio = new Date(d); inicio.setDate(d.getDate() - d.getDay());
+                const fin = new Date(inicio); fin.setDate(inicio.getDate() + 6);
+                incluir = fItem >= inicio && fItem <= fin;
+            }
+            if(tipo === 'mes') {
+                const [y, m] = repMes.value.split('-');
+                incluir = fItem.getFullYear() == y && (fItem.getMonth() + 1) == m;
+            }
+            if(incluir) {
+                if(i.tipo === 'normal') vBarra += i.monto;
+                else vCerrado += i.monto;
+                htmlDetalle += `${i.nombre} ($${i.monto}) | `;
+            }
+        });
+        const total = vBarra + vCerrado;
+        document.getElementById('resConsumos').innerText = (vBarra / 90).toFixed(2);
+        document.getElementById('resBarra').innerText = `$${vBarra.toFixed(2)}`;
+        document.getElementById('resCerrado').innerText = `$${vCerrado.toFixed(2)}`;
+        document.getElementById('resTotal').innerText = `$${total.toFixed(2)}`;
+        document.getElementById('resRojo').innerText = `$${(total * 0.7).toFixed(2)}`;
+        document.getElementById('resVerde').innerText = `$${(total * 0.3).toFixed(2)}`;
+        document.getElementById('listaDetalle').innerText = htmlDetalle;
+    }
 
-cliente.value=""; total.value="";
-}
+    function downloadReport() {
+        const target = document.getElementById('reporteParaImagen');
+        showToast("Generando...");
+        html2canvas(target, { scale: 2, backgroundColor: "#ffffff" }).then(canvas => {
+            const link = document.createElement('a');
+            link.download = `Reporte_${new Date().getTime()}.png`;
+            link.href = canvas.toDataURL("image/png");
+            link.click();
+            showToast("📸 Imagen guardada");
+        });
+    }
 
-function addCerrado(){
-let f=fecha.value||hoy();
-let c=clienteC.value||"Sin nombre";
-let t=parseFloat(cerrado.value);
-if(!t)return;
+    function showToast(msg) {
+        const t = document.getElementById('toast');
+        t.innerText = msg; t.style.opacity = 1;
+        setTimeout(() => t.style.opacity = 0, 2000);
+    }
 
-datos.push({id:Date.now(),fecha:f,cliente:c,total:t,tipo:"cerrado"});
-save(); update();
-
-clienteC.value=""; cerrado.value="";
-}
-
-/* ELIMINAR */
-function borrar(id){
-datos = datos.filter(d => d.id != id);
-save();
-update();
-generar();
-}
-
-/* LISTA SEPARADA */
-function update(){
-
-let f = fecha.value || hoy();
-
-let htmlClientes="";
-let htmlCerrados="";
-
-datos.forEach(d=>{
-
-if(d.fecha === f){
-
-if(d.tipo=="normal"){
-htmlClientes+=`
-<p>
-${d.cliente||"—"} - $${d.total}
-<br><button class="del" onclick="borrar(${d.id})">Eliminar</button>
-</p>`;
-}
-
-if(d.tipo=="cerrado"){
-htmlCerrados+=`
-<p>
-${d.cliente||"—"} - $${d.total}
-<br><button class="del" onclick="borrar(${d.id})">Eliminar</button>
-</p>`;
-}
-
-}
-
-});
-
-listaClientes.innerHTML = htmlClientes || "<p>Sin registros</p>";
-listaCerrados.innerHTML = htmlCerrados || "<p>Sin registros</p>";
-}
-
-/* SEMANA */
-function semana(fecha){
-let d=new Date(fecha);
-let dia=d.getDay();
-let diff=(dia>=5)?dia-5:dia+2;
-let inicio=new Date(d);
-inicio.setDate(d.getDate()-diff);
-
-let fin=new Date(inicio);
-fin.setDate(inicio.getDate()+6);
-
-return {inicio,fin};
-}
-
-/* REPORTE */
-function generar(){
-
-let tipo = tipo.value;
-let f = fechaRep.value || hoy();
-
-let ventas=0,cerrado=0;
-let listaC="",listaCe="";
-
-datos.forEach(d=>{
-
-let fd=new Date(d.fecha);
-let incluir=false;
-
-if(tipo=="dia") incluir=d.fecha===f;
-
-if(tipo=="semana"){
-let {inicio,fin}=semana(f);
-incluir=fd>=inicio && fd<=fin;
-}
-
-if(tipo=="mes" && mesRep.value){
-let [y,m]=mesRep.value.split("-");
-incluir=(fd.getFullYear()==y && (fd.getMonth()+1)==m);
-}
-
-if(incluir){
-
-if(d.tipo=="normal"){
-ventas+=d.total;
-listaC+=`<p>🥤 ${d.cliente} - $${d.total}</p>`;
-}
-
-if(d.tipo=="cerrado"){
-cerrado+=d.total;
-listaCe+=`<p>📦 ${d.cliente} - $${d.total}</p>`;
-}
-
-}
-
-});
-
-let total=ventas+cerrado;
-let rojo=(total*0.7).toFixed(2);
-let verde=(total*0.3).toFixed(2);
-let consumos=(ventas/90).toFixed(2);
-
-reporte.innerHTML=`
-<div class="consumos">${consumos} 🥤</div>
-
-<p>💰 Total: $${total}</p>
-<p>🥤 Ventas: $${ventas}</p>
-<p>📦 Cerrado: $${cerrado}</p>
-
-<p>🔴 $${rojo}</p>
-<p>🟢 $${verde}</p>
-
-<hr>
-${listaC}
-${listaCe}
-`;
-}
-
-/* IMAGEN */
-function descargar(){
-html2canvas(reporte,{scale:2}).then(canvas=>{
-let link=document.createElement("a");
-link.download="reporte.png";
-link.href=canvas.toDataURL();
-link.click();
-});
-}
-
-update();
-
+    inputFecha.onchange = renderList;
 </script>
 
 </body>
 </html>
+
+
+```
