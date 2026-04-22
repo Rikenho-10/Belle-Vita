@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Belle Vita - Ultra Luxury Report</title>
+    <title>Belle Vita - Ricardo Premium</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700;900&family=Playfair+Display:ital,wght@0,700;1,700&display=swap');
@@ -15,372 +15,367 @@
             --paper: #fdfaf5;
             --rojo: #b03a2e;
             --verde: #1e8449;
-            --shadow: 0 10px 30px rgba(0,0,0,0.5);
+            --inner-shadow: inset 3px 3px 6px rgba(0,0,0,0.4), inset -3px -3px 6px rgba(255,255,255,0.05);
         }
 
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body { 
-            margin: 0; 
-            font-family: 'Montserrat', sans-serif; 
-            background: radial-gradient(circle at top, #1a3a2a, #0b1f15);
-            color: white; 
-            display: flex; 
-            justify-content: center;
-            min-height: 100vh;
+            margin: 0; font-family: 'Montserrat', sans-serif; 
+            background: var(--emerald); color: white; 
+            display: flex; justify-content: center; min-height: 100vh;
         }
 
-        .app { width: 100%; max-width: 500px; position: relative; display: flex; flex-direction: column; }
+        .app-container { width: 100%; max-width: 480px; display: flex; flex-direction: column; background: var(--emerald); }
 
-        /* HEADER PREMIUM */
-        .header { 
-            background: linear-gradient(to bottom, rgba(0,0,0,0.4), transparent);
-            padding: 20px; text-align: center; border-radius: 0 0 30px 30px; 
-            z-index: 50; 
+        /* HEADER & NEON */
+        .header { padding: 25px 15px; text-align: center; background: linear-gradient(to bottom, rgba(0,0,0,0.5), transparent); }
+        .logo-neon { 
+            width: 70px; height: 70px; background: white; margin: 0 auto 10px; 
+            border-radius: 50%; border: 2px solid var(--gold); 
+            display: flex; align-items: center; justify-content: center; overflow: hidden;
+            box-shadow: 0 0 15px var(--gold); cursor: pointer;
+            animation: pulse-gold 2s infinite ease-in-out;
         }
-        .logo-ring { 
-            width: 75px; height: 75px; background: white; margin: 0 auto 10px; 
-            border-radius: 50%; border: 3px solid var(--gold); 
-            display: flex; align-items: center; justify-content: center; overflow: hidden; 
-            box-shadow: 0 0 20px var(--gold); cursor: pointer;
-        }
-        .logo-ring img { width: 100%; height: 100%; object-fit: cover; }
-        .logo-ring b { font-size: 28px; color: var(--emerald); }
-        .header h1 { 
-            font-family: 'Playfair Display', serif; color: var(--gold); 
-            margin: 0; font-size: 24px; text-transform: uppercase; letter-spacing: 4px;
-        }
+        @keyframes pulse-gold { 0%, 100% { box-shadow: 0 0 10px var(--gold); } 50% { box-shadow: 0 0 25px var(--gold-light); } }
+        .logo-neon img { width: 100%; height: 100%; object-fit: cover; }
+        .logo-neon b { font-size: 24px; color: var(--emerald); }
+        .header h1 { font-family: 'Playfair Display', serif; color: var(--gold); margin: 0; font-size: 22px; letter-spacing: 3px; text-transform: uppercase; }
 
-        /* NAVEGACIÓN LUXURY */
-        .tabs { display: flex; padding: 15px 25px; gap: 15px; margin-top: -15px; z-index: 100; position: relative; }
-        .tab { 
-            flex: 1; padding: 14px; border-radius: 12px; border: 1px solid var(--gold); 
-            font-weight: 800; font-size: 11px; cursor: pointer; 
-            background: rgba(11, 31, 21, 0.8); color: var(--gold); transition: 0.4s;
-            backdrop-filter: blur(10px);
+        /* TABS PREMIUM */
+        .nav-tabs { display: flex; padding: 0 20px; gap: 15px; margin-top: -15px; position: relative; z-index: 10; }
+        .tab-link { 
+            flex: 1; padding: 15px; border-radius: 15px; border: 1px solid var(--gold); 
+            font-weight: 800; font-size: 11px; cursor: pointer; text-align: center;
+            background: rgba(11, 31, 21, 0.9); color: var(--gold); transition: 0.3s;
         }
-        .tab.active { background: var(--gold); color: var(--emerald); box-shadow: 0 0 15px var(--gold); }
+        .tab-link.active { background: var(--gold); color: var(--emerald); box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
 
-        .container { padding: 25px; flex: 1; }
-        .card { 
-            background: rgba(255,255,255,0.05); border-radius: 20px; padding: 20px; 
-            margin-bottom: 25px; border: 1px solid rgba(197, 160, 89, 0.2);
-            backdrop-filter: blur(5px);
-        }
-        .card-label { font-size: 10px; font-weight: 900; color: var(--gold); text-transform: uppercase; margin-bottom: 12px; display: block; letter-spacing: 2px; }
+        .view { padding: 30px 20px; flex: 1; }
+        .luxury-card { background: rgba(255,255,255,0.05); border-radius: 20px; padding: 20px; margin-bottom: 20px; border: 1px solid rgba(197, 160, 89, 0.2); }
+        .card-title { font-size: 10px; font-weight: 900; color: var(--gold); text-transform: uppercase; margin-bottom: 12px; display: block; letter-spacing: 1.5px; }
 
-        /* INPUTS */
+        /* INPUTS RELIEVE HUNDIDO */
         input, select { 
-            width: 100%; padding: 15px; border: 1px solid rgba(197, 160, 89, 0.3); border-radius: 12px; 
-            background: rgba(0,0,0,0.3); font-family: inherit; font-weight: 600; color: white; margin-bottom: 15px;
+            width: 100%; padding: 14px; border: none; border-radius: 12px; 
+            background: rgba(0,0,0,0.3); color: white; margin-bottom: 15px;
+            box-shadow: var(--inner-shadow); font-family: inherit; font-weight: 600;
         }
-        input:focus { border-color: var(--gold); box-shadow: 0 0 10px rgba(197, 160, 89, 0.2); }
+        input:focus { outline: 1px solid var(--gold); }
 
-        .btn { 
+        /* BOTONES BISELADOS */
+        .btn-luxury { 
             width: 100%; padding: 16px; border-radius: 12px; border: none; 
             font-weight: 900; text-transform: uppercase; cursor: pointer; 
-            letter-spacing: 1px; transition: 0.3s;
+            transition: 0.2s; letter-spacing: 1px;
+            box-shadow: 4px 4px 10px rgba(0,0,0,0.4);
         }
-        .btn-gold { background: linear-gradient(135deg, var(--gold-light), var(--gold)); color: var(--emerald); box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
-        .btn-dark { background: transparent; border: 1px solid var(--gold); color: var(--gold); }
-        .btn-green { background: #1e8449; color: white; margin-top: 20px; box-shadow: 0 5px 15px rgba(30,132,73,0.3); }
-        .btn:active { transform: scale(0.96); opacity: 0.8; }
+        .btn-gold { background: linear-gradient(135deg, var(--gold-light), var(--gold)); color: var(--emerald); }
+        .btn-outline { background: transparent; border: 1px solid var(--gold); color: var(--gold); }
+        .btn-green { background: var(--verde); color: white; margin-top: 20px; }
+        .btn-luxury:active { transform: scale(0.97); box-shadow: 2px 2px 5px rgba(0,0,0,0.4); }
 
-        /* LISTA OPERACION */
-        .mov-item { 
-            display: flex; justify-content: space-between; align-items: center; 
-            padding: 15px; background: rgba(255,255,255,0.03); border-radius: 12px; 
-            margin-bottom: 10px; border: 1px solid rgba(255,255,255,0.05);
-        }
-        .mov-item b { color: var(--gold-light); }
-        .btn-del { background: rgba(176, 58, 46, 0.2); color: #ff6b6b; border: none; padding: 6px 12px; border-radius: 6px; font-size: 10px; font-weight: 800; cursor: pointer; }
+        /* LISTA REGISTRO */
+        .log-item { display: flex; justify-content: space-between; align-items: center; padding: 12px; background: rgba(255,255,255,0.03); border-radius: 12px; margin-bottom: 10px; border-left: 4px solid var(--gold); }
+        .log-info b { font-size: 14px; color: var(--gold-light); }
+        .btn-del { background: rgba(176, 58, 46, 0.2); color: #ff4d4d; border: none; padding: 6px 12px; border-radius: 8px; font-size: 10px; font-weight: 800; cursor: pointer; }
 
         /* =========================================
-           ESTILO DEL REPORTE (Basado en 416418.jpg)
+           DISEÑO DEL REPORTE (Canvas)
            ========================================= */
-        #reporte-canvas {
-            width: 1000px; height: 1400px; /* Tamaño fijo para calidad 4K */
-            background: var(--emerald);
-            background-image: url('https://www.transparenttextures.com/patterns/dark-matter.png');
-            padding: 40px; position: relative; color: white; overflow: hidden;
-            display: flex; flex-direction: column;
-            box-shadow: 0 0 50px rgba(0,0,0,1);
+        #reporte-export {
+            width: 800px; height: 1100px; background: var(--emerald);
+            padding: 40px; position: relative; color: white; display: flex; flex-direction: column;
+            overflow: hidden; border: 1px solid var(--gold);
         }
-
-        /* Adornos de hojas doradas (esquinas) */
-        .leaf-adorn { position: absolute; width: 250px; opacity: 0.6; pointer-events: none; }
-        .leaf-top-left { top: -20px; left: -20px; transform: rotate(0deg); }
-        .leaf-bottom-right { bottom: -20px; right: -20px; transform: rotate(180deg); }
-
-        /* Header del Reporte */
-        .rep-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; position: relative; z-index: 2; }
-        .rep-logo-box { display: flex; align-items: center; gap: 20px; }
-        .rep-logo-circle { width: 150px; height: 150px; border: 5px solid var(--gold); border-radius: 50%; overflow: hidden; background: white; box-shadow: 0 0 30px var(--gold); display: flex; align-items: center; justify-content: center; }
-        .rep-logo-circle img { width: 100%; height: 100%; object-fit: cover; }
-        .rep-title-box { text-align: left; }
-        .rep-club-name { font-family: 'Playfair Display', serif; font-size: 65px; color: white; letter-spacing: 5px; margin: 0; }
-        .rep-club-sub { font-size: 14px; letter-spacing: 4px; color: var(--gold); text-transform: uppercase; margin-top: 5px; font-weight: 300; }
-
-        .date-badge { 
-            background: rgba(0,0,0,0.4); border: 2px solid var(--gold); border-radius: 20px; 
-            padding: 15px 30px; text-align: center; min-width: 220px;
-        }
-        .date-day-name { color: var(--gold); font-size: 18px; text-transform: uppercase; font-weight: 900; margin-bottom: 5px; }
-        .date-number { font-size: 55px; font-weight: 900; line-height: 1; }
-        .date-month-year { font-size: 18px; color: var(--gold); text-transform: uppercase; margin-top: 5px; }
-
-        /* Cuerpo del Reporte */
-        .rep-body { display: flex; gap: 40px; flex: 1; position: relative; z-index: 2; }
+        /* Hojas de fondo sutiles */
+        .rep-bg-pattern { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.05; pointer-events: none; }
         
-        /* Columna Izquierda: Tabla o Resumen */
-        .rep-left { flex: 1.3; }
-        .rep-table { width: 100%; border-collapse: separate; border-spacing: 0 5px; background: var(--paper); border-radius: 15px; border: 3px solid var(--gold); overflow: hidden; }
-        .rep-table thead { background: var(--emerald); color: var(--gold); font-family: 'Playfair Display', serif; }
-        .rep-table th { padding: 15px; font-size: 18px; text-transform: uppercase; }
-        .rep-table td { padding: 12px 15px; color: var(--emerald); font-weight: 700; font-size: 20px; border-bottom: 1px solid rgba(0,0,0,0.05); }
-        .row-num { width: 60px; text-align: center; color: #888; font-weight: 400; border-right: 1px solid rgba(0,0,0,0.05); }
-        .row-name { padding-left: 20px !important; }
-        .row-money { width: 120px; text-align: right; padding-right: 30px !important; }
+        .rep-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; position: relative; z-index: 2; }
+        .rep-logo-area { display: flex; align-items: center; gap: 15px; }
+        .rep-logo-img { width: 100px; height: 100px; border: 3px solid var(--gold); border-radius: 50%; background: white; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+        .rep-logo-img img { width: 100%; height: 100%; object-fit: cover; }
+        .rep-club-info h2 { font-family: 'Playfair Display', serif; font-size: 40px; margin: 0; color: white; letter-spacing: 2px; }
+        .rep-club-info p { color: var(--gold); font-size: 10px; text-transform: uppercase; margin: 0; letter-spacing: 3px; }
 
-        /* Estilo para Reporte Semanal/Mensual (Grande) */
-        .summary-view { 
-            height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; 
-            background: rgba(255,255,255,0.03); border: 2px solid var(--gold); border-radius: 30px;
-            padding: 50px; text-align: center;
-        }
-        .summary-label { font-size: 24px; color: var(--gold); text-transform: uppercase; letter-spacing: 5px; margin-bottom: 10px; }
-        .summary-value { font-size: 120px; font-weight: 900; color: white; margin-bottom: 40px; text-shadow: 0 0 30px var(--gold); }
+        .rep-date-box { border: 2px solid var(--gold); padding: 10px 20px; text-align: center; border-radius: 15px; background: rgba(0,0,0,0.2); }
+        .rep-date-main { font-size: 36px; font-weight: 900; line-height: 1; }
+        .rep-date-sub { font-size: 12px; color: var(--gold); text-transform: uppercase; font-weight: 700; margin-top: 5px; }
 
-        /* Columna Derecha: Badges */
-        .rep-right { flex: 0.7; display: flex; flex-direction: column; gap: 25px; }
-        .badge-consumos { 
-            background: rgba(0,0,0,0.4); border: 2px solid var(--gold); border-radius: 25px; 
-            padding: 30px; text-align: center;
-        }
-        .badge-consumos-lbl { color: var(--gold); font-size: 18px; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; }
-        .badge-consumos-val { font-size: 85px; font-weight: 900; color: white; line-height: 1; }
+        .rep-body { display: flex; gap: 30px; flex: 1; position: relative; z-index: 2; }
+        .rep-col-left { flex: 1.2; }
+        .rep-col-right { flex: 0.8; display: flex; flex-direction: column; gap: 20px; }
 
-        .stat-card { 
-            background: var(--paper); color: var(--emerald); border-radius: 20px; 
-            padding: 20px 30px; display: flex; align-items: center; justify-content: space-between;
-            border-left: 10px solid var(--gold); position: relative;
-        }
-        .stat-card i { font-size: 24px; opacity: 0.1; position: absolute; right: 20px; }
-        .stat-info { display: flex; flex-direction: column; }
-        .stat-lbl { font-size: 14px; font-weight: 900; color: #888; text-transform: uppercase; margin-bottom: 5px; }
-        .stat-val { font-size: 32px; font-weight: 900; }
-        
-        .stat-card.rojo { color: var(--rojo); border-left-color: var(--rojo); }
-        .stat-card.verde { color: var(--verde); border-left-color: var(--verde); }
+        /* Tabla Estilo Imagen 416418 */
+        .table-luxe { width: 100%; border-collapse: separate; border-spacing: 0 4px; background: var(--paper); border-radius: 12px; border: 3px solid var(--gold); overflow: hidden; }
+        .table-luxe thead { background: var(--emerald); color: var(--gold); font-size: 14px; }
+        .table-luxe th { padding: 12px; text-transform: uppercase; }
+        .table-luxe td { padding: 10px 15px; color: var(--emerald); font-weight: 700; font-size: 16px; border-bottom: 1px solid rgba(0,0,0,0.05); }
 
-        /* Footer del Reporte */
-        .rep-footer { 
-            margin-top: 40px; text-align: center; padding: 30px; border-top: 1px solid rgba(197, 160, 89, 0.3);
-            background: linear-gradient(to top, rgba(197, 160, 89, 0.1), transparent);
-        }
-        .footer-quote { font-family: 'Playfair Display', serif; font-size: 28px; font-style: italic; color: white; margin-bottom: 10px; }
-        .footer-sub { color: var(--gold); font-size: 18px; text-transform: uppercase; letter-spacing: 5px; }
+        /* Vista Resumen (Semanal/Mensual) */
+        .exec-summary { height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; background: rgba(255,255,255,0.03); border: 1px solid var(--gold); border-radius: 20px; text-align: center; }
+        .exec-label { font-size: 18px; color: var(--gold); text-transform: uppercase; letter-spacing: 4px; }
+        .exec-value { font-size: 90px; font-weight: 900; color: white; margin: 10px 0; }
+
+        /* Badges de stats */
+        .badge-box { background: rgba(0,0,0,0.4); border: 1px solid var(--gold); border-radius: 20px; padding: 25px; text-align: center; }
+        .badge-lbl { font-size: 14px; color: var(--gold); text-transform: uppercase; font-weight: 800; margin-bottom: 8px; }
+        .badge-val { font-size: 50px; font-weight: 900; line-height: 1; }
+
+        .stat-line { background: var(--paper); color: var(--emerald); border-radius: 15px; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-left: 8px solid var(--gold); }
+        .stat-line.rojo { border-left-color: var(--rojo); color: var(--rojo); }
+        .stat-line.verde { border-left-color: var(--verde); color: var(--verde); }
+        .stat-name { font-size: 12px; font-weight: 900; text-transform: uppercase; color: #888; }
+        .stat-num { font-size: 24px; font-weight: 900; }
+
+        .rep-foot { margin-top: 30px; text-align: center; border-top: 1px solid rgba(197,160,89,0.3); padding-top: 20px; }
+        .rep-foot p { font-family: 'Playfair Display', serif; font-style: italic; font-size: 20px; margin: 0; }
 
         .hidden { display: none; }
-        #toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: var(--gold); color: var(--emerald); padding: 15px 30px; border-radius: 50px; font-weight: 900; font-size: 14px; opacity: 0; transition: 0.5s; z-index: 1000; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        #toast { position: fixed; bottom: 30px; background: var(--gold); color: var(--emerald); padding: 12px 25px; border-radius: 50px; font-weight: 900; font-size: 13px; opacity: 0; transition: 0.5s; z-index: 1000; box-shadow: 0 5px 20px rgba(0,0,0,0.5); pointer-events: none; }
     </style>
 </head>
 <body>
 
-<div class="app">
-    <!-- UI HEADER -->
+<div class="app-container">
+    <!-- CABECERA -->
     <div class="header">
-        <input type="file" id="upLogo" class="hidden" accept="image/*">
-        <div class="logo-ring" onclick="document.getElementById('upLogo').click()">
-            <img id="uiLogoImg" class="hidden">
-            <b id="uiLogoTxt">BV</b>
+        <input type="file" id="fileIn" class="hidden" accept="image/*">
+        <div class="logo-neon" id="logoBtn">
+            <img id="logoUi" class="hidden">
+            <b id="logoUiPlaceholder">BV</b>
         </div>
         <h1>Belle Vita</h1>
     </div>
 
-    <!-- UI TABS -->
-    <div class="tabs">
-        <button class="tab active" id="btn-oper" onclick="go('oper')">REGISTRO</button>
-        <button class="tab" id="btn-repo" onclick="go('repo')">REPORTE</button>
+    <!-- NAVEGACIÓN -->
+    <div class="nav-tabs">
+        <div class="tab-link active" id="tab-oper" onclick="switchView('oper')">OPERACIÓN</div>
+        <div class="tab-link" id="tab-repo" onclick="switchView('repo')">REPORTE</div>
     </div>
 
-    <!-- UI REGISTRO -->
-    <div id="view-oper" class="container">
-        <div class="card">
-            <span class="card-label">📅 Fecha de Operación</span>
-            <input type="date" id="inFecha">
+    <!-- VISTA OPERACIÓN -->
+    <div id="view-oper" class="view">
+        <div class="luxury-card">
+            <span class="card-title">📅 Fecha de Trabajo</span>
+            <input type="date" id="fechaCtrl">
         </div>
-        <div class="card">
-            <span class="card-label">🥤 Barra (Socio)</span>
-            <input id="inName" placeholder="Nombre del Socio">
-            <input type="number" id="inAmt" placeholder="Monto $">
-            <button class="btn btn-gold" onclick="save('normal')">Añadir Consumo</button>
+        <div class="luxury-card">
+            <span class="card-title">🥤 Consumo Barra (Socio)</span>
+            <input type="text" id="nombreSocio" placeholder="Nombre">
+            <input type="number" id="montoSocio" placeholder="Monto $">
+            <button class="btn-luxury btn-gold" onclick="registrar('normal')">Añadir Consumo</button>
         </div>
-        <div class="card">
-            <span class="card-label">📦 Venta de Producto</span>
-            <input id="inProd" placeholder="Producto/Concepto">
-            <input type="number" id="inAmtP" placeholder="Monto $">
-            <button class="btn btn-dark" onclick="save('cerrado')">Registrar Venta</button>
+        <div class="luxury-card">
+            <span class="card-title">📦 Venta de Producto</span>
+            <input type="text" id="nombreProd" placeholder="Producto">
+            <input type="number" id="montoProd" placeholder="Monto $">
+            <button class="btn-luxury btn-outline" onclick="registrar('cerrado')">Registrar Venta</button>
         </div>
-        <span class="card-label">Bitácora Activa</span>
-        <div id="movList"></div>
+        <span class="card-title">Bitácora Activa</span>
+        <div id="bitacoraLista"></div>
     </div>
 
-    <!-- UI REPORTES -->
-    <div id="view-repo" class="container hidden">
-        <div class="card">
-            <span class="card-label">Configurar Cierre</span>
-            <select id="selModo" onchange="toggleF()">
-                <option value="dia">Reporte Diario (Con Lista)</option>
-                <option value="semana">Resumen Semanal</option>
+    <!-- VISTA REPORTE -->
+    <div id="view-repo" class="view hidden">
+        <div class="luxury-card">
+            <span class="card-title">Filtros de Cierre</span>
+            <select id="filtroModo" onchange="toggleFiltros()">
+                <option value="dia">Cierre Diario (con Lista)</option>
+                <option value="semana">Resumen Semanal (Vie-Jue)</option>
                 <option value="mes">Resumen Mensual</option>
-                <option value="rango">Rango Libre</option>
+                <option value="rango">Rango Personalizado</option>
             </select>
-            <div id="f-dia">
-                <input type="date" id="dateRef" onchange="renderR()">
+            <div id="ctrl-simple">
+                <input type="date" id="fechaRef" onchange="recalcular()">
             </div>
-            <div id="f-rango" class="hidden">
-                <input type="date" id="dateFrom" onchange="renderR()">
-                <input type="date" id="dateTo" onchange="renderR()">
+            <div id="ctrl-rango" class="hidden">
+                <input type="date" id="fechaDesde" onchange="recalcular()">
+                <input type="date" id="fechaHasta" onchange="recalcular()">
             </div>
         </div>
 
-        <!-- AREA DE CAPTURA (Oculta en la UI, se renderiza para el canvas) -->
-        <div style="overflow: hidden; height: 0; opacity: 0; position: absolute; top: -5000px;">
-            <div id="reporte-canvas">
-                <!-- Hojas doradas -->
-                <svg class="leaf-adorn leaf-top-left" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 20C80 20 100 80 100 120C100 80 120 20 180 20C120 20 100 80 100 120C100 80 80 20 20 20Z" fill="url(#goldGrad)"/><defs><linearGradient id="goldGrad" x1="20" y1="20" x2="180" y2="120" gradientUnits="userSpaceOnUse"><stop stop-color="#e4c68d"/><stop offset="1" stop-color="#c5a059"/></linearGradient></defs></svg>
-                <svg class="leaf-adorn leaf-bottom-right" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 20C80 20 100 80 100 120C100 80 120 20 180 20C120 20 100 80 100 120C100 80 80 20 20 20Z" fill="url(#goldGrad)"/></svg>
-
-                <div class="rep-header">
-                    <div class="rep-logo-box">
-                        <div class="rep-logo-circle">
-                            <img id="repLogoImg" class="hidden">
-                            <b id="repLogoTxt" style="font-size: 60px; color: #c5a059;">BV</b>
+        <!-- CANVAS INVISIBLE PARA CAPTURA -->
+        <div style="position: absolute; top: -10000px; left: -10000px;">
+            <div id="reporte-export">
+                <div class="rep-bg-pattern">
+                    <svg width="100%" height="100%"><defs><pattern id="leaves" width="100" height="100" patternUnits="userSpaceOnUse"><path d="M50 20c15 0 20 20 20 30s-5 30-20 30-20-20-20-30 5-30 20-30z" fill="#c5a059" fill-opacity="0.2"/></pattern></defs><rect width="100%" height="100%" fill="url(#leaves)"/></svg>
+                </div>
+                
+                <div class="rep-head">
+                    <div class="rep-logo-area">
+                        <div class="rep-logo-img">
+                            <img id="logoExport" class="hidden">
+                            <b id="logoExportPlaceholder" style="font-size: 50px; color: #c5a059;">BV</b>
                         </div>
-                        <div class="rep-title-box">
-                            <h2 class="rep-club-name">BELLE VITA</h2>
-                            <p class="rep-club-sub">Nutrición • Bienestar • Transformación</p>
+                        <div class="rep-club-info">
+                            <h2>BELLE VITA</h2>
+                            <p>Nutrición • Bienestar • Transformación</p>
                         </div>
                     </div>
-                    <div class="date-badge">
-                        <div class="date-day-name" id="can-day-name">Martes</div>
-                        <div class="date-number" id="can-day-num">21</div>
-                        <div class="date-month-year" id="can-month-year">Abril, 2026</div>
+                    <div class="rep-date-box">
+                        <div class="rep-date-main" id="can-num">21</div>
+                        <div class="rep-date-sub" id="can-txt">Martes, Abril 2026</div>
                     </div>
                 </div>
 
                 <div class="rep-body">
-                    <div class="rep-left" id="can-left-area">
-                        <!-- Se llena vía JS (Tabla o Resumen Grande) -->
+                    <div class="rep-col-left" id="reporte-contenido-dinamico">
+                        <!-- Se llena con tabla o resumen gigante -->
                     </div>
-
-                    <div class="rep-right">
-                        <div class="badge-consumos">
-                            <div class="badge-consumos-lbl">Consumos</div>
-                            <div class="badge-consumos-val" id="can-consumos">0.00</div>
+                    <div class="rep-col-right">
+                        <div class="badge-box">
+                            <div class="badge-lbl" id="lbl-consumos">Consumos</div>
+                            <div class="badge-val" id="can-consumos">0.00</div>
                         </div>
-
-                        <div class="stat-card">
-                            <div class="stat-info">
-                                <span class="stat-lbl">P. Cerrado</span>
-                                <span class="stat-val" id="can-cerrado">$ 0.00</span>
-                            </div>
+                        <div class="stat-line">
+                            <span class="stat-name">P. Cerrado</span>
+                            <span class="stat-num" id="can-cerrado">$0</span>
                         </div>
-
-                        <div class="stat-card">
-                            <div class="stat-info">
-                                <span class="stat-lbl">Venta Total</span>
-                                <span class="stat-val" id="can-total">$ 0.00</span>
-                            </div>
+                        <div class="stat-line">
+                            <span class="stat-name">Vta Total</span>
+                            <span class="stat-num" id="can-total">$0</span>
                         </div>
-
-                        <div class="stat-card rojo">
-                            <div class="stat-info">
-                                <span class="stat-lbl">Rojo</span>
-                                <span class="stat-val" id="can-rojo">$ 0.00</span>
-                            </div>
+                        <div class="stat-line rojo">
+                            <span class="stat-name" style="color:inherit">Rojo</span>
+                            <span class="stat-num" id="can-rojo">$0</span>
                         </div>
-
-                        <div class="stat-card verde">
-                            <div class="stat-info">
-                                <span class="stat-lbl">Verde</span>
-                                <span class="stat-val" id="can-verde">$ 0.00</span>
-                            </div>
+                        <div class="stat-line verde">
+                            <span class="stat-name" style="color:inherit">Verde</span>
+                            <span class="stat-num" id="can-verde">$0</span>
                         </div>
                     </div>
                 </div>
 
-                <div class="rep-footer">
-                    <div class="footer-quote">Tu decides tu cambio, nosotros te acompañamos.</div>
-                    <div class="footer-sub">Belle Vita, belleza que nace de ti.</div>
+                <div class="rep-foot">
+                    <p>Belle Vita, belleza que nace de ti.</p>
                 </div>
             </div>
         </div>
 
-        <button class="btn btn-green" onclick="capture()">📸 GENERAR REPORTE PARA WHATSAPP</button>
-        <p style="text-align:center; color: var(--gold); font-size:12px; margin-top:20px;">* El reporte diario incluye lista; Semanal y Mensual solo acumulados.</p>
+        <button class="btn-luxury btn-green" onclick="descargarReporte()">📸 GENERAR IMAGEN PARA WHATSAPP</button>
     </div>
 </div>
 
 <div id="toast"></div>
 
 <script>
-    // Memoria Persistente
-    let db = JSON.parse(localStorage.getItem('belle_luxury_db_v1')) || [];
-    let myLogo = localStorage.getItem('belle_luxury_logo_v1') || null;
+    // --- MOTOR DE DATOS ---
+    let clubDB = JSON.parse(localStorage.getItem('bv_luxury_v11')) || [];
+    let savedLogo = localStorage.getItem('bv_logo_v11') || null;
 
-    const inF = document.getElementById('inFecha');
-    const dRef = document.getElementById('dateRef');
-    const sModo = document.getElementById('selModo');
+    // --- ELEMENTOS ---
+    const fechaCtrl = document.getElementById('fechaCtrl');
+    const fechaRef = document.getElementById('fechaRef');
+    const filtroModo = document.getElementById('filtroModo');
 
-    window.onload = () => {
-        const t = new Date().toISOString().split('T')[0];
-        inF.value = t;
-        dRef.value = t;
-        document.getElementById('dateFrom').value = t;
-        document.getElementById('dateTo').value = t;
-        if(myLogo) applyLogo(myLogo);
-        renderL();
+    window.onload = function() {
+        const hoy = new Date().toISOString().split('T')[0];
+        fechaCtrl.value = hoy;
+        fechaRef.value = hoy;
+        document.getElementById('fechaDesde').value = hoy;
+        document.getElementById('fechaHasta').value = hoy;
+        if(savedLogo) aplicarLogo(savedLogo);
+        renderizarLista();
     };
 
-    // --- MANEJO DE LOGO ---
-    document.getElementById('upLogo').onchange = (e) => {
+    // --- LOGO ---
+    document.getElementById('logoBtn').onclick = () => document.getElementById('fileIn').click();
+    document.getElementById('fileIn').onchange = (e) => {
         const file = e.target.files[0];
         if(file) {
             const reader = new FileReader();
             reader.onload = (ev) => {
-                myLogo = ev.target.result;
-                localStorage.setItem('belle_luxury_logo_v1', myLogo);
-                applyLogo(myLogo);
+                savedLogo = ev.target.result;
+                localStorage.setItem('bv_logo_v11', savedLogo);
+                aplicarLogo(savedLogo);
             };
             reader.readAsDataURL(file);
         }
     };
 
-    function applyLogo(url) {
-        const uImg = document.getElementById('uiLogoImg');
-        const uTxt = document.getElementById('uiLogoTxt');
-        const cImg = document.getElementById('repLogoImg');
-        const cTxt = document.getElementById('repLogoTxt');
-        
-        uImg.src = url; uImg.classList.remove('hidden'); uTxt.classList.add('hidden');
-        cImg.src = url; cImg.classList.remove('hidden'); cTxt.classList.add('hidden');
+    function aplicarLogo(url) {
+        document.getElementById('logoUi').src = url; document.getElementById('logoUi').classList.remove('hidden');
+        document.getElementById('logoUiPlaceholder').classList.add('hidden');
+        document.getElementById('logoExport').src = url; document.getElementById('logoExport').classList.remove('hidden');
+        document.getElementById('logoExportPlaceholder').classList.add('hidden');
     }
 
-    // --- NAVEGACION ---
-    function go(v) {
-        document.getElementById('view-oper').classList.toggle('hidden', v !== 'oper');
-        document.getElementById('view-repo').classList.toggle('hidden', v !== 'repo');
-        document.getElementById('btn-oper').classList.toggle('active', v === 'oper');
-        document.getElementById('btn-repo').classList.toggle('active', v === 'repo');
-        if(v === 'repo') renderR();
+    // --- NAVEGACIÓN ---
+    function switchView(target) {
+        document.getElementById('view-oper').classList.toggle('hidden', target !== 'oper');
+        document.getElementById('view-repo').classList.toggle('hidden', target !== 'repo');
+        document.getElementById('tab-oper').classList.toggle('active', target === 'oper');
+        document.getElementById('tab-repo').classList.toggle('active', target === 'repo');
+        if(target === 'repo') recalcular();
     }
 
-    // --- OPERACION ---
-    function save(tipo) {
+    // --- REGISTRO ---
+    function registrar(tipo) {
         let n, m;
         if(tipo === 'normal') {
-            n = document.getElementById('inName').value || "Socio";
-            m = parseFloat(document.getElementById('inAmt').value);
-            document.getElementById('inName').value = ''; document.getElementById('inAmt').value = '';
-        } e
+            n = document.getElementById('nombreSocio').value || "Socio";
+            m = parseFloat(document.getElementById('montoSocio').value);
+            document.getElementById('nombreSocio').value = ''; 
+            document.getElementById('montoSocio').value = '';
+        } else {
+            n = document.getElementById('nombreProd').value || "Venta";
+            m = parseFloat(document.getElementById('montoProd').value);
+            document.getElementById('nombreProd').value = ''; 
+            document.getElementById('montoProd').value = '';
+        }
+
+        if(isNaN(m)) { showToast("⚠️ Ingresa un monto válido"); return; }
+
+        clubDB.push({ id: Date.now(), fecha: fechaCtrl.value, nombre: n, monto: m, tipo: tipo });
+        localStorage.setItem('bv_luxury_v11', JSON.stringify(clubDB));
+        renderizarLista();
+        showToast("✅ Registro Exitoso");
+    }
+
+    function eliminar(id) {
+        clubDB = clubDB.filter(i => i.id !== id);
+        localStorage.setItem('bv_luxury_v11', JSON.stringify(clubDB));
+        renderizarLista();
+    }
+
+    function renderizarLista() {
+        const list = document.getElementById('bitacoraLista');
+        const items = clubDB.filter(d => d.fecha === fechaCtrl.value);
+        if(items.length === 0) { list.innerHTML = `<p style="text-align:center; color:#555; font-size:12px;">Sin registros hoy</p>`; return; }
+        list.innerHTML = items.map(i => `
+            <div class="log-item">
+                <div class="log-info"><b>${i.tipo === 'cerrado' ? '📦' : '🥤'} ${i.nombre}</b><br><small>$${i.monto.toFixed(2)}</small></div>
+                <button class="btn-del" onclick="eliminar(${i.id})">QUITAR</button>
+            </div>
+        `).join('');
+    }
+
+    // --- REPORTES ---
+    function toggleFiltros() {
+        const m = filtroModo.value;
+        document.getElementById('ctrl-simple').classList.toggle('hidden', m === 'rango');
+        document.getElementById('ctrl-rango').classList.toggle('hidden', m !== 'rango');
+        recalcular();
+    }
+
+    function recalcular() {
+        const modo = filtroModo.value;
+        let filtrados = [];
+        let dIni, dFin;
+        let diasAbiertos = new Set();
+
+        if(modo === 'rango') {
+            dIni = new Date(document.getElementById('fechaDesde').value + 'T12:00:00');
+            dFin = new Date(document.getElementById('fechaHasta').value + 'T12:00:00');
+            filtrados = clubDB.filter(d => {
+                let f = new Date(d.fecha + 'T12:00:00');
+                if(f >= dIni && f <= dFin) {
+                    if(d.tipo === 'normal') diasAbiertos.add(d.fecha);
+                    return true;
+                }
+                return false;
+            });
+        } else {
+            const ref = fechaRef.value;
+            const dRef = new Date(ref + 'T12:00:00');
+   
