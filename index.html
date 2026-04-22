@@ -1,9 +1,11 @@
+```html
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Belle Vita - Master Stable</title>
+    <title>Belle Vita - Ricardo Premium Master</title>
+    <!-- Script de captura de imagen -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700;900&family=Playfair+Display:ital,wght@0,700;1,700&display=swap');
@@ -15,329 +17,343 @@
             --paper: #fdfaf5;
             --rojo: #b03a2e;
             --verde: #1e8449;
-            --shadow-out: 5px 5px 12px #050d09, -2px -2px 10px rgba(255,255,255,0.05);
-            --shadow-in: inset 3px 3px 6px rgba(0,0,0,0.6), inset -2px -2px 5px rgba(255,255,255,0.05);
+            --shadow-in: inset 4px 4px 8px rgba(0,0,0,0.5), inset -2px -2px 5px rgba(255,255,255,0.05);
+            --shadow-out: 5px 5px 15px rgba(0,0,0,0.4), -2px -2px 10px rgba(255,255,255,0.05);
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
+        
         body { 
             margin: 0; font-family: 'Montserrat', sans-serif; 
             background: var(--emerald); color: white; 
             display: flex; justify-content: center; min-height: 100vh;
         }
 
-        .app-container { width: 100%; max-width: 480px; display: flex; flex-direction: column; background: var(--emerald); }
+        .app-main { width: 100%; max-width: 480px; display: flex; flex-direction: column; background: var(--emerald); }
 
-        /* HEADER & NEON */
-        .header { padding: 25px 15px; text-align: center; background: linear-gradient(to bottom, rgba(0,0,0,0.5), transparent); }
-        .logo-neon { 
-            width: 70px; height: 70px; background: white; margin: 0 auto 10px; 
-            border-radius: 50%; border: 2px solid var(--gold); 
+        /* HEADER PREMIUM */
+        .app-header { padding: 25px 15px; text-align: center; position: relative; z-index: 50; }
+        
+        .logo-trigger { 
+            width: 75px; height: 75px; background: white; margin: 0 auto 12px; 
+            border-radius: 50%; border: 3px solid var(--gold); 
             display: flex; align-items: center; justify-content: center; overflow: hidden;
-            box-shadow: 0 0 15px var(--gold); cursor: pointer;
-            animation: pulse-gold 2s infinite ease-in-out;
+            box-shadow: 0 0 20px var(--gold); cursor: pointer;
+            animation: pulse-neon 2s infinite ease-in-out;
         }
-        @keyframes pulse-gold { 0%, 100% { box-shadow: 0 0 10px var(--gold); } 50% { box-shadow: 0 0 25px var(--gold-light); } }
-        .logo-neon img { width: 100%; height: 100%; object-fit: cover; }
-        .logo-neon b { font-size: 24px; color: var(--emerald); }
-        .header h1 { font-family: 'Playfair Display', serif; color: var(--gold); margin: 0; font-size: 22px; letter-spacing: 3px; text-transform: uppercase; }
+        @keyframes pulse-neon { 0%, 100% { box-shadow: 0 0 10px var(--gold); } 50% { box-shadow: 0 0 30px var(--gold-light); } }
+        .logo-trigger img { width: 100%; height: 100%; object-fit: cover; }
+        .logo-trigger b { font-size: 28px; color: var(--emerald); }
+        
+        .app-header h1 { 
+            font-family: 'Playfair Display', serif; color: var(--gold); 
+            margin: 0; font-size: 24px; letter-spacing: 4px; text-transform: uppercase; 
+        }
 
-        /* TABS */
-        .nav-tabs { display: flex; padding: 0 20px; gap: 15px; margin-top: -15px; position: relative; z-index: 10; }
-        .tab-item { 
+        /* NAVEGACIÓN */
+        .nav-container { display: flex; padding: 0 20px; gap: 15px; margin-top: -15px; z-index: 100; position: relative; }
+        .nav-btn { 
             flex: 1; padding: 15px; border-radius: 15px; border: 1px solid var(--gold); 
             font-weight: 800; font-size: 11px; cursor: pointer; text-align: center;
-            background: rgba(11, 31, 21, 0.9); color: var(--gold); transition: 0.3s;
+            background: rgba(11, 31, 21, 0.95); color: var(--gold); transition: 0.3s;
         }
-        .tab-item.active { background: var(--gold); color: var(--emerald); box-shadow: 0 5px 15px rgba(0,0,0,0.4); }
+        .nav-btn.active { background: var(--gold); color: var(--emerald); box-shadow: 0 5px 20px rgba(0,0,0,0.5); }
 
-        .view-content { padding: 30px 20px; flex: 1; }
-        .lux-card { background: rgba(255,255,255,0.03); border-radius: 20px; padding: 20px; margin-bottom: 20px; border: 1px solid rgba(197, 160, 89, 0.1); }
-        .card-lbl { font-size: 10px; font-weight: 900; color: var(--gold); text-transform: uppercase; margin-bottom: 12px; display: block; letter-spacing: 1.5px; }
+        .view-pane { padding: 35px 20px; flex: 1; }
+        .lux-card { background: rgba(255,255,255,0.03); border-radius: 25px; padding: 20px; margin-bottom: 25px; border: 1px solid rgba(197, 160, 89, 0.15); }
+        .lux-lbl { font-size: 10px; font-weight: 900; color: var(--gold); text-transform: uppercase; margin-bottom: 12px; display: block; letter-spacing: 2px; }
 
-        /* INPUTS HUNDIDOS */
+        /* INPUTS RELIEVE HUNDIDO */
         input, select { 
-            width: 100%; padding: 14px; border: none; border-radius: 12px; 
-            background: rgba(0,0,0,0.2); color: white; margin-bottom: 15px;
+            width: 100%; padding: 15px; border: none; border-radius: 12px; 
+            background: rgba(0,0,0,0.25); color: white; margin-bottom: 15px;
             box-shadow: var(--shadow-in); font-family: inherit; font-weight: 600;
         }
 
         /* BOTONES BISELADOS */
         .btn-lux { 
-            width: 100%; padding: 16px; border-radius: 12px; border: none; 
+            width: 100%; padding: 18px; border-radius: 15px; border: none; 
             font-weight: 900; text-transform: uppercase; cursor: pointer; 
-            transition: 0.2s; letter-spacing: 1px;
-            box-shadow: 4px 4px 10px rgba(0,0,0,0.5);
+            transition: 0.2s; letter-spacing: 2px; font-size: 12px;
+            box-shadow: 6px 6px 12px rgba(0,0,0,0.5);
         }
         .btn-gold { background: linear-gradient(135deg, var(--gold-light), var(--gold)); color: var(--emerald); }
         .btn-outline { background: transparent; border: 1px solid var(--gold); color: var(--gold); }
-        .btn-green { background: var(--verde); color: white; margin-top: 20px; }
+        .btn-green { background: var(--verde); color: white; margin-top: 20px; font-size: 16px; }
         .btn-lux:active { transform: scale(0.97); }
 
-        /* LOG */
-        .log-row { display: flex; justify-content: space-between; align-items: center; padding: 12px; background: rgba(255,255,255,0.02); border-radius: 12px; margin-bottom: 8px; border-left: 3px solid var(--gold); }
-        .log-row b { font-size: 13px; color: var(--gold-light); }
-        .btn-del { background: rgba(176, 58, 46, 0.2); color: #ff4d4d; border: none; padding: 6px 12px; border-radius: 8px; font-size: 10px; font-weight: 800; cursor: pointer; }
+        /* BITÁCORA */
+        .item-row { display: flex; justify-content: space-between; align-items: center; padding: 15px; background: rgba(255,255,255,0.02); border-radius: 15px; margin-bottom: 10px; border-left: 5px solid var(--gold); }
+        .item-info b { font-size: 14px; color: var(--gold-light); display: block; }
+        .item-info small { color: #888; }
+        .del-x { background: rgba(176, 58, 46, 0.2); color: #ff6b6b; border: none; padding: 8px 12px; border-radius: 10px; font-size: 10px; font-weight: 900; cursor: pointer; }
 
-        /* REPORTE CANVAS (PARA IMAGEN) */
-        #reporte-canvas {
-            width: 800px; height: 1150px; background: var(--emerald);
-            padding: 40px; position: relative; color: white; display: flex; flex-direction: column;
+        /* REPORTE CANVAS (PARA WHATSAPP) */
+        #canvas-export {
+            width: 900px; height: 1300px; background: var(--emerald);
+            padding: 50px; position: relative; color: white; display: flex; flex-direction: column;
             overflow: hidden; border: 2px solid var(--gold);
         }
         
-        .rep-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; position: relative; z-index: 2; }
-        .rep-logo-box { display: flex; align-items: center; gap: 15px; }
-        .rep-logo-circle { width: 100px; height: 100px; border: 3px solid var(--gold); border-radius: 50%; background: white; overflow: hidden; display: flex; align-items: center; justify-content: center; }
-        .rep-logo-circle img { width: 100%; height: 100%; object-fit: cover; }
-        .rep-club-name h2 { font-family: 'Playfair Display', serif; font-size: 42px; margin: 0; color: white; letter-spacing: 2px; }
-        .rep-club-name p { color: var(--gold); font-size: 11px; text-transform: uppercase; margin: 0; letter-spacing: 3px; }
+        .c-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; position: relative; z-index: 2; }
+        .c-logo-box { display: flex; align-items: center; gap: 20px; }
+        .c-logo-ring { width: 130px; height: 130px; border: 4px solid var(--gold); border-radius: 50%; background: white; overflow: hidden; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 30px var(--gold); }
+        .c-logo-ring img { width: 100%; height: 100%; object-fit: cover; }
+        .c-club-name h2 { font-family: 'Playfair Display', serif; font-size: 55px; margin: 0; color: white; letter-spacing: 4px; }
+        .c-club-name p { color: var(--gold); font-size: 14px; text-transform: uppercase; margin: 0; letter-spacing: 5px; font-weight: 300; }
 
-        .rep-date-tag { border: 2px solid var(--gold); padding: 12px 25px; text-align: center; border-radius: 15px; background: rgba(0,0,0,0.3); }
-        .rep-date-day { font-size: 40px; font-weight: 900; line-height: 1; }
-        .rep-date-month { font-size: 12px; color: var(--gold); text-transform: uppercase; font-weight: 800; margin-top: 5px; }
+        .c-date-tag { border: 3px solid var(--gold); padding: 15px 30px; text-align: center; border-radius: 20px; background: rgba(0,0,0,0.4); }
+        .c-date-n { font-size: 55px; font-weight: 900; line-height: 1; }
+        .c-date-t { font-size: 16px; color: var(--gold); text-transform: uppercase; font-weight: 800; margin-top: 8px; }
 
-        .rep-body { display: flex; gap: 30px; flex: 1; position: relative; z-index: 2; }
-        .rep-left { flex: 1.2; }
-        .rep-right { flex: 0.8; display: flex; flex-direction: column; gap: 15px; }
+        .c-body { display: flex; gap: 40px; flex: 1; position: relative; z-index: 2; }
+        .c-left { flex: 1.3; }
+        .c-right { flex: 0.7; display: flex; flex-direction: column; gap: 20px; }
 
-        .rep-table { width: 100%; border-collapse: separate; border-spacing: 0 4px; background: var(--paper); border-radius: 12px; border: 3px solid var(--gold); overflow: hidden; }
-        .rep-table th { background: var(--emerald); color: var(--gold); padding: 12px; font-size: 14px; text-transform: uppercase; }
-        .rep-table td { padding: 10px 15px; color: var(--emerald); font-weight: 700; font-size: 17px; border-bottom: 1px solid rgba(0,0,0,0.05); }
+        .c-table { width: 100%; border-collapse: separate; border-spacing: 0 5px; background: var(--paper); border-radius: 15px; border: 4px solid var(--gold); overflow: hidden; }
+        .c-table th { background: var(--emerald); color: var(--gold); padding: 15px; font-size: 18px; text-transform: uppercase; }
+        .c-table td { padding: 12px 20px; color: var(--emerald); font-weight: 700; font-size: 20px; border-bottom: 1px solid rgba(0,0,0,0.05); }
 
-        .exec-box { height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; background: rgba(255,255,255,0.03); border: 2px solid var(--gold); border-radius: 30px; text-align: center; padding: 20px; }
-        .exec-lbl { font-size: 18px; color: var(--gold); text-transform: uppercase; letter-spacing: 4px; margin-bottom: 10px; }
-        .exec-val { font-size: 95px; font-weight: 900; color: white; }
+        .c-exec-box { height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; background: rgba(255,255,255,0.03); border: 2px solid var(--gold); border-radius: 40px; text-align: center; padding: 40px; }
+        .c-exec-lbl { font-size: 24px; color: var(--gold); text-transform: uppercase; letter-spacing: 6px; margin-bottom: 15px; }
+        .c-exec-val { font-size: 110px; font-weight: 900; color: white; text-shadow: 0 0 30px var(--gold); }
 
-        /* Badge Consumos adaptable */
-        .rep-badge-cons { background: rgba(0,0,0,0.5); border: 1px solid var(--gold); border-radius: 60px; padding: 8px 15px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-        .rep-badge-cons-lbl { font-size: 14px; color: var(--gold); text-transform: uppercase; font-weight: 800; margin-right: 15px; }
-        .rep-badge-cons-num { background: var(--verde); color: white; min-width: 55px; height: 55px; padding: 0 12px; display: flex; align-items: center; justify-content: center; border-radius: 30px; font-size: 24px; font-weight: 900; }
+        .c-badge-cons { background: rgba(0,0,0,0.6); border: 2px solid var(--gold); border-radius: 60px; padding: 15px 25px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .c-badge-lbl { font-size: 18px; color: var(--gold); text-transform: uppercase; font-weight: 800; font-family: 'Playfair Display', serif; }
+        .c-badge-num { background: var(--verde); color: white; min-width: 65px; height: 65px; padding: 0 15px; display: flex; align-items: center; justify-content: center; border-radius: 35px; font-size: 28px; font-weight: 900; box-shadow: inset 0 0 10px rgba(0,0,0,0.5); }
 
-        .rep-stat-card { background: var(--paper); color: var(--emerald); border-radius: 15px; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-left: 8px solid var(--gold); }
-        .rep-stat-card.rojo { border-left-color: var(--rojo); color: var(--rojo); }
-        .rep-stat-card.verde { border-left-color: var(--verde); color: var(--verde); }
-        .rep-stat-lbl { font-size: 12px; font-weight: 900; text-transform: uppercase; color: #888; }
-        .rep-stat-val { font-size: 26px; font-weight: 900; }
+        .c-stat-row { background: var(--paper); color: var(--emerald); border-radius: 20px; padding: 20px 30px; display: flex; justify-content: space-between; align-items: center; border-left: 12px solid var(--gold); }
+        .c-stat-row.rojo { border-left-color: var(--rojo); color: var(--rojo); }
+        .c-stat-row.verde { border-left-color: var(--verde); color: var(--verde); }
+        .c-stat-lbl { font-size: 16px; font-weight: 900; text-transform: uppercase; color: #999; }
+        .c-stat-val { font-size: 34px; font-weight: 900; }
 
-        .rep-footer { margin-top: 30px; text-align: center; border-top: 1px solid rgba(197,160,89,0.3); padding-top: 20px; }
-        .rep-footer p { font-family: 'Playfair Display', serif; font-style: italic; font-size: 22px; margin: 0; color: white; }
+        .c-foot { margin-top: 40px; text-align: center; border-top: 1px solid rgba(197,160,89,0.3); padding-top: 30px; }
+        .c-foot p { font-family: 'Playfair Display', serif; font-style: italic; font-size: 28px; color: white; }
 
         .hidden { display: none !important; }
-        #toast { position: fixed; bottom: 30px; background: var(--gold); color: var(--emerald); padding: 12px 25px; border-radius: 50px; font-weight: 900; font-size: 13px; opacity: 0; transition: 0.5s; z-index: 1000; pointer-events: none; }
+        #toast { position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%); background: var(--gold); color: var(--emerald); padding: 15px 35px; border-radius: 50px; font-weight: 900; font-size: 14px; opacity: 0; transition: 0.5s; z-index: 2000; pointer-events: none; border: 2px solid white; }
     </style>
 </head>
 <body>
 
-<div class="app-container">
-    <div class="header">
-        <input type="file" id="logoUpload" class="hidden" accept="image/*">
-        <div class="logo-neon" onclick="document.getElementById('logoUpload').click()">
-            <img id="uiLogo" class="hidden">
-            <b id="uiLogoDef">BV</b>
+<div class="app-main">
+    <!-- HEADER -->
+    <div class="app-header">
+        <input type="file" id="logoIn" class="hidden" accept="image/*">
+        <div class="logo-trigger" id="logoBtn">
+            <img id="imgUi" class="hidden">
+            <b id="txtUi">BV</b>
         </div>
         <h1>Belle Vita</h1>
     </div>
 
-    <div class="nav-tabs">
-        <div class="tab-item active" id="tab-o" onclick="cambiarVista('reg')">OPERACIÓN</div>
-        <div class="tab-item" id="tab-r" onclick="cambiarVista('rep')">REPORTES</div>
+    <!-- TABS -->
+    <div class="nav-container">
+        <div class="nav-btn active" id="btn-o" onclick="navTo('reg')">OPERACIÓN</div>
+        <div class="nav-btn" id="btn-r" onclick="navTo('rep')">REPORTES</div>
     </div>
 
-    <!-- REGISTRO -->
-    <div id="view-reg" class="view-content">
+    <!-- VISTA REGISTRO -->
+    <div id="view-reg" class="view-pane">
         <div class="lux-card">
-            <span class="card-lbl">📅 Fecha</span>
-            <input type="date" id="regFecha">
+            <span class="lux-lbl">📅 Fecha</span>
+            <input type="date" id="iFecha">
         </div>
         <div class="lux-card">
-            <span class="card-lbl">🥤 Barra</span>
-            <input type="text" id="regNom" placeholder="Nombre Socio">
-            <input type="number" id="regMon" placeholder="Monto $">
-            <button class="btn-lux btn-gold" onclick="guardarDato('normal')">Añadir a Barra</button>
+            <span class="lux-lbl">🥤 Consumo Barra</span>
+            <input type="text" id="iNom" placeholder="Nombre Socio">
+            <input type="number" id="iMon" placeholder="Monto $">
+            <button class="btn-lux btn-gold" onclick="addEntry('normal')">Añadir a Barra</button>
         </div>
         <div class="lux-card">
-            <span class="card-lbl">📦 Cerrado</span>
-            <input type="text" id="regCerrNom" placeholder="Producto">
-            <input type="number" id="regCerrMon" placeholder="Monto $">
-            <button class="btn-lux btn-outline" onclick="guardarDato('cerrado')">Registrar Venta</button>
+            <span class="lux-lbl">📦 Venta Cerrada</span>
+            <input type="text" id="iProd" placeholder="Producto">
+            <input type="number" id="iProdMon" placeholder="Monto $">
+            <button class="btn-lux btn-outline" onclick="addEntry('cerrado')">Registrar Venta</button>
         </div>
-        <span class="card-lbl">Movimientos de hoy</span>
-        <div id="listaMovimientos"></div>
+        <span class="lux-lbl">Bitácora Activa</span>
+        <div id="listEntries"></div>
     </div>
 
-    <!-- REPORTES -->
-    <div id="view-rep" class="view-content hidden">
+    <!-- VISTA REPORTES -->
+    <div id="view-rep" class="view-pane hidden">
         <div class="lux-card">
-            <span class="card-lbl">Tipo de Reporte</span>
-            <select id="selPeriodo" onchange="actualizarFiltros()">
+            <span class="lux-lbl">Configurar Reporte</span>
+            <select id="sPeriodo" onchange="upFilters()">
                 <option value="dia">Reporte Diario</option>
-                <option value="semana">Semana (Vie-Jue)</option>
+                <option value="semana">Reporte Semanal (Vie-Jue)</option>
                 <option value="mes">Reporte Mensual</option>
-                <option value="rango">Rango Libre</option>
+                <option value="rango">Rango Personalizado</option>
             </select>
-            <div id="div-simple">
-                <input type="date" id="fRef" onchange="generarCalculos()">
+            <div id="box-s">
+                <input type="date" id="fRef" onchange="runCalc()">
             </div>
-            <div id="div-rango" class="hidden">
-                <input type="date" id="fDe" onchange="generarCalculos()">
-                <input type="date" id="fA" onchange="generarCalculos()">
+            <div id="box-r" class="hidden">
+                <input type="date" id="fDe" onchange="runCalc()">
+                <input type="date" id="fA" onchange="runCalc()">
             </div>
         </div>
 
-        <!-- CANVAS PARA WHATSAPP (OCULTO) -->
+        <!-- CANVAS EXPORT (OCULTO) -->
         <div style="position: absolute; top: -10000px; left: -10000px;">
-            <div id="reporte-canvas">
-                <div class="rep-header">
-                    <div class="rep-logo-box">
-                        <div class="rep-logo-circle">
-                            <img id="canLogo" class="hidden">
-                            <b id="canLogoDef" style="font-size: 50px; color: #c5a059;">BV</b>
+            <div id="canvas-export">
+                <div class="c-head">
+                    <div class="c-logo-box">
+                        <div class="c-logo-ring">
+                            <img id="cLogo" class="hidden">
+                            <b id="cTxt" style="font-size: 60px; color: #c5a059;">BV</b>
                         </div>
-                        <div class="rep-club-name">
+                        <div class="c-club-name">
                             <h2>BELLE VITA</h2>
-                            <p>Premium Nutrition Club</p>
+                            <p>Luxury Nutrition Experience</p>
                         </div>
                     </div>
-                    <div class="rep-date-tag">
-                        <div class="rep-date-day" id="c-dia-n">21</div>
-                        <div class="rep-date-month" id="c-dia-t">Martes, Abril 2026</div>
+                    <div class="c-date-tag">
+                        <div class="c-date-n" id="c-num">21</div>
+                        <div class="c-date-t" id="c-txt">Martes, Abril 2026</div>
                     </div>
                 </div>
 
-                <div class="rep-body">
-                    <div class="rep-left" id="c-dinamico">
+                <div class="c-body">
+                    <div class="c-left" id="c-dinamico">
                         <!-- Tabla o Promedio -->
                     </div>
-                    <div class="rep-right">
-                        <div class="rep-badge-cons">
-                            <span class="rep-badge-cons-lbl" id="c-lbl-c">Consumos</span>
-                            <span class="rep-badge-cons-num" id="c-val-c">0.00</span>
+                    <div class="c-right">
+                        <div class="c-badge-cons">
+                            <span class="c-badge-lbl" id="c-lbl-c">Consumos</span>
+                            <span class="c-badge-num" id="c-val-c">0.00</span>
                         </div>
-                        <div class="rep-stat-card"><div class="rep-stat-info"><span class="rep-stat-lbl">P. Cerrado</span><div class="rep-stat-val" id="c-v-c">$0</div></div></div>
-                        <div class="rep-stat-card"><div class="rep-stat-info"><span class="rep-stat-lbl">Venta Total</span><div class="rep-stat-val" id="c-v-t">$0</div></div></div>
-                        <div class="rep-stat-card rojo"><div class="rep-stat-info"><span class="rep-stat-lbl" style="color:inherit">Rojo</span><div class="rep-stat-val" id="c-v-r">$0</div></div></div>
-                        <div class="rep-stat-card verde"><div class="rep-stat-info"><span class="rep-stat-lbl" style="color:inherit">Verde</span><div class="rep-stat-val" id="c-v-v">$0</div></div></div>
+                        <div class="c-stat-row"><span class="c-stat-lbl">P. Cerrado</span><div class="c-stat-val" id="c-v-c">$0</div></div>
+                        <div class="c-stat-row"><span class="c-stat-lbl">Vta Total</span><div class="c-stat-val" id="c-v-t">$0</div></div>
+                        <div class="c-stat-row rojo"><span>Rojo</span><div class="c-stat-val" id="c-v-r">$0</div></div>
+                        <div class="c-stat-row verde"><span>Verde</span><div class="c-stat-val" id="c-v-v">$0</div></div>
                     </div>
                 </div>
-                <div class="rep-footer"><p>Belle Vita, el poder de tu transformación.</p></div>
+                <div class="c-foot"><p>Belle Vita, belleza que nace de ti.</p></div>
             </div>
         </div>
 
-        <button class="btn-lux btn-green" onclick="descargarImagen()">📸 GENERAR IMAGEN PARA WHATSAPP</button>
+        <button class="btn-lux btn-green" onclick="exportImg()">📸 GENERAR TICKET PARA WHATSAPP</button>
     </div>
 </div>
 
 <div id="toast"></div>
 
 <script>
-    // Almacenamiento Seguro
-    let dataLocal = JSON.parse(localStorage.getItem('bv_master_stable_v1')) || [];
-    let logoLocal = localStorage.getItem('bv_logo_v11') || null;
+    // --- MOTOR DE DATOS ---
+    let storageKey = 'bv_tank_v1';
+    let database = JSON.parse(localStorage.getItem(storageKey)) || [];
+    let savedLogo = localStorage.getItem('bv_logo_tank') || null;
 
-    const regFecha = document.getElementById('regFecha');
+    // --- ELEMENTOS ---
+    const iFecha = document.getElementById('iFecha');
     const fRef = document.getElementById('fRef');
-    const selPeriodo = document.getElementById('selPeriodo');
+    const sPeriodo = document.getElementById('sPeriodo');
 
-    window.onload = () => {
+    window.onload = function() {
         const t = new Date().toISOString().split('T')[0];
-        regFecha.value = t; fRef.value = t;
+        iFecha.value = t; fRef.value = t;
         document.getElementById('fDe').value = t;
         document.getElementById('fA').value = t;
-        if(logoLocal) setLogo(logoLocal);
-        mostrarLista();
+        if(savedLogo) applyLogo(savedLogo);
+        renderList();
+
+        // LOGO TRIGGER BLINDADO
+        document.getElementById('logoBtn').addEventListener('click', function() {
+            document.getElementById('logoIn').click();
+        });
     };
 
     // --- LOGO ---
-    document.getElementById('logoUpload').onchange = (e) => {
+    document.getElementById('logoIn').onchange = (e) => {
         const file = e.target.files[0];
         if(file) {
             const reader = new FileReader();
             reader.onload = (ev) => {
-                logoLocal = ev.target.result;
-                localStorage.setItem('bv_logo_v11', logoLocal);
-                setLogo(logoLocal);
+                savedLogo = ev.target.result;
+                localStorage.setItem('bv_logo_tank', savedLogo);
+                applyLogo(savedLogo);
             };
             reader.readAsDataURL(file);
         }
     };
 
-    function setLogo(url) {
-        document.getElementById('uiLogo').src = url; document.getElementById('uiLogo').classList.remove('hidden');
-        document.getElementById('uiLogoDef').classList.add('hidden');
-        document.getElementById('canLogo').src = url; document.getElementById('canLogo').classList.remove('hidden');
-        document.getElementById('canLogoDef').classList.add('hidden');
+    function applyLogo(url) {
+        document.getElementById('imgUi').src = url; document.getElementById('imgUi').classList.remove('hidden');
+        document.getElementById('txtUi').classList.add('hidden');
+        document.getElementById('cLogo').src = url; document.getElementById('cLogo').classList.remove('hidden');
+        document.getElementById('cTxt').classList.add('hidden');
     }
 
     // --- NAVEGACION ---
-    function cambiarVista(v) {
-        document.getElementById('view-reg').classList.toggle('hidden', v !== 'reg');
-        document.getElementById('view-rep').classList.toggle('hidden', v !== 'rep');
-        document.getElementById('tab-o').classList.toggle('active', v === 'reg');
-        document.getElementById('tab-r').classList.toggle('active', v === 'rep');
-        if(v === 'rep') generarCalculos();
+    function navTo(pane) {
+        document.getElementById('view-reg').classList.toggle('hidden', pane !== 'reg');
+        document.getElementById('view-rep').classList.toggle('hidden', pane !== 'rep');
+        document.getElementById('btn-o').classList.toggle('active', pane === 'reg');
+        document.getElementById('btn-r').classList.toggle('active', pane === 'rep');
+        if(pane === 'rep') runCalc();
     }
 
-    // --- GUARDADO ---
-    function guardarDato(tipo) {
+    // --- REGISTRO ---
+    function addEntry(type) {
         let n, m;
-        if(tipo === 'normal') {
-            n = document.getElementById('regNom').value || "Socio";
-            m = parseFloat(document.getElementById('regMon').value);
-            document.getElementById('regNom').value = ''; document.getElementById('regMon').value = '';
+        if(type === 'normal') {
+            n = document.getElementById('iNom').value || "Socio";
+            m = parseFloat(document.getElementById('iMon').value);
+            document.getElementById('iNom').value = ''; document.getElementById('iMon').value = '';
         } else {
-            n = document.getElementById('regCerrNom').value || "Venta";
-            m = parseFloat(document.getElementById('regCerrMon').value);
-            document.getElementById('regCerrNom').value = ''; document.getElementById('regCerrMon').value = '';
+            n = document.getElementById('iProd').value || "Venta";
+            m = parseFloat(document.getElementById('iProdMon').value);
+            document.getElementById('iProd').value = ''; document.getElementById('iProdMon').value = '';
         }
-        if(isNaN(m)) { msg("Ingresa un monto válido"); return; }
+        if(isNaN(m)) { pop("Monto inválido"); return; }
         
-        dataLocal.push({ id: Date.now(), fecha: regFecha.value, nombre: n, monto: m, tipo: tipo });
-        localStorage.setItem('bv_master_stable_v1', JSON.stringify(dataLocal));
-        mostrarLista();
-        msg("✅ Guardado");
+        database.push({ id: Date.now(), fecha: iFecha.value, nombre: n, monto: m, tipo: type });
+        localStorage.setItem(storageKey, JSON.stringify(database));
+        renderList();
+        pop("✅ Guardado");
     }
 
-    function borrarDato(id) {
-        dataLocal = dataLocal.filter(i => i.id !== id);
-        localStorage.setItem('bv_master_stable_v1', JSON.stringify(dataLocal));
-        mostrarLista();
+    function removeEntry(id) {
+        database = database.filter(i => i.id !== id);
+        localStorage.setItem(storageKey, JSON.stringify(database));
+        renderList();
     }
 
-    function mostrarLista() {
-        const list = document.getElementById('listaMovimientos');
-        const hoy = regFecha.value;
-        const filtrados = dataLocal.filter(d => d.fecha === hoy);
-        if(filtrados.length === 0) { list.innerHTML = `<p style="text-align:center; color:#555; font-size:12px;">Sin registros hoy</p>`; return; }
-        list.innerHTML = filtrados.map(i => `
-            <div class="log-row">
-                <div><b>${i.tipo === 'cerrado' ? '📦' : '🥤'} ${i.nombre}</b><br><small>$${i.monto.toFixed(2)}</small></div>
-                <button class="btn-del" onclick="borrarDato(${i.id})">QUITAR</button>
+    function renderList() {
+        const div = document.getElementById('listEntries');
+        const filtrados = database.filter(d => d.fecha === iFecha.value);
+        if(filtrados.length === 0) { div.innerHTML = `<p style="text-align:center; color:#555; font-size:12px;">Sin registros</p>`; return; }
+        div.innerHTML = filtrados.map(i => `
+            <div class="item-row">
+                <div class="item-info"><b>${i.tipo === 'cerrado' ? '📦' : '🥤'} ${i.nombre}</b><small>$${i.monto.toFixed(2)}</small></div>
+                <button class="del-x" onclick="removeEntry(${i.id})">QUITAR</button>
             </div>
         `).join('');
     }
 
     // --- REPORTES ---
-    function actualizarFiltros() {
-        const m = selPeriodo.value;
-        document.getElementById('div-simple').classList.toggle('hidden', m === 'rango');
-        document.getElementById('div-rango').classList.toggle('hidden', m !== 'rango');
-        generarCalculos();
+    function upFilters() {
+        const m = sPeriodo.value;
+        document.getElementById('box-s').classList.toggle('hidden', m === 'rango');
+        document.getElementById('box-r').classList.toggle('hidden', m !== 'rango');
+        runCalc();
     }
 
-    function generarCalculos() {
-        const modo = selPeriodo.value;
-        let finalData = [];
+    function runCalc() {
+        const modo = sPeriodo.value;
+        let data = [];
         let dI, dF;
-        let setDias = new Set();
+        let setD = new Set();
 
         if(modo === 'rango') {
             dI = new Date(document.getElementById('fDe').value + 'T12:00:00');
             dF = new Date(document.getElementById('fA').value + 'T12:00:00');
-            finalData = dataLocal.filter(d => {
+            data = database.filter(d => {
                 let f = new Date(d.fecha + 'T12:00:00');
                 if(f >= dI && f <= dF) {
-                    if(d.tipo === 'normal') setDias.add(d.fecha);
+                    if(d.tipo === 'normal') setD.add(d.fecha);
                     return true;
                 }
                 return false;
@@ -346,28 +362,28 @@
             const r = fRef.value;
             const dR = new Date(r + 'T12:00:00');
             if(modo === 'dia') {
-                finalData = dataLocal.filter(d => d.fecha === r);
+                data = database.filter(d => d.fecha === r);
                 dI = dR; dF = dR;
             } else if(modo === 'semana') {
                 let dia = dR.getDay();
                 let diff = (dia >= 5) ? (dia - 5) : (dia + 2);
                 dI = new Date(dR); dI.setDate(dR.getDate() - diff);
                 dF = new Date(dI); dF.setDate(dI.getDate() + 6);
-                finalData = dataLocal.filter(d => {
+                data = database.filter(d => {
                     let f = new Date(d.fecha + 'T12:00:00');
                     if(f >= dI && f <= dF) {
-                        if(d.tipo === 'normal') setDias.add(d.fecha);
+                        if(d.tipo === 'normal') setD.add(d.fecha);
                         return true;
                     }
                     return false;
                 });
             } else {
-                finalData = dataLocal.filter(d => {
+                data = database.filter(d => {
                     let f = new Date(d.fecha + 'T12:00:00');
                     if(f.getMonth() === dR.getMonth() && f.getFullYear() === dR.getFullYear()) {
-                        if(d.tipo === 'normal') setDias.add(d.fecha);
+                        if(d.tipo === 'normal') setD.add(d.fecha);
                         return true;
                     }
                     return false;
                 });
-                dI = new Date(dR
+                dI = new Date(dR.getFullYear(), dR.getMonth()
