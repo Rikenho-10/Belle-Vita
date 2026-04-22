@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Belle Vita Premium - Ricardo Master</title>
-    <!-- Librería para la captura del reporte -->
+    <title>Belle Vita Premium - Ricardo</title>
+    <!-- Librería para el Flyer de WhatsApp -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700;900&family=Playfair+Display:ital,wght@0,700;1,700&display=swap');
@@ -16,313 +16,292 @@
             --paper: #fdfaf5;
             --rojo: #b03a2e;
             --verde: #1e8449;
-            --sh-in: inset 4px 4px 8px rgba(0,0,0,0.5), inset -2px -2px 5px rgba(255,255,255,0.1);
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
         body { margin: 0; font-family: 'Montserrat', sans-serif; background: var(--emerald); color: white; display: flex; justify-content: center; min-height: 100vh; }
-        .app-shell { width: 100%; max-width: 480px; display: flex; flex-direction: column; background: var(--emerald); }
+        .app-shell { width: 100%; max-width: 480px; background: var(--emerald); display: flex; flex-direction: column; }
 
         /* HEADER */
         .header { padding: 30px 15px; text-align: center; }
         .logo-box { 
-            width: 85px; height: 85px; background: white; margin: 0 auto 12px; 
+            width: 80px; height: 80px; background: white; margin: 0 auto 10px; 
             border-radius: 50%; border: 3px solid var(--gold); 
             display: flex; align-items: center; justify-content: center; overflow: hidden;
             box-shadow: 0 0 20px var(--gold); cursor: pointer;
-            animation: pulse-gold 2s infinite;
         }
-        @keyframes pulse-gold { 0%, 100% { box-shadow: 0 0 10px var(--gold); } 50% { box-shadow: 0 0 30px var(--gold-light); } }
         .logo-box img { width: 100%; height: 100%; object-fit: cover; }
         .logo-box b { font-size: 30px; color: var(--emerald); }
-        .header h1 { font-family: 'Playfair Display', serif; color: var(--gold); margin: 0; font-size: 26px; letter-spacing: 4px; text-transform: uppercase; }
+        .header h1 { font-family: 'Playfair Display', serif; color: var(--gold); margin: 0; font-size: 24px; letter-spacing: 3px; text-transform: uppercase; }
 
-        /* NAVEGACION */
-        .tabs { display: flex; padding: 0 20px; gap: 10px; margin-top: -15px; }
+        /* TABS */
+        .tabs { display: flex; padding: 0 20px; gap: 10px; margin-top: -15px; z-index: 100; }
         .tab-btn { 
             flex: 1; padding: 16px; border-radius: 12px; border: 1px solid var(--gold); 
-            font-weight: 900; font-size: 11px; cursor: pointer; text-align: center;
-            background: rgba(0,0,0,0.5); color: var(--gold); transition: 0.3s;
+            font-weight: 900; font-size: 10px; cursor: pointer; text-align: center;
+            background: rgba(0,0,0,0.6); color: var(--gold); transition: 0.3s;
         }
         .tab-btn.active { background: var(--gold); color: var(--emerald); }
 
-        /* CONTENIDO */
+        /* VIEWS */
         .view { padding: 25px 20px; flex: 1; }
-        .lux-card { background: rgba(255,255,255,0.05); border-radius: 20px; padding: 22px; margin-bottom: 25px; border: 1px solid rgba(197, 160, 89, 0.2); }
-        .lux-lbl { font-size: 10px; font-weight: 900; color: var(--gold); text-transform: uppercase; margin-bottom: 12px; display: block; letter-spacing: 2px; }
+        .lux-card { background: rgba(255,255,255,0.05); border-radius: 20px; padding: 20px; margin-bottom: 25px; border: 1px solid rgba(197, 160, 89, 0.2); }
+        .lux-lbl { font-size: 10px; font-weight: 900; color: var(--gold); text-transform: uppercase; margin-bottom: 10px; display: block; letter-spacing: 2px; }
         
         input, select { 
-            width: 100%; padding: 15px; border: none; border-radius: 12px; 
-            background: rgba(0,0,0,0.4); color: white; margin-bottom: 15px;
-            box-shadow: var(--sh-in); font-family: inherit; font-weight: 600; font-size: 14px;
+            width: 100%; padding: 14px; border: none; border-radius: 10px; 
+            background: rgba(0,0,0,0.3); color: white; margin-bottom: 15px;
+            box-shadow: inset 3px 3px 6px rgba(0,0,0,0.5); font-family: inherit; font-weight: 600;
         }
 
-        .btn-action { 
+        .btn-lux { 
             width: 100%; padding: 18px; border-radius: 15px; border: none; 
             font-weight: 900; text-transform: uppercase; cursor: pointer; 
-            box-shadow: 0 6px 15px rgba(0,0,0,0.4); transition: 0.2s;
-            letter-spacing: 1px;
+            transition: 0.2s; letter-spacing: 1px;
         }
         .btn-gold { background: linear-gradient(135deg, var(--gold-light), var(--gold)); color: var(--emerald); }
         .btn-dark { background: transparent; border: 1px solid var(--gold); color: var(--gold); }
-        .btn-green { background: var(--verde); color: white; margin-top: 25px; font-size: 16px; }
-        .btn-action:active { transform: scale(0.97); opacity: 0.9; }
+        .btn-green { background: var(--verde); color: white; margin-top: 20px; font-size: 16px; }
+        .btn-lux:active { transform: scale(0.97); opacity: 0.8; }
 
-        .log-row { display: flex; justify-content: space-between; align-items: center; padding: 15px; background: rgba(255,255,255,0.02); border-radius: 15px; margin-bottom: 10px; border-left: 5px solid var(--gold); }
-        .log-row b { font-size: 14px; color: var(--gold-light); }
-        .btn-del { background: rgba(176, 58, 46, 0.3); color: #ff6b6b; border: none; padding: 8px 12px; border-radius: 10px; font-size: 10px; font-weight: 900; }
+        .log-item { display: flex; justify-content: space-between; align-items: center; padding: 12px; background: rgba(255,255,255,0.02); border-radius: 12px; margin-bottom: 8px; border-left: 4px solid var(--gold); }
+        .btn-del { background: rgba(176, 58, 46, 0.3); color: #ff6b6b; border: none; padding: 6px 12px; border-radius: 8px; font-size: 10px; font-weight: 900; cursor: pointer; }
 
-        /* REPORTE PARA WHATSAPP (CANVAS) */
+        /* REPORTE WHATSAPP - DISEÑO 416418 */
         #reporte-export {
-            width: 900px; height: 1300px; background: var(--emerald);
-            padding: 50px; position: relative; color: white; display: flex; flex-direction: column;
+            width: 800px; height: 1100px; background: var(--emerald);
+            padding: 40px; position: relative; color: white; display: flex; flex-direction: column;
             border: 2px solid var(--gold); overflow: hidden;
         }
-        .c-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 50px; }
-        .c-logo-group { display: flex; align-items: center; gap: 25px; }
-        .c-logo-circle { width: 150px; height: 150px; border: 5px solid var(--gold); border-radius: 50%; background: white; overflow: hidden; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 30px var(--gold); }
+        .c-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; }
+        .c-logo-group { display: flex; align-items: center; gap: 20px; }
+        .c-logo-circle { width: 120px; height: 120px; border: 4px solid var(--gold); border-radius: 50%; background: white; overflow: hidden; display: flex; align-items: center; justify-content: center; }
         .c-logo-circle img { width: 100%; height: 100%; object-fit: cover; }
-        .c-club-text h2 { font-family: 'Playfair Display', serif; font-size: 55px; margin: 0; letter-spacing: 5px; }
-        .c-club-text p { color: var(--gold); font-size: 14px; text-transform: uppercase; margin: 0; letter-spacing: 5px; }
+        .c-club-text h2 { font-family: 'Playfair Display', serif; font-size: 48px; margin: 0; }
+        .c-club-text p { color: var(--gold); font-size: 12px; text-transform: uppercase; margin: 0; letter-spacing: 4px; }
 
-        .c-date-box { border: 3px solid var(--gold); padding: 15px 30px; text-align: center; border-radius: 20px; background: rgba(0,0,0,0.4); }
-        .c-date-n { font-size: 60px; font-weight: 900; line-height: 1; }
-        .c-date-t { font-size: 16px; color: var(--gold); text-transform: uppercase; font-weight: 800; margin-top: 8px; }
+        .c-date-box { border: 2px solid var(--gold); padding: 12px 25px; text-align: center; border-radius: 15px; background: rgba(0,0,0,0.3); }
+        .c-date-n { font-size: 50px; font-weight: 900; line-height: 1; }
+        .c-date-t { font-size: 14px; color: var(--gold); text-transform: uppercase; font-weight: 800; margin-top: 5px; }
 
-        .c-main { display: flex; gap: 40px; flex: 1; }
+        .c-main { display: flex; gap: 35px; flex: 1; }
         .c-left-col { flex: 1.3; }
-        .c-right-col { flex: 0.7; display: flex; flex-direction: column; gap: 25px; }
+        .c-right-col { flex: 0.7; display: flex; flex-direction: column; gap: 20px; }
 
-        .c-table { width: 100%; border-collapse: separate; border-spacing: 0 6px; background: var(--paper); border-radius: 15px; border: 4px solid var(--gold); }
-        .c-table th { background: var(--emerald); color: var(--gold); padding: 15px; font-size: 18px; text-transform: uppercase; text-align: center; }
-        .c-table td { padding: 14px 20px; color: var(--emerald); font-weight: 700; font-size: 20px; border-bottom: 1px solid rgba(0,0,0,0.05); }
+        .c-table { width: 100%; border-collapse: separate; border-spacing: 0 4px; background: var(--paper); border-radius: 12px; border: 3px solid var(--gold); }
+        .c-table th { background: var(--emerald); color: var(--gold); padding: 14px; font-size: 16px; text-transform: uppercase; }
+        .c-table td { padding: 12px 15px; color: var(--emerald); font-weight: 700; font-size: 18px; border-bottom: 1px solid rgba(0,0,0,0.05); }
 
-        .c-exec-box { height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; background: rgba(255,255,255,0.03); border: 2px solid var(--gold); border-radius: 50px; text-align: center; padding: 40px; }
-        .c-exec-lbl { font-size: 24px; color: var(--gold); text-transform: uppercase; letter-spacing: 6px; margin-bottom: 20px; }
-        .c-exec-val { font-size: 120px; font-weight: 900; color: white; text-shadow: 0 0 30px var(--gold); }
+        .c-exec-box { height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; background: rgba(255,255,255,0.03); border: 2px solid var(--gold); border-radius: 40px; text-align: center; padding: 20px; }
+        .c-exec-lbl { font-size: 20px; color: var(--gold); text-transform: uppercase; letter-spacing: 5px; margin-bottom: 15px; }
+        .c-exec-val { font-size: 110px; font-weight: 900; color: white; text-shadow: 0 0 30px var(--gold); }
 
-        .c-badge-pill { background: rgba(0,0,0,0.6); border: 2px solid var(--gold); border-radius: 70px; padding: 15px 25px; display: flex; justify-content: space-between; align-items: center; }
-        .c-badge-lbl { font-size: 18px; color: var(--gold); text-transform: uppercase; font-weight: 800; font-family: 'Playfair Display'; }
-        .c-badge-num { background: var(--verde); color: white; min-width: 75px; height: 75px; display: flex; align-items: center; justify-content: center; border-radius: 40px; font-size: 30px; font-weight: 900; }
+        .c-badge-pill { background: rgba(0,0,0,0.5); border: 1px solid var(--gold); border-radius: 60px; padding: 10px 15px; display: flex; justify-content: space-between; align-items: center; }
+        .c-badge-lbl { font-size: 14px; color: var(--gold); text-transform: uppercase; font-weight: 800; font-family: 'Playfair Display'; }
+        .c-badge-num { background: var(--verde); color: white; min-width: 65px; height: 65px; display: flex; align-items: center; justify-content: center; border-radius: 35px; font-size: 26px; font-weight: 900; }
 
-        .c-stat-card { background: var(--paper); color: var(--emerald); border-radius: 20px; padding: 22px 30px; display: flex; justify-content: space-between; align-items: center; border-left: 12px solid var(--gold); }
+        .c-stat-card { background: var(--paper); color: var(--emerald); border-radius: 15px; padding: 18px 25px; display: flex; justify-content: space-between; align-items: center; border-left: 10px solid var(--gold); }
         .c-stat-card.rojo { border-left-color: var(--rojo); color: var(--rojo); }
         .c-stat-card.verde { border-left-color: var(--verde); color: var(--verde); }
-        .c-stat-val { font-size: 36px; font-weight: 900; }
+        .c-stat-val { font-size: 30px; font-weight: 900; }
 
-        .c-footer { margin-top: 50px; text-align: center; border-top: 2px solid rgba(197,160,89,0.3); padding-top: 40px; font-family: 'Playfair Display', serif; font-style: italic; font-size: 32px; }
+        .c-footer { margin-top: 40px; text-align: center; border-top: 1px solid rgba(197,160,89,0.3); padding-top: 30px; font-family: 'Playfair Display', serif; font-style: italic; font-size: 24px; }
 
         .hidden { display: none !important; }
-        #toast { position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%); background: var(--gold); color: var(--emerald); padding: 15px 35px; border-radius: 50px; font-weight: 900; opacity: 0; transition: 0.5s; z-index: 9999; border: 2px solid white; }
+        #toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: var(--gold); color: var(--emerald); padding: 15px 30px; border-radius: 50px; font-weight: 900; opacity: 0; transition: 0.5s; z-index: 1000; pointer-events: none; }
     </style>
 </head>
 <body>
 
 <div class="app-shell">
-    <!-- UI HEADER -->
     <div class="header">
-        <input type="file" id="logo-pick" class="hidden" accept="image/*">
-        <div class="logo-box" id="logo-btn">
-            <img id="ui-img" class="hidden">
-            <b id="ui-txt">BV</b>
+        <input type="file" id="logo-input" class="hidden" accept="image/*">
+        <div class="logo-box" id="logo-trigger">
+            <img id="ui-logo-img" class="hidden">
+            <b id="ui-logo-def">BV</b>
         </div>
         <h1>Belle Vita</h1>
     </div>
 
-    <!-- UI TABS -->
     <div class="tabs">
-        <button class="tab-btn active" id="btn-o" onclick="window.navegar('oper')">REGISTRO</button>
-        <button class="tab-btn" id="btn-r" onclick="window.navegar('repo')">REPORTES</button>
+        <button class="tab-btn active" id="tab-o" onclick="navTo('oper')">REGISTRO</button>
+        <button class="tab-btn" id="tab-r" onclick="navTo('repo')">REPORTES</button>
     </div>
 
-    <!-- VISTA OPERACIÓN -->
-    <div id="v-oper" class="view">
+    <div id="view-oper" class="view">
         <div class="lux-card">
-            <span class="lux-lbl">📅 Día de Registro</span>
+            <span class="lux-lbl">📅 Fecha</span>
             <input type="date" id="fecha-app">
         </div>
         <div class="lux-card">
-            <span class="lux-lbl">🥤 Consumo Barra</span>
-            <input type="text" id="nom-s" placeholder="Nombre Socio">
-            <input type="number" id="mon-s" placeholder="Monto $">
-            <button class="btn-action btn-gold" onclick="window.agregar('normal')">Añadir Consumo</button>
+            <span class="lux-lbl">🥤 Barra</span>
+            <input type="text" id="nom-socio" placeholder="Nombre Socio">
+            <input type="number" id="mon-socio" placeholder="Monto $">
+            <button class="btn-lux btn-gold" onclick="guardar('normal')">Añadir Consumo</button>
         </div>
         <div class="lux-card">
-            <span class="lux-lbl">📦 Venta de Producto</span>
-            <input type="text" id="nom-p" placeholder="Producto">
-            <input type="number" id="mon-p" placeholder="Monto $">
-            <button class="btn-action btn-dark" onclick="window.agregar('cerrado')">Registrar Venta</button>
+            <span class="lux-lbl">📦 Producto</span>
+            <input type="text" id="nom-prod" placeholder="Venta Cerrada">
+            <input type="number" id="mon-prod" placeholder="Monto $">
+            <button class="btn-lux btn-dark" onclick="guardar('cerrado')">Registrar Venta</button>
         </div>
-        <span class="lux-lbl">Bitácora de Hoy</span>
-        <div id="lista-bit"></div>
+        <span class="lux-lbl">Actividad</span>
+        <div id="lista-hoy"></div>
     </div>
 
-    <!-- VISTA REPORTE -->
-    <div id="v-repo" class="view hidden">
+    <div id="view-repo" class="view hidden">
         <div class="lux-card">
-            <span class="lux-lbl">Configuración del Cierre</span>
-            <select id="sel-periodo" onchange="window.procesar()">
-                <option value="dia">Reporte Diario (con Lista)</option>
+            <span class="lux-lbl">Tipo de Cierre</span>
+            <select id="sel-modo" onchange="run()">
+                <option value="dia">Reporte Diario (Lista)</option>
                 <option value="semana">Semanal (Vie-Jue)</option>
-                <option value="mes">Reporte Mensual</option>
-                <option value="rango">Rango Libre</option>
+                <option value="mes">Mensual</option>
+                <option value="rango">Personalizado</option>
             </select>
-            <div id="f-simple">
-                <input type="date" id="f-ref" onchange="window.procesar()">
+            <div id="div-simple">
+                <input type="date" id="f-ref" onchange="run()">
             </div>
-            <div id="f-rango" class="hidden">
-                <input type="date" id="f-de" onchange="window.procesar()">
-                <input type="date" id="f-a" onchange="window.procesar()">
+            <div id="div-rango" class="hidden">
+                <input type="date" id="f-de" onchange="run()">
+                <input type="date" id="f-a" onchange="run()">
             </div>
         </div>
 
-        <!-- AREA DE CAPTURA (Oculta) -->
+        <!-- CANVAS INVISIBLE -->
         <div style="position: absolute; top: -10000px; left: -10000px;">
             <div id="reporte-export">
                 <div class="c-header">
                     <div class="c-logo-group">
                         <div class="c-logo-circle">
-                            <img id="can-img" class="hidden">
-                            <b id="can-txt" style="font-size: 65px; color: #c5a059;">BV</b>
+                            <img id="c-img" class="hidden">
+                            <b id="c-def" style="font-size: 55px; color: #c5a059;">BV</b>
                         </div>
                         <div class="c-club-text">
                             <h2>BELLE VITA</h2>
-                            <p>Luxury Nutrition Club</p>
+                            <p>Luxury Nutrition Experience</p>
                         </div>
                     </div>
                     <div class="c-date-box">
-                        <div class="c-date-n" id="c-dia">21</div>
-                        <div class="c-date-t" id="c-mes">Abril, 2026</div>
+                        <div class="c-date-n" id="c-num">21</div>
+                        <div class="c-date-t" id="c-txt">Abril, 2026</div>
                     </div>
                 </div>
                 <div class="c-main">
-                    <div class="c-left-col" id="c-dinamico"></div>
+                    <div class="c-left-col" id="c-din"></div>
                     <div class="c-right-col">
                         <div class="c-badge-pill">
                             <span class="c-badge-lbl" id="c-lbl">Consumos</span>
-                            <span class="c-badge-num" id="c-consumos">0</span>
+                            <span class="c-badge-num" id="c-cons">0</span>
                         </div>
-                        <div class="c-stat-card"><span>P. Cerrado</span><div class="c-stat-val" id="c-cerrado">$0</div></div>
-                        <div class="c-stat-card"><span>Vta Total</span><div class="c-stat-val" id="c-total">$0</div></div>
-                        <div class="c-stat-card rojo"><span>Rojo</span><div class="c-stat-val" id="c-rojo">$0</div></div>
-                        <div class="c-stat-card verde"><span>Verde</span><div class="c-stat-val" id="c-verde">$0</div></div>
+                        <div class="c-stat-card"><span>P. Cerrado</span><div class="c-stat-val" id="c-v-c">$0</div></div>
+                        <div class="c-stat-card"><span>Vta Total</span><div class="c-stat-val" id="c-v-t">$0</div></div>
+                        <div class="c-stat-card rojo"><span>Rojo</span><div class="c-stat-val" id="c-v-r">$0</div></div>
+                        <div class="c-stat-card verde"><span>Verde</span><div class="c-stat-val" id="c-v-v">$0</div></div>
                     </div>
                 </div>
-                <div class="c-footer">Tu cambio comienza aquí. Belle Vita.</div>
+                <div class="c-footer">Belle Vita, belleza que nace de ti.</div>
             </div>
         </div>
-        <button class="btn-action btn-green" onclick="window.generar()">📸 GENERAR FLYER WHATSAPP</button>
+        <button class="btn-lux btn-green" onclick="capturar()">📸 GENERAR PARA WHATSAPP</button>
     </div>
 </div>
 
 <div id="toast"></div>
 
 <script>
-    // USAR NOMBRES ÚNICOS PARA EVITAR CACHÉ
-    window.miDB = JSON.parse(localStorage.getItem('bv_master_v30')) || [];
-    window.miLogo = localStorage.getItem('bv_logo_v30') || null;
+    // --- MOTOR DE DATOS ---
+    var db = JSON.parse(localStorage.getItem('bv_final_v50')) || [];
+    var logo = localStorage.getItem('bv_logo_v50') || null;
 
-    // AL CARGAR
-    window.addEventListener('DOMContentLoaded', function() {
-        var hoy = new Date().toISOString().split('T')[0];
-        document.getElementById('fecha-app').value = hoy;
-        document.getElementById('f-ref').value = hoy;
-        document.getElementById('f-de').value = hoy;
-        document.getElementById('f-a').value = hoy;
-        
-        if(window.miLogo) window.pintarLogo(window.miLogo);
-        window.listar();
-
-        // Forzar click en logo
-        document.getElementById('logo-btn').onclick = function() {
-            document.getElementById('logo-pick').click();
-        };
-    });
+    window.onload = function() {
+        var h = new Date().toISOString().split('T')[0];
+        document.getElementById('fecha-app').value = h;
+        document.getElementById('f-ref').value = h;
+        document.getElementById('f-de').value = h;
+        document.getElementById('f-a').value = h;
+        if(logo) putLogo(logo);
+        list();
+        document.getElementById('logo-trigger').onclick = function() { document.getElementById('logo-input').click(); };
+    };
 
     // LOGO
-    document.getElementById('logo-pick').onchange = function(e) {
-        var file = e.target.files[0];
-        if(file) {
-            var reader = new FileReader();
-            reader.onload = function(ev) {
-                window.miLogo = ev.target.result;
-                localStorage.setItem('bv_logo_v30', window.miLogo);
-                window.pintarLogo(window.miLogo);
+    document.getElementById('logo-input').onchange = function(e) {
+        var f = e.target.files[0];
+        if(f) {
+            var r = new FileReader();
+            r.onload = function(ev) {
+                logo = ev.target.result;
+                localStorage.setItem('bv_logo_v50', logo);
+                putLogo(logo);
             };
-            reader.readAsDataURL(file);
+            r.readAsDataURL(f);
         }
     };
 
-    window.pintarLogo = function(url) {
-        document.getElementById('ui-img').src = url; 
-        document.getElementById('ui-img').classList.remove('hidden');
-        document.getElementById('ui-txt').classList.add('hidden');
-        document.getElementById('can-img').src = url; 
-        document.getElementById('can-img').classList.remove('hidden');
-        document.getElementById('can-txt').classList.add('hidden');
-    };
+    function putLogo(u) {
+        document.getElementById('ui-logo-img').src = u; document.getElementById('ui-logo-img').classList.remove('hidden');
+        document.getElementById('ui-logo-def').classList.add('hidden');
+        document.getElementById('c-img').src = u; document.getElementById('c-img').classList.remove('hidden');
+        document.getElementById('c-def').classList.add('hidden');
+    }
 
-    // NAVEGAR
-    window.navegar = function(s) {
-        document.getElementById('v-oper').classList.toggle('hidden', s !== 'oper');
-        document.getElementById('v-repo').classList.toggle('hidden', s !== 'repo');
-        document.getElementById('btn-o').classList.toggle('active', s === 'oper');
-        document.getElementById('btn-r').classList.toggle('active', s === 'repo');
-        if(s === 'repo') window.procesar();
-    };
+    // NAV
+    function navTo(s) {
+        document.getElementById('view-oper').classList.toggle('hidden', s !== 'oper');
+        document.getElementById('view-repo').classList.toggle('hidden', s !== 'repo');
+        document.getElementById('tab-o').classList.toggle('active', s === 'oper');
+        document.getElementById('tab-r').classList.toggle('active', s === 'repo');
+        if(s === 'repo') run();
+    }
 
     // REGISTRO
-    window.agregar = function(tipo) {
-        var n, m;
-        var fecha = document.getElementById('fecha-app').value;
+    function guardar(tipo) {
+        var n, m, f = document.getElementById('fecha-app').value;
         if(tipo === 'normal') {
-            n = document.getElementById('nom-s').value || "Socio";
-            m = parseFloat(document.getElementById('mon-s').value);
-            document.getElementById('nom-s').value = ''; 
-            document.getElementById('mon-s').value = '';
+            n = document.getElementById('nom-socio').value || "Socio";
+            m = parseFloat(document.getElementById('mon-socio').value);
+            document.getElementById('nom-socio').value = ''; document.getElementById('mon-socio').value = '';
         } else {
-            n = document.getElementById('nom-p').value || "Venta";
-            m = parseFloat(document.getElementById('mon-p').value);
-            document.getElementById('nom-p').value = ''; 
-            document.getElementById('mon-p').value = '';
+            n = document.getElementById('nom-prod').value || "Venta";
+            m = parseFloat(document.getElementById('mon-prod').value);
+            document.getElementById('nom-prod').value = ''; document.getElementById('mon-prod').value = '';
         }
         if(isNaN(m)) return;
+        db.push({ id: Date.now(), fecha: f, nombre: n, monto: m, tipo: tipo });
+        localStorage.setItem('bv_final_v50', JSON.stringify(db));
+        list();
+        pop("✅ Registrado");
+    }
 
-        window.miDB.push({ id: Date.now(), fecha: fecha, nombre: n, monto: m, tipo: tipo });
-        localStorage.setItem('bv_master_v30', JSON.stringify(window.miDB));
-        window.listar();
-        window.pop("✅ Registro Guardado");
-    };
+    function borrar(id) {
+        db = db.filter(function(i) { return i.id !== id; });
+        localStorage.setItem('bv_final_v50', JSON.stringify(db));
+        list();
+    }
 
-    window.quitar = function(id) {
-        window.miDB = window.miDB.filter(function(i) { return i.id !== id; });
-        localStorage.setItem('bv_master_v30', JSON.stringify(window.miDB));
-        window.listar();
-    };
-
-    window.listar = function() {
-        var box = document.getElementById('lista-bit');
+    function list() {
+        var box = document.getElementById('lista-hoy');
         var hoy = document.getElementById('fecha-app').value;
-        var filtered = window.miDB.filter(function(d) { return d.fecha === hoy; });
-        if(filtered.length === 0) { box.innerHTML = '<p style="text-align:center; color:#555; font-size:12px;">Sin ventas registradas</p>'; return; }
-        box.innerHTML = filtered.map(function(i) {
-            return '<div class="log-row"><div><b>' + (i.tipo === 'cerrado' ? '📦' : '🥤') + ' ' + i.nombre + '</b><br><small>$' + i.monto.toFixed(2) + '</small></div><button class="btn-del" onclick="window.quitar(' + i.id + ')">BORRAR</button></div>';
+        var f = db.filter(function(d) { return d.fecha === hoy; });
+        if(f.length === 0) { box.innerHTML = '<p style="text-align:center;color:#555;font-size:12px;">Sin ventas</p>'; return; }
+        box.innerHTML = f.map(function(i) {
+            return '<div class="log-item"><div><b>' + (i.tipo === 'cerrado' ? '📦' : '🥤') + ' ' + i.nombre + '</b><br><small>$' + i.monto.toFixed(2) + '</small></div><button class="btn-del" onclick="borrar(' + i.id + ')">BORRAR</button></div>';
         }).join('');
-    };
+    }
 
-    // REPORTES
-    window.procesar = function() {
-        var modo = document.getElementById('sel-periodo').value;
-        document.getElementById('f-simple').classList.toggle('hidden', modo === 'rango');
-        document.getElementById('f-rango').classList.toggle('hidden', modo !== 'rango');
+    // CALC
+    function run() {
+        var m = document.getElementById('sel-modo').value;
+        document.getElementById('div-simple').classList.toggle('hidden', m === 'rango');
+        document.getElementById('div-rango').classList.toggle('hidden', m !== 'rango');
 
         var data = [];
         var dI, dF, setD = new Set();
 
-        if(modo === 'rango') {
+        if(m === 'rango') {
             dI = new Date(document.getElementById('f-de').value + 'T12:00:00');
             dF = new Date(document.getElementById('f-a').value + 'T12:00:00');
-            data = window.miDB.filter(function(d) {
+            data = db.filter(function(d) {
                 var f = new Date(d.fecha + 'T12:00:00');
                 if(f >= dI && f <= dF) { if(d.tipo === 'normal') setD.add(d.fecha); return true; }
                 return false;
@@ -330,19 +309,19 @@
         } else {
             var r = document.getElementById('f-ref').value;
             var dR = new Date(r + 'T12:00:00');
-            if(modo === 'dia') { data = window.miDB.filter(function(d) { return d.fecha === r; }); dI = dR; dF = dR; }
-            else if(modo === 'semana') {
+            if(m === 'dia') { data = db.filter(function(d) { return d.fecha === r; }); dI = dR; dF = dR; }
+            else if(m === 'semana') {
                 var dia = dR.getDay();
                 var diff = (dia >= 5) ? (dia - 5) : (dia + 2);
                 dI = new Date(dR); dI.setDate(dR.getDate() - diff);
                 dF = new Date(dI); dF.setDate(dI.getDate() + 6);
-                data = window.miDB.filter(function(d) {
+                data = db.filter(function(d) {
                     var f = new Date(d.fecha + 'T12:00:00');
                     if(f >= dI && f <= dF) { if(d.tipo === 'normal') setD.add(d.fecha); return true; }
                     return false;
                 });
             } else {
-                data = window.miDB.filter(function(d) {
+                data = db.filter(function(d) {
                     var f = new Date(d.fecha + 'T12:00:00');
                     if(f.getMonth() === dR.getMonth() && f.getFullYear() === dR.getFullYear()) { if(d.tipo === 'normal') setD.add(d.fecha); return true; }
                     return false;
@@ -352,15 +331,51 @@
             }
         }
 
-        var barra = data.filter(function(f) { return f.tipo === 'normal'; });
+        var b = data.filter(function(f) { return f.tipo === 'normal'; });
+        var sB = b.reduce(function(a, x) { return a + x.monto; }, 0);
         var sC = data.filter(function(f) { return f.tipo === 'cerrado'; }).reduce(function(a, x) { return a + x.monto; }, 0);
-        var sB = barra.reduce(function(a, x) { return a + x.monto; }, 0);
-        var tot = sB + sC;
-        var consT = sB / 90;
-        var avg = (consT / (setD.size || 1)).toFixed(2);
+        var t = sB + sC;
+        var cT = sB / 90;
+        var avg = (cT / (setD.size || 1)).toFixed(2);
 
-        document.getElementById('c-dia').innerText = dI.getDate();
-        document.getElementById('c-mes').innerText = dI.toLocaleDateString('es-ES', { month: 'long', year: 'numeric' });
-        document.getElementById('c-lbl').innerText = modo === 'dia' ? 'Consumos' : 'Promedio';
-        document.getElementById('c-consumos').innerText = modo === 'dia' ? consT.toFixed(2) : avg;
-        docu
+        document.getElementById('c-num').innerText = dI.getDate();
+        document.getElementById('c-txt').innerText = dI.toLocaleDateString('es-ES', { month: 'long', year: 'numeric' });
+        document.getElementById('c-lbl').innerText = m === 'dia' ? 'Consumos' : 'Promedio';
+        document.getElementById('c-cons').innerText = m === 'dia' ? cT.toFixed(2) : avg;
+        document.getElementById('c-v-c').innerText = '$' + sC.toLocaleString();
+        document.getElementById('c-v-t').innerText = '$' + t.toLocaleString();
+        document.getElementById('c-v-r').innerText = '$' + (t * 0.7).toLocaleString();
+        document.getElementById('c-v-v').innerText = '$' + (t * 0.3).toLocaleString();
+
+        var box = document.getElementById('c-din');
+        if(m === 'dia') {
+            var html = '<table class="c-table"><thead><tr><th>#</th><th style="text-align:left">Socio</th><th style="text-align:right">$</th></tr></thead><tbody>';
+            b.forEach(function(i, idx) { html += '<tr><td style="text-align:center;color:#888;">' + (idx+1) + '</td><td>' + i.nombre + '</td><td style="text-align:right">' + i.monto + '</td></tr>'; });
+            for(var k = b.length; k < 20; k++) html += '<tr><td style="text-align:center;color:#eee">' + (k+1) + '</td><td></td><td></td></tr>';
+            box.innerHTML = html + '</tbody></table>';
+        } else {
+            box.innerHTML = '<div class="c-exec-box"><span class="c-exec-lbl">Consumos Totales</span><div class="c-exec-val">' + cT.toFixed(2) + '</div><span class="c-exec-lbl">Acumulado</span></div>';
+        }
+    }
+
+    function capturar() {
+        run();
+        pop("📸 Generando...");
+        setTimeout(function() {
+            html2canvas(document.getElementById('reporte-export'), { scale: 3, backgroundColor: "#0b1f15" }).then(function(c) {
+                var l = document.createElement('a');
+                l.download = 'BelleVita_' + Date.now() + '.png';
+                l.href = c.toDataURL('image/png');
+                l.click();
+                pop("✅ Guardado");
+            });
+        }, 700);
+    }
+
+    function pop(m) {
+        var t = document.getElementById('toast'); t.innerText = m; t.style.opacity = 1;
+        setTimeout(function() { t.style.opacity = 0; }, 3000);
+    }
+</script>
+</body>
+</html>
