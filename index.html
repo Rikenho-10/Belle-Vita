@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Belle Vita - Ricardo Luxury Master</title>
-    <!-- Librería para la captura de imagen -->
+    <title>Belle Vita Premium - Ricardo Master</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700;900&family=Playfair+Display:ital,wght@0,700;1,700&display=swap');
@@ -20,7 +19,7 @@
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
         body { margin: 0; font-family: 'Montserrat', sans-serif; background: var(--emerald); color: white; display: flex; justify-content: center; min-height: 100vh; }
-        .app-shell { width: 100%; max-width: 480px; background: var(--emerald); display: flex; flex-direction: column; }
+        .app-shell { width: 100%; max-width: 480px; display: flex; flex-direction: column; background: var(--emerald); }
 
         /* HEADER */
         .header { padding: 30px 15px; text-align: center; }
@@ -29,26 +28,24 @@
             border-radius: 50%; border: 3px solid var(--gold); 
             display: flex; align-items: center; justify-content: center; overflow: hidden;
             box-shadow: 0 0 20px var(--gold); cursor: pointer;
-            animation: pulse-gold 2s infinite;
         }
-        @keyframes pulse-gold { 0%, 100% { box-shadow: 0 0 10px var(--gold); } 50% { box-shadow: 0 0 30px var(--gold-light); } }
         .logo-box img { width: 100%; height: 100%; object-fit: cover; }
         .logo-box b { font-size: 30px; color: var(--emerald); }
         .header h1 { font-family: 'Playfair Display', serif; color: var(--gold); margin: 0; font-size: 24px; letter-spacing: 3px; text-transform: uppercase; }
 
         /* NAVEGACION */
-        .tabs { display: flex; padding: 0 20px; gap: 10px; margin-top: -15px; z-index: 100; }
+        .tabs { display: flex; padding: 0 20px; gap: 10px; margin-top: -15px; }
         .tab-btn { 
-            flex: 1; padding: 16px; border-radius: 12px; border: 1px solid var(--gold); 
+            flex: 1; padding: 15px; border-radius: 12px; border: 1px solid var(--gold); 
             font-weight: 900; font-size: 10px; cursor: pointer; text-align: center;
-            background: rgba(0,0,0,0.6); color: var(--gold); transition: 0.3s;
+            background: rgba(0,0,0,0.4); color: var(--gold); transition: 0.3s;
         }
         .tab-btn.active { background: var(--gold); color: var(--emerald); }
 
-        /* VIEWS */
+        /* CONTENIDO */
         .view { padding: 25px 20px; flex: 1; }
-        .lux-card { background: rgba(255,255,255,0.05); border-radius: 20px; padding: 20px; margin-bottom: 25px; border: 1px solid rgba(197, 160, 89, 0.2); }
-        .lux-lbl { font-size: 10px; font-weight: 900; color: var(--gold); text-transform: uppercase; margin-bottom: 10px; display: block; letter-spacing: 2px; }
+        .lux-card { background: rgba(255,255,255,0.04); border-radius: 20px; padding: 20px; margin-bottom: 20px; border: 1px solid rgba(197, 160, 89, 0.2); }
+        .lux-lbl { font-size: 10px; font-weight: 900; color: var(--gold); text-transform: uppercase; margin-bottom: 10px; display: block; letter-spacing: 1px; }
         
         input, select { 
             width: 100%; padding: 14px; border: none; border-radius: 10px; 
@@ -56,146 +53,139 @@
             box-shadow: inset 3px 3px 6px rgba(0,0,0,0.5); font-family: inherit; font-weight: 600;
         }
 
-        .btn-lux { 
-            width: 100%; padding: 18px; border-radius: 15px; border: none; 
+        .btn-action { 
+            width: 100%; padding: 16px; border-radius: 12px; border: none; 
             font-weight: 900; text-transform: uppercase; cursor: pointer; 
-            transition: 0.2s; letter-spacing: 1px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.4); transition: 0.2s;
         }
         .btn-gold { background: linear-gradient(135deg, var(--gold-light), var(--gold)); color: var(--emerald); }
         .btn-dark { background: transparent; border: 1px solid var(--gold); color: var(--gold); }
         .btn-green { background: var(--verde); color: white; margin-top: 20px; font-size: 16px; }
-        .btn-lux:active { transform: scale(0.97); opacity: 0.8; }
+        .btn-action:active { transform: scale(0.97); }
 
-        .log-item { display: flex; justify-content: space-between; align-items: center; padding: 12px; background: rgba(255,255,255,0.02); border-radius: 12px; margin-bottom: 8px; border-left: 4px solid var(--gold); }
+        .log-row { display: flex; justify-content: space-between; align-items: center; padding: 12px; background: rgba(255,255,255,0.02); border-radius: 12px; margin-bottom: 8px; border-left: 4px solid var(--gold); }
         .btn-del { background: rgba(176, 58, 46, 0.3); color: #ff6b6b; border: none; padding: 6px 12px; border-radius: 8px; font-size: 10px; font-weight: 900; cursor: pointer; }
 
-        /* =========================================
-           DISEÑO DEL REPORTE (Apegado a 416418.jpg)
-           ========================================= */
+        /* REPORTE CANVAS - DISEÑO IGUAL A 416418 */
         #reporte-export {
-            width: 800px; /* Ancho fijo */
-            min-height: 1100px; /* Altura mínima, crecerá con el contenido */
+            width: 900px; 
+            min-height: 1200px;
             background: var(--emerald);
-            padding: 50px 40px; 
+            padding: 60px 45px; 
             position: relative; color: white; 
             display: flex; flex-direction: column;
-            border: 3px solid var(--gold);
+            border: 4px solid var(--gold);
         }
-        
-        .c-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 40px; }
+        .c-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 45px; }
         .c-logo-group { display: flex; align-items: center; gap: 20px; }
-        .c-logo-circle { width: 140px; height: 140px; border: 4px solid var(--gold); border-radius: 50%; background: white; overflow: hidden; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 30px rgba(197, 160, 89, 0.5); }
+        .c-logo-circle { width: 150px; height: 150px; border: 5px solid var(--gold); border-radius: 50%; background: white; overflow: hidden; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 30px var(--gold); }
         .c-logo-circle img { width: 100%; height: 100%; object-fit: cover; }
-        .c-club-text h2 { font-family: 'Playfair Display', serif; font-size: 50px; margin: 0; letter-spacing: 3px; }
-        .c-club-text p { color: var(--gold); font-size: 13px; text-transform: uppercase; margin: 0; letter-spacing: 5px; font-weight: 300; }
+        .c-club-text h2 { font-family: 'Playfair Display', serif; font-size: 55px; margin: 0; letter-spacing: 3px; }
+        .c-club-text p { color: var(--gold); font-size: 14px; text-transform: uppercase; margin: 0; letter-spacing: 5px; }
 
-        .c-date-box { border: 2.5px solid var(--gold); padding: 15px 30px; text-align: center; border-radius: 15px; background: rgba(0,0,0,0.3); }
-        .c-date-n { font-size: 55px; font-weight: 900; line-height: 1; }
-        .c-date-t { font-size: 14px; color: var(--gold); text-transform: uppercase; font-weight: 800; margin-top: 5px; }
+        .c-date-box { border: 3px solid var(--gold); padding: 15px 30px; text-align: center; border-radius: 20px; background: rgba(0,0,0,0.3); }
+        .c-date-n { font-size: 60px; font-weight: 900; line-height: 1; }
+        .c-date-t { font-size: 16px; color: var(--gold); text-transform: uppercase; font-weight: 800; margin-top: 8px; }
 
-        .c-main { display: flex; gap: 30px; flex: 1; }
-        .c-left-col { flex: 1.25; }
-        .c-right-col { flex: 0.75; display: flex; flex-direction: column; gap: 20px; }
+        .c-main { display: flex; gap: 40px; flex: 1; }
+        .c-left-col { flex: 1.3; }
+        .c-right-col { flex: 0.7; display: flex; flex-direction: column; gap: 25px; }
 
-        /* Tabla Estilo Luxury */
-        .table-luxe { width: 100%; border-collapse: separate; border-spacing: 0 3px; background: var(--paper); border-radius: 12px; border: 3px solid var(--gold); overflow: hidden; }
-        .table-luxe thead { background: var(--emerald); color: var(--gold); font-size: 16px; }
-        .table-luxe th { padding: 15px; text-transform: uppercase; font-family: 'Playfair Display', serif; }
-        .table-luxe td { padding: 12px 15px; color: var(--emerald); font-weight: 800; font-size: 18px; border-bottom: 1px solid rgba(0,0,0,0.05); }
+        .c-table { width: 100%; border-collapse: separate; border-spacing: 0 6px; background: var(--paper); border-radius: 15px; border: 4px solid var(--gold); overflow: hidden; }
+        .c-table th { background: var(--emerald); color: var(--gold); padding: 15px; font-size: 20px; text-transform: uppercase; }
+        .c-table td { padding: 14px 20px; color: var(--emerald); font-weight: 800; font-size: 22px; border-bottom: 1px solid rgba(0,0,0,0.05); }
 
-        .c-exec-box { height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; background: rgba(255,255,255,0.03); border: 2.5px solid var(--gold); border-radius: 40px; text-align: center; padding: 40px; }
-        .c-exec-lbl { font-size: 22px; color: var(--gold); text-transform: uppercase; letter-spacing: 5px; margin-bottom: 10px; }
-        .c-exec-val { font-size: 110px; font-weight: 900; color: white; text-shadow: 0 0 30px var(--gold); }
+        .c-exec-box { height: 100%; min-height: 400px; display: flex; flex-direction: column; justify-content: center; align-items: center; background: rgba(255,255,255,0.03); border: 2px solid var(--gold); border-radius: 40px; text-align: center; padding: 40px; }
+        .c-exec-lbl { font-size: 24px; color: var(--gold); text-transform: uppercase; letter-spacing: 6px; margin-bottom: 15px; }
+        .c-exec-val { font-size: 120px; font-weight: 900; color: white; text-shadow: 0 0 20px var(--gold); }
 
-        /* Badges */
-        .c-badge-pill { background: rgba(0,0,0,0.5); border: 2px solid var(--gold); border-radius: 60px; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; }
-        .c-badge-lbl { font-size: 16px; color: var(--gold); text-transform: uppercase; font-weight: 800; font-family: 'Playfair Display'; }
-        .c-badge-num { background: var(--verde); color: white; min-width: 65px; height: 65px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-size: 26px; font-weight: 900; }
+        .c-badge-pill { background: rgba(0,0,0,0.6); border: 2px solid var(--gold); border-radius: 70px; padding: 15px 25px; display: flex; justify-content: space-between; align-items: center; }
+        .c-badge-lbl { font-size: 18px; color: var(--gold); text-transform: uppercase; font-weight: 800; font-family: 'Playfair Display'; }
+        .c-badge-num { background: var(--verde); color: white; min-width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-size: 32px; font-weight: 900; }
 
-        .c-stat-card { background: var(--paper); color: var(--emerald); border-radius: 15px; padding: 20px 25px; display: flex; justify-content: space-between; align-items: center; border-left: 10px solid var(--gold); }
+        .c-stat-card { background: var(--paper); color: var(--emerald); border-radius: 20px; padding: 22px 30px; display: flex; justify-content: space-between; align-items: center; border-left: 12px solid var(--gold); }
         .c-stat-card.rojo { border-left-color: var(--rojo); color: var(--rojo); }
         .c-stat-card.verde { border-left-color: var(--verde); color: var(--verde); }
-        .c-stat-lbl { font-size: 13px; font-weight: 900; text-transform: uppercase; color: #777; }
-        .c-stat-val { font-size: 30px; font-weight: 900; }
+        .c-stat-val { font-size: 36px; font-weight: 900; }
 
-        .c-footer { margin-top: 50px; text-align: center; border-top: 2px solid rgba(197,160,89,0.3); padding-top: 30px; font-family: 'Playfair Display', serif; font-style: italic; font-size: 26px; }
+        .c-footer { margin-top: 60px; text-align: center; border-top: 2px solid rgba(197,160,89,0.3); padding-top: 40px; font-family: 'Playfair Display', serif; font-style: italic; font-size: 30px; }
 
         .hidden { display: none !important; }
-        #toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: var(--gold); color: var(--emerald); padding: 15px 30px; border-radius: 50px; font-weight: 900; opacity: 0; transition: 0.5s; z-index: 9999; }
+        #toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: var(--gold); color: var(--emerald); padding: 15px 30px; border-radius: 50px; font-weight: 900; opacity: 0; transition: 0.5s; z-index: 9999; border: 2px solid white; }
     </style>
 </head>
 <body>
 
 <div class="app-shell">
-    <!-- UI HEADER -->
+    <!-- HEADER -->
     <div class="header">
-        <input type="file" id="logo-input" class="hidden" accept="image/*">
-        <div class="logo-box" id="logo-trigger">
-            <img id="ui-logo-img" class="hidden">
-            <b id="ui-logo-def">BV</b>
+        <input type="file" id="logo-in" class="hidden" accept="image/*">
+        <div class="logo-box" id="logo-trigger-btn">
+            <img id="ui-logo-preview" class="hidden">
+            <b id="ui-logo-placeholder">BV</b>
         </div>
         <h1>Belle Vita</h1>
     </div>
 
     <!-- TABS -->
     <div class="tabs">
-        <button class="tab-btn active" id="tab-o" onclick="window.navegar('oper')">OPERACIÓN</button>
-        <button class="tab-btn" id="tab-r" onclick="window.navegar('repo')">REPORTES</button>
+        <button class="tab-btn active" id="btn-oper" onclick="navegar('oper')">OPERACIÓN</button>
+        <button class="tab-btn" id="btn-repo" onclick="navegar('repo')">REPORTES</button>
     </div>
 
-    <!-- VISTA REGISTRO -->
-    <div id="view-oper" class="view">
+    <!-- REGISTRO -->
+    <div id="v-oper" class="view">
         <div class="lux-card">
-            <span class="lux-lbl">📅 Fecha de Operación</span>
+            <span class="lux-lbl">📅 Fecha</span>
             <input type="date" id="fecha-actual">
         </div>
         <div class="lux-card">
-            <span class="lux-lbl">🥤 Consumo Barra (Socio)</span>
-            <input type="text" id="nombre-socio" placeholder="Nombre">
-            <input type="number" id="monto-socio" placeholder="Monto $">
-            <button class="btn-lux btn-gold" onclick="window.guardarRegistro('normal')">Añadir Consumo</button>
+            <span class="lux-lbl">🥤 Barra (Socio)</span>
+            <input type="text" id="in-nom-socio" placeholder="Nombre">
+            <input type="number" id="in-mon-socio" placeholder="Monto $">
+            <button class="btn-action btn-gold" onclick="registrar('normal')">Añadir Consumo</button>
         </div>
         <div class="lux-card">
-            <span class="lux-lbl">📦 Venta Cerrada (Producto)</span>
-            <input type="text" id="nombre-prod" placeholder="Producto">
-            <input type="number" id="monto-prod" placeholder="Monto $">
-            <button class="btn-lux btn-dark" onclick="window.guardarRegistro('cerrado')">Registrar Venta</button>
+            <span class="lux-lbl">📦 Producto</span>
+            <input type="text" id="in-nom-prod" placeholder="Venta Cerrada">
+            <input type="number" id="in-mon-prod" placeholder="Monto $">
+            <button class="btn-action btn-dark" onclick="registrar('cerrado')">Registrar Venta</button>
         </div>
-        <span class="lux-lbl">Actividad Registrada</span>
-        <div id="bitacora-lista"></div>
+        <span class="lux-lbl">Movimientos de Hoy</span>
+        <div id="bitacora-hoy"></div>
     </div>
 
-    <!-- VISTA REPORTES -->
-    <div id="view-repo" class="view hidden">
+    <!-- REPORTES -->
+    <div id="v-repo" class="view hidden">
         <div class="lux-card">
-            <span class="lux-lbl">Configurar Reporte</span>
-            <select id="filtro-modo" onchange="window.recalcular()">
-                <option value="dia">Reporte Diario (Lista Completa)</option>
-                <option value="semana">Resumen Semanal (Vie-Jue)</option>
-                <option value="mes">Resumen Mensual</option>
-                <option value="rango">Rango Personalizado</option>
+            <span class="lux-lbl">Modo de Cierre</span>
+            <select id="sel-modo" onchange="recalcular()">
+                <option value="dia">Cierre Diario (Lista)</option>
+                <option value="semana">Semanal (Vie-Jue)</option>
+                <option value="mes">Reporte Mensual</option>
+                <option value="rango">Rango Libre</option>
             </select>
-            <div id="div-f-simple">
-                <input type="date" id="fecha-ref" onchange="window.recalcular()">
+            <div id="box-dia">
+                <input type="date" id="fecha-ref" onchange="recalcular()">
             </div>
-            <div id="div-f-rango" class="hidden">
-                <input type="date" id="rango-de" onchange="window.recalcular()">
-                <input type="date" id="rango-a" onchange="window.recalcular()">
+            <div id="box-rango" class="hidden">
+                <input type="date" id="rango-de" onchange="recalcular()">
+                <input type="date" id="rango-a" onchange="recalcular()">
             </div>
         </div>
 
-        <!-- AREA DE CAPTURA (Oculta para el usuario) -->
-        <div style="position: absolute; top: -20000px; left: -20000px; width: 800px;">
+        <!-- CANVAS PARA WHATSAPP (OCULTO) -->
+        <div style="position: absolute; top: -20000px; left: -20000px;">
             <div id="reporte-export">
                 <div class="c-header">
                     <div class="c-logo-group">
                         <div class="c-logo-circle">
                             <img id="can-logo-img" class="hidden">
-                            <b id="can-logo-def" style="font-size: 55px; color: #c5a059;">BV</b>
+                            <b id="can-logo-def" style="font-size: 60px; color: #c5a059;">BV</b>
                         </div>
                         <div class="c-club-text">
                             <h2>BELLE VITA</h2>
-                            <p>Luxury Nutrition Experience</p>
+                            <p>Premium Nutrition Club</p>
                         </div>
                     </div>
                     <div class="c-date-box">
@@ -207,143 +197,163 @@
                     <div class="c-left-col" id="c-dinamico"></div>
                     <div class="c-right-col">
                         <div class="c-badge-pill">
-                            <span class="c-badge-lbl" id="c-lbl-c">Consumos</span>
-                            <span class="c-badge-num" id="c-val-consumos">0</span>
+                            <span class="c-badge-lbl" id="c-lbl-cons">Consumos</span>
+                            <span class="c-badge-num" id="c-val-cons">0</span>
                         </div>
-                        <div class="c-stat-card"><div class="stat-inner"><span class="c-stat-lbl">P. Cerrado</span><div class="c-stat-val" id="c-val-cerrado">$0</div></div></div>
-                        <div class="c-stat-card"><div class="stat-inner"><span class="c-stat-lbl">Vta Total</span><div class="c-stat-val" id="c-val-total">$0</div></div></div>
-                        <div class="c-stat-card rojo"><div class="stat-inner"><span class="c-stat-lbl" style="color:inherit">Rojo</span><div class="c-stat-val" id="c-val-rojo">$0</div></div></div>
-                        <div class="c-stat-card verde"><div class="stat-inner"><span class="c-stat-lbl" style="color:inherit">Verde</span><div class="c-stat-val" id="c-val-verde">$0</div></div></div>
+                        <div class="c-stat-card"><span>P. Cerrado</span><div class="c-stat-val" id="c-val-cerr">$0</div></div>
+                        <div class="c-stat-card"><span>Vta Total</span><div class="c-stat-val" id="c-val-tot">$0</div></div>
+                        <div class="c-stat-card rojo"><span>Rojo</span><div class="c-stat-val" id="c-val-rojo">$0</div></div>
+                        <div class="c-stat-card verde"><span>Verde</span><div class="c-stat-val" id="c-val-verde">$0</div></div>
                     </div>
                 </div>
-                <div class="c-footer">Belle Vita, belleza que nace de ti.</div>
+                <div class="c-footer">Belle Vita, el poder de tu cambio.</div>
             </div>
         </div>
-        <button class="btn-lux btn-green" onclick="window.generarFlyer()">📸 GENERAR FLYER PARA WHATSAPP</button>
+        <button class="btn-action btn-green" onclick="generar()">📸 GENERAR FLYER PARA WHATSAPP</button>
     </div>
 </div>
 
 <div id="toast"></div>
 
 <script>
-    // --- MOTOR MASTER V51 ---
-    (function() {
-        var db = JSON.parse(localStorage.getItem('bv_luxury_v51')) || [];
-        var logo = localStorage.getItem('bv_logo_v51') || null;
+    // --- MOTOR BLINDADO ---
+    var database = JSON.parse(localStorage.getItem('bv_luxury_final_v100')) || [];
+    var logo_url = localStorage.getItem('bv_logo_v100') || null;
 
-        window.onload = function() {
-            var hoy = new Date().toISOString().split('T')[0];
-            document.getElementById('fecha-actual').value = hoy;
-            document.getElementById('fecha-ref').value = hoy;
-            document.getElementById('rango-de').value = hoy;
-            document.getElementById('rango-a').value = hoy;
-            
-            if(logo) applyLogo(logo);
-            window.renderLista();
-            
-            document.getElementById('logo-trigger').onclick = function() { 
-                document.getElementById('logo-input').click(); 
+    // INICIALIZACION
+    window.onload = function() {
+        var h = new Date().toISOString().split('T')[0];
+        document.getElementById('fecha-actual').value = h;
+        document.getElementById('fecha-ref').value = h;
+        document.getElementById('rango-de').value = h;
+        document.getElementById('rango-a').value = h;
+        if(logo_url) applyLogo(logo_url);
+        renderLog();
+        document.getElementById('logo-trigger-btn').onclick = function() { document.getElementById('logo-in').click(); };
+    };
+
+    // LOGO
+    document.getElementById('logo-in').onchange = function(e) {
+        var f = e.target.files[0];
+        if(f) {
+            var reader = new FileReader();
+            reader.onload = function(ev) {
+                logo_url = ev.target.result;
+                localStorage.setItem('bv_logo_v100', logo_url);
+                applyLogo(logo_url);
             };
-        };
-
-        // MANEJO DE LOGO
-        document.getElementById('logo-input').onchange = function(e) {
-            var file = e.target.files[0];
-            if(file) {
-                var reader = new FileReader();
-                reader.onload = function(ev) {
-                    logo = ev.target.result;
-                    localStorage.setItem('bv_logo_v51', logo);
-                    applyLogo(logo);
-                };
-                reader.readAsDataURL(file);
-            }
-        };
-
-        function applyLogo(url) {
-            document.getElementById('ui-logo-img').src = url; document.getElementById('ui-logo-img').classList.remove('hidden');
-            document.getElementById('ui-logo-def').classList.add('hidden');
-            document.getElementById('can-logo-img').src = url; document.getElementById('can-logo-img').classList.remove('hidden');
-            document.getElementById('can-logo-def').classList.add('hidden');
+            reader.readAsDataURL(f);
         }
+    };
 
-        // NAVEGACION
-        window.navegar = function(v) {
-            document.getElementById('view-oper').classList.toggle('hidden', v !== 'oper');
-            document.getElementById('view-repo').classList.toggle('hidden', v !== 'repo');
-            document.getElementById('tab-o').classList.toggle('active', v === 'oper');
-            document.getElementById('tab-r').classList.toggle('active', v === 'repo');
-            if(v === 'repo') window.recalcular();
-        };
+    function applyLogo(u) {
+        document.getElementById('ui-logo-preview').src = u; document.getElementById('ui-logo-preview').classList.remove('hidden');
+        document.getElementById('ui-logo-placeholder').classList.add('hidden');
+        document.getElementById('can-logo-img').src = u; document.getElementById('can-logo-img').classList.remove('hidden');
+        document.getElementById('can-logo-def').classList.add('hidden');
+    }
 
-        // GUARDADO
-        window.guardarRegistro = function(tipo) {
-            var n, m, f = document.getElementById('fecha-actual').value;
-            if(tipo === 'normal') {
-                n = document.getElementById('nombre-socio').value || "Socio";
-                m = parseFloat(document.getElementById('monto-socio').value);
-                document.getElementById('nombre-socio').value = ''; document.getElementById('monto-socio').value = '';
-            } else {
-                n = document.getElementById('nombre-prod').value || "Venta";
-                m = parseFloat(document.getElementById('monto-prod').value);
-                document.getElementById('nombre-prod').value = ''; document.getElementById('monto-prod').value = '';
-            }
-            if(isNaN(m)) return;
-            db.push({ id: Date.now(), fecha: f, nombre: n, monto: m, tipo: tipo });
-            localStorage.setItem('bv_luxury_v51', JSON.stringify(db));
-            window.renderLista();
-            pop("✅ Registrado");
-        };
+    // NAVEGACION
+    function navegar(s) {
+        document.getElementById('v-oper').classList.toggle('hidden', s !== 'oper');
+        document.getElementById('v-repo').classList.toggle('hidden', s !== 'repo');
+        document.getElementById('btn-oper').classList.toggle('active', s === 'oper');
+        document.getElementById('btn-repo').classList.toggle('active', s === 'repo');
+        if(s === 'repo') recalcular();
+    }
 
-        window.quitar = function(id) {
-            db = db.filter(function(i) { return i.id !== id; });
-            localStorage.setItem('bv_luxury_v51', JSON.stringify(db));
-            window.renderLista();
-        };
+    // REGISTRO
+    function registrar(tipo) {
+        var n, m, f = document.getElementById('fecha-actual').value;
+        if(tipo === 'normal') {
+            n = document.getElementById('in-nom-socio').value || "Socio";
+            m = parseFloat(document.getElementById('in-mon-socio').value);
+            document.getElementById('in-nom-socio').value = ''; document.getElementById('in-mon-socio').value = '';
+        } else {
+            n = document.getElementById('in-nom-prod').value || "Venta";
+            m = parseFloat(document.getElementById('in-mon-prod').value);
+            document.getElementById('in-nom-prod').value = ''; document.getElementById('in-mon-prod').value = '';
+        }
+        if(isNaN(m)) return;
+        database.push({ id: Date.now(), fecha: f, nombre: n, monto: m, tipo: tipo });
+        localStorage.setItem('bv_luxury_final_v100', JSON.stringify(database));
+        renderLog();
+        popToast("✅ Registrado");
+    }
 
-        window.renderLista = function() {
-            var box = document.getElementById('bitacora-lista');
-            var hoy = document.getElementById('fecha-actual').value;
-            var fil = db.filter(function(d) { return d.fecha === hoy; });
-            if(fil.length === 0) { box.innerHTML = '<p style="text-align:center; color:#555; font-size:12px;">Sin registros</p>'; return; }
-            box.innerHTML = fil.map(function(i) {
-                return '<div class="log-item"><div><b>' + (i.tipo === 'cerrado' ? '📦' : '🥤') + ' ' + i.nombre + '</b><br><small>$' + i.monto.toFixed(2) + '</small></div><button class="btn-del" onclick="window.quitar(' + i.id + ')">QUITAR</button></div>';
-            }).join('');
-        };
+    function borrar(id) {
+        database = database.filter(function(i) { return i.id !== id; });
+        localStorage.setItem('bv_luxury_final_v100', JSON.stringify(database));
+        renderLog();
+    }
 
-        // CALCULO DE REPORTES
-        window.recalcular = function() {
-            var m = document.getElementById('filtro-modo').value;
-            document.getElementById('div-f-simple').classList.toggle('hidden', m === 'rango');
-            document.getElementById('div-f-rango').classList.toggle('hidden', m !== 'rango');
+    function renderLog() {
+        var b = document.getElementById('bitacora-hoy');
+        var hoy = document.getElementById('fecha-actual').value;
+        var f = database.filter(function(d) { return d.fecha === hoy; });
+        if(f.length === 0) { b.innerHTML = '<p style="text-align:center;color:#555;font-size:12px;">Vacío</p>'; return; }
+        b.innerHTML = f.map(function(i) {
+            return '<div class="log-row"><div><b>' + (i.tipo === 'cerrado' ? '📦' : '🥤') + ' ' + i.nombre + '</b><br><small>$' + i.monto.toFixed(2) + '</small></div><button class="btn-del" onclick="borrar(' + i.id + ')">X</button></div>';
+        }).join('');
+    }
 
-            var res = [], dI, dF, setD = new Set();
+    // REPORTES
+    function recalcular() {
+        var m = document.getElementById('sel-modo').value;
+        document.getElementById('box-dia').classList.toggle('hidden', m === 'rango');
+        document.getElementById('box-rango').classList.toggle('hidden', m !== 'rango');
 
-            if(m === 'rango') {
-                dI = new Date(document.getElementById('rango-de').value + 'T12:00:00');
-                dF = new Date(document.getElementById('rango-a').value + 'T12:00:00');
-                res = db.filter(function(d) {
+        var res = [], dI, dF, setD = new Set();
+        if(m === 'rango') {
+            dI = new Date(document.getElementById('rango-de').value + 'T12:00:00');
+            dF = new Date(document.getElementById('rango-a').value + 'T12:00:00');
+            res = database.filter(function(d) {
+                var f = new Date(d.fecha + 'T12:00:00');
+                if(f >= dI && f <= dF) { if(d.tipo === 'normal') setD.add(d.fecha); return true; }
+                return false;
+            });
+        } else {
+            var r = document.getElementById('fecha-ref').value;
+            var dR = new Date(r + 'T12:00:00');
+            if(m === 'dia') { res = database.filter(function(d) { return d.fecha === r; }); dI = dR; dF = dR; }
+            else if(m === 'semana') {
+                var dia = dR.getDay();
+                var diff = (dia >= 5) ? (dia - 5) : (dia + 2);
+                dI = new Date(dR); dI.setDate(dR.getDate() - diff);
+                dF = new Date(dI); dF.setDate(dI.getDate() + 6);
+                res = database.filter(function(d) {
                     var f = new Date(d.fecha + 'T12:00:00');
                     if(f >= dI && f <= dF) { if(d.tipo === 'normal') setD.add(d.fecha); return true; }
                     return false;
                 });
             } else {
-                var r = document.getElementById('fecha-ref').value;
-                var dR = new Date(r + 'T12:00:00');
-                if(m === 'dia') { res = db.filter(function(d) { return d.fecha === r; }); dI = dR; dF = dR; }
-                else if(m === 'semana') {
-                    var dia = dR.getDay();
-                    var diff = (dia >= 5) ? (dia - 5) : (dia + 2);
-                    dI = new Date(dR); dI.setDate(dR.getDate() - diff);
-                    dF = new Date(dI); dF.setDate(dI.getDate() + 6);
-                    res = db.filter(function(d) {
-                        var f = new Date(d.fecha + 'T12:00:00');
-                        if(f >= dI && f <= dF) { if(d.tipo === 'normal') setD.add(d.fecha); return true; }
-                        return false;
-                    });
-                } else {
-                    res = db.filter(function(d) {
-                        var f = new Date(d.fecha + 'T12:00:00');
-                        if(f.getMonth() === dR.getMonth() && f.getFullYear() === dR.getFullYear()) { if(d.tipo === 'normal') setD.add(d.fecha); return true; }
-                        return false;
-   
+                res = database.filter(function(d) {
+                    var f = new Date(d.fecha + 'T12:00:00');
+                    if(f.getMonth() === dR.getMonth() && f.getFullYear() === dR.getFullYear()) { if(d.tipo === 'normal') setD.add(d.fecha); return true; }
+                    return false;
+                });
+                dI = new Date(dR.getFullYear(), dR.getMonth(), 1);
+                dF = new Date(dR.getFullYear(), dR.getMonth() + 1, 0);
+            }
+        }
+
+        var barra = res.filter(function(f) { return f.tipo === 'normal'; });
+        var totB = barra.reduce(function(a, x) { return a + x.monto; }, 0);
+        var totC = res.filter(function(f) { return f.tipo === 'cerrado'; }).reduce(function(a, x) { return a + x.monto; }, 0);
+        var total = totB + totC;
+        var cons = totB / 90;
+        var avg = (cons / (setD.size || 1)).toFixed(2);
+
+        document.getElementById('c-num').innerText = dI.getDate();
+        document.getElementById('c-txt').innerText = dI.toLocaleDateString('es-ES', { month: 'long', year: 'numeric' });
+        document.getElementById('c-lbl-cons').innerText = m === 'dia' ? 'Consumos' : 'Promedio';
+        document.getElementById('c-val-cons').innerText = m === 'dia' ? cons.toFixed(2) : avg;
+        document.getElementById('c-val-cerr').innerText = '$' + totC.toLocaleString();
+        document.getElementById('c-val-tot').innerText = '$' + total.toLocaleString();
+        document.getElementById('c-val-rojo').innerText = '$' + (total * 0.7).toLocaleString();
+        document.getElementById('c-val-verde').innerText = '$' + (total * 0.3).toLocaleString();
+
+        var boxIz = document.getElementById('c-dinamico');
+        if(m === 'dia') {
+            var t = '<table class="c-table"><thead><tr><th>#</th><th style="text-align:left">Socio</th><th style="text-align:right">$</th></tr></thead><tbody>';
+ 
