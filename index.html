@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Belle Vita - Ricardo Premium</title>
+    <title>Belle Vita - Master Stable</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700;900&family=Playfair+Display:ital,wght@0,700;1,700&display=swap');
@@ -15,10 +15,11 @@
             --paper: #fdfaf5;
             --rojo: #b03a2e;
             --verde: #1e8449;
-            --inner-shadow: inset 3px 3px 6px rgba(0,0,0,0.4), inset -3px -3px 6px rgba(255,255,255,0.05);
+            --shadow-out: 5px 5px 12px #050d09, -2px -2px 10px rgba(255,255,255,0.05);
+            --shadow-in: inset 3px 3px 6px rgba(0,0,0,0.6), inset -2px -2px 5px rgba(255,255,255,0.05);
         }
 
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
         body { 
             margin: 0; font-family: 'Montserrat', sans-serif; 
             background: var(--emerald); color: white; 
@@ -41,341 +42,332 @@
         .logo-neon b { font-size: 24px; color: var(--emerald); }
         .header h1 { font-family: 'Playfair Display', serif; color: var(--gold); margin: 0; font-size: 22px; letter-spacing: 3px; text-transform: uppercase; }
 
-        /* TABS PREMIUM */
+        /* TABS */
         .nav-tabs { display: flex; padding: 0 20px; gap: 15px; margin-top: -15px; position: relative; z-index: 10; }
-        .tab-link { 
+        .tab-item { 
             flex: 1; padding: 15px; border-radius: 15px; border: 1px solid var(--gold); 
             font-weight: 800; font-size: 11px; cursor: pointer; text-align: center;
             background: rgba(11, 31, 21, 0.9); color: var(--gold); transition: 0.3s;
         }
-        .tab-link.active { background: var(--gold); color: var(--emerald); box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+        .tab-item.active { background: var(--gold); color: var(--emerald); box-shadow: 0 5px 15px rgba(0,0,0,0.4); }
 
-        .view { padding: 30px 20px; flex: 1; }
-        .luxury-card { background: rgba(255,255,255,0.05); border-radius: 20px; padding: 20px; margin-bottom: 20px; border: 1px solid rgba(197, 160, 89, 0.2); }
-        .card-title { font-size: 10px; font-weight: 900; color: var(--gold); text-transform: uppercase; margin-bottom: 12px; display: block; letter-spacing: 1.5px; }
+        .view-content { padding: 30px 20px; flex: 1; }
+        .lux-card { background: rgba(255,255,255,0.03); border-radius: 20px; padding: 20px; margin-bottom: 20px; border: 1px solid rgba(197, 160, 89, 0.1); }
+        .card-lbl { font-size: 10px; font-weight: 900; color: var(--gold); text-transform: uppercase; margin-bottom: 12px; display: block; letter-spacing: 1.5px; }
 
-        /* INPUTS RELIEVE HUNDIDO */
+        /* INPUTS HUNDIDOS */
         input, select { 
             width: 100%; padding: 14px; border: none; border-radius: 12px; 
-            background: rgba(0,0,0,0.3); color: white; margin-bottom: 15px;
-            box-shadow: var(--inner-shadow); font-family: inherit; font-weight: 600;
+            background: rgba(0,0,0,0.2); color: white; margin-bottom: 15px;
+            box-shadow: var(--shadow-in); font-family: inherit; font-weight: 600;
         }
-        input:focus { outline: 1px solid var(--gold); }
 
         /* BOTONES BISELADOS */
-        .btn-luxury { 
+        .btn-lux { 
             width: 100%; padding: 16px; border-radius: 12px; border: none; 
             font-weight: 900; text-transform: uppercase; cursor: pointer; 
             transition: 0.2s; letter-spacing: 1px;
-            box-shadow: 4px 4px 10px rgba(0,0,0,0.4);
+            box-shadow: 4px 4px 10px rgba(0,0,0,0.5);
         }
         .btn-gold { background: linear-gradient(135deg, var(--gold-light), var(--gold)); color: var(--emerald); }
         .btn-outline { background: transparent; border: 1px solid var(--gold); color: var(--gold); }
         .btn-green { background: var(--verde); color: white; margin-top: 20px; }
-        .btn-luxury:active { transform: scale(0.97); box-shadow: 2px 2px 5px rgba(0,0,0,0.4); }
+        .btn-lux:active { transform: scale(0.97); }
 
-        /* LISTA REGISTRO */
-        .log-item { display: flex; justify-content: space-between; align-items: center; padding: 12px; background: rgba(255,255,255,0.03); border-radius: 12px; margin-bottom: 10px; border-left: 4px solid var(--gold); }
-        .log-info b { font-size: 14px; color: var(--gold-light); }
+        /* LOG */
+        .log-row { display: flex; justify-content: space-between; align-items: center; padding: 12px; background: rgba(255,255,255,0.02); border-radius: 12px; margin-bottom: 8px; border-left: 3px solid var(--gold); }
+        .log-row b { font-size: 13px; color: var(--gold-light); }
         .btn-del { background: rgba(176, 58, 46, 0.2); color: #ff4d4d; border: none; padding: 6px 12px; border-radius: 8px; font-size: 10px; font-weight: 800; cursor: pointer; }
 
-        /* =========================================
-           DISEÑO DEL REPORTE (Canvas)
-           ========================================= */
-        #reporte-export {
-            width: 800px; height: 1100px; background: var(--emerald);
+        /* REPORTE CANVAS (PARA IMAGEN) */
+        #reporte-canvas {
+            width: 800px; height: 1150px; background: var(--emerald);
             padding: 40px; position: relative; color: white; display: flex; flex-direction: column;
-            overflow: hidden; border: 1px solid var(--gold);
+            overflow: hidden; border: 2px solid var(--gold);
         }
-        /* Hojas de fondo sutiles */
-        .rep-bg-pattern { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.05; pointer-events: none; }
         
-        .rep-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; position: relative; z-index: 2; }
-        .rep-logo-area { display: flex; align-items: center; gap: 15px; }
-        .rep-logo-img { width: 100px; height: 100px; border: 3px solid var(--gold); border-radius: 50%; background: white; overflow: hidden; display: flex; align-items: center; justify-content: center; }
-        .rep-logo-img img { width: 100%; height: 100%; object-fit: cover; }
-        .rep-club-info h2 { font-family: 'Playfair Display', serif; font-size: 40px; margin: 0; color: white; letter-spacing: 2px; }
-        .rep-club-info p { color: var(--gold); font-size: 10px; text-transform: uppercase; margin: 0; letter-spacing: 3px; }
+        .rep-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; position: relative; z-index: 2; }
+        .rep-logo-box { display: flex; align-items: center; gap: 15px; }
+        .rep-logo-circle { width: 100px; height: 100px; border: 3px solid var(--gold); border-radius: 50%; background: white; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+        .rep-logo-circle img { width: 100%; height: 100%; object-fit: cover; }
+        .rep-club-name h2 { font-family: 'Playfair Display', serif; font-size: 42px; margin: 0; color: white; letter-spacing: 2px; }
+        .rep-club-name p { color: var(--gold); font-size: 11px; text-transform: uppercase; margin: 0; letter-spacing: 3px; }
 
-        .rep-date-box { border: 2px solid var(--gold); padding: 10px 20px; text-align: center; border-radius: 15px; background: rgba(0,0,0,0.2); }
-        .rep-date-main { font-size: 36px; font-weight: 900; line-height: 1; }
-        .rep-date-sub { font-size: 12px; color: var(--gold); text-transform: uppercase; font-weight: 700; margin-top: 5px; }
+        .rep-date-tag { border: 2px solid var(--gold); padding: 12px 25px; text-align: center; border-radius: 15px; background: rgba(0,0,0,0.3); }
+        .rep-date-day { font-size: 40px; font-weight: 900; line-height: 1; }
+        .rep-date-month { font-size: 12px; color: var(--gold); text-transform: uppercase; font-weight: 800; margin-top: 5px; }
 
         .rep-body { display: flex; gap: 30px; flex: 1; position: relative; z-index: 2; }
-        .rep-col-left { flex: 1.2; }
-        .rep-col-right { flex: 0.8; display: flex; flex-direction: column; gap: 20px; }
+        .rep-left { flex: 1.2; }
+        .rep-right { flex: 0.8; display: flex; flex-direction: column; gap: 15px; }
 
-        /* Tabla Estilo Imagen 416418 */
-        .table-luxe { width: 100%; border-collapse: separate; border-spacing: 0 4px; background: var(--paper); border-radius: 12px; border: 3px solid var(--gold); overflow: hidden; }
-        .table-luxe thead { background: var(--emerald); color: var(--gold); font-size: 14px; }
-        .table-luxe th { padding: 12px; text-transform: uppercase; }
-        .table-luxe td { padding: 10px 15px; color: var(--emerald); font-weight: 700; font-size: 16px; border-bottom: 1px solid rgba(0,0,0,0.05); }
+        .rep-table { width: 100%; border-collapse: separate; border-spacing: 0 4px; background: var(--paper); border-radius: 12px; border: 3px solid var(--gold); overflow: hidden; }
+        .rep-table th { background: var(--emerald); color: var(--gold); padding: 12px; font-size: 14px; text-transform: uppercase; }
+        .rep-table td { padding: 10px 15px; color: var(--emerald); font-weight: 700; font-size: 17px; border-bottom: 1px solid rgba(0,0,0,0.05); }
 
-        /* Vista Resumen (Semanal/Mensual) */
-        .exec-summary { height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; background: rgba(255,255,255,0.03); border: 1px solid var(--gold); border-radius: 20px; text-align: center; }
-        .exec-label { font-size: 18px; color: var(--gold); text-transform: uppercase; letter-spacing: 4px; }
-        .exec-value { font-size: 90px; font-weight: 900; color: white; margin: 10px 0; }
+        .exec-box { height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; background: rgba(255,255,255,0.03); border: 2px solid var(--gold); border-radius: 30px; text-align: center; padding: 20px; }
+        .exec-lbl { font-size: 18px; color: var(--gold); text-transform: uppercase; letter-spacing: 4px; margin-bottom: 10px; }
+        .exec-val { font-size: 95px; font-weight: 900; color: white; }
 
-        /* Badges de stats */
-        .badge-box { background: rgba(0,0,0,0.4); border: 1px solid var(--gold); border-radius: 20px; padding: 25px; text-align: center; }
-        .badge-lbl { font-size: 14px; color: var(--gold); text-transform: uppercase; font-weight: 800; margin-bottom: 8px; }
-        .badge-val { font-size: 50px; font-weight: 900; line-height: 1; }
+        /* Badge Consumos adaptable */
+        .rep-badge-cons { background: rgba(0,0,0,0.5); border: 1px solid var(--gold); border-radius: 60px; padding: 8px 15px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .rep-badge-cons-lbl { font-size: 14px; color: var(--gold); text-transform: uppercase; font-weight: 800; margin-right: 15px; }
+        .rep-badge-cons-num { background: var(--verde); color: white; min-width: 55px; height: 55px; padding: 0 12px; display: flex; align-items: center; justify-content: center; border-radius: 30px; font-size: 24px; font-weight: 900; }
 
-        .stat-line { background: var(--paper); color: var(--emerald); border-radius: 15px; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-left: 8px solid var(--gold); }
-        .stat-line.rojo { border-left-color: var(--rojo); color: var(--rojo); }
-        .stat-line.verde { border-left-color: var(--verde); color: var(--verde); }
-        .stat-name { font-size: 12px; font-weight: 900; text-transform: uppercase; color: #888; }
-        .stat-num { font-size: 24px; font-weight: 900; }
+        .rep-stat-card { background: var(--paper); color: var(--emerald); border-radius: 15px; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-left: 8px solid var(--gold); }
+        .rep-stat-card.rojo { border-left-color: var(--rojo); color: var(--rojo); }
+        .rep-stat-card.verde { border-left-color: var(--verde); color: var(--verde); }
+        .rep-stat-lbl { font-size: 12px; font-weight: 900; text-transform: uppercase; color: #888; }
+        .rep-stat-val { font-size: 26px; font-weight: 900; }
 
-        .rep-foot { margin-top: 30px; text-align: center; border-top: 1px solid rgba(197,160,89,0.3); padding-top: 20px; }
-        .rep-foot p { font-family: 'Playfair Display', serif; font-style: italic; font-size: 20px; margin: 0; }
+        .rep-footer { margin-top: 30px; text-align: center; border-top: 1px solid rgba(197,160,89,0.3); padding-top: 20px; }
+        .rep-footer p { font-family: 'Playfair Display', serif; font-style: italic; font-size: 22px; margin: 0; color: white; }
 
-        .hidden { display: none; }
-        #toast { position: fixed; bottom: 30px; background: var(--gold); color: var(--emerald); padding: 12px 25px; border-radius: 50px; font-weight: 900; font-size: 13px; opacity: 0; transition: 0.5s; z-index: 1000; box-shadow: 0 5px 20px rgba(0,0,0,0.5); pointer-events: none; }
+        .hidden { display: none !important; }
+        #toast { position: fixed; bottom: 30px; background: var(--gold); color: var(--emerald); padding: 12px 25px; border-radius: 50px; font-weight: 900; font-size: 13px; opacity: 0; transition: 0.5s; z-index: 1000; pointer-events: none; }
     </style>
 </head>
 <body>
 
 <div class="app-container">
-    <!-- CABECERA -->
     <div class="header">
-        <input type="file" id="fileIn" class="hidden" accept="image/*">
-        <div class="logo-neon" id="logoBtn">
-            <img id="logoUi" class="hidden">
-            <b id="logoUiPlaceholder">BV</b>
+        <input type="file" id="logoUpload" class="hidden" accept="image/*">
+        <div class="logo-neon" onclick="document.getElementById('logoUpload').click()">
+            <img id="uiLogo" class="hidden">
+            <b id="uiLogoDef">BV</b>
         </div>
         <h1>Belle Vita</h1>
     </div>
 
-    <!-- NAVEGACIÓN -->
     <div class="nav-tabs">
-        <div class="tab-link active" id="tab-oper" onclick="switchView('oper')">OPERACIÓN</div>
-        <div class="tab-link" id="tab-repo" onclick="switchView('repo')">REPORTE</div>
+        <div class="tab-item active" id="tab-o" onclick="cambiarVista('reg')">OPERACIÓN</div>
+        <div class="tab-item" id="tab-r" onclick="cambiarVista('rep')">REPORTES</div>
     </div>
 
-    <!-- VISTA OPERACIÓN -->
-    <div id="view-oper" class="view">
-        <div class="luxury-card">
-            <span class="card-title">📅 Fecha de Trabajo</span>
-            <input type="date" id="fechaCtrl">
+    <!-- REGISTRO -->
+    <div id="view-reg" class="view-content">
+        <div class="lux-card">
+            <span class="card-lbl">📅 Fecha</span>
+            <input type="date" id="regFecha">
         </div>
-        <div class="luxury-card">
-            <span class="card-title">🥤 Consumo Barra (Socio)</span>
-            <input type="text" id="nombreSocio" placeholder="Nombre">
-            <input type="number" id="montoSocio" placeholder="Monto $">
-            <button class="btn-luxury btn-gold" onclick="registrar('normal')">Añadir Consumo</button>
+        <div class="lux-card">
+            <span class="card-lbl">🥤 Barra</span>
+            <input type="text" id="regNom" placeholder="Nombre Socio">
+            <input type="number" id="regMon" placeholder="Monto $">
+            <button class="btn-lux btn-gold" onclick="guardarDato('normal')">Añadir a Barra</button>
         </div>
-        <div class="luxury-card">
-            <span class="card-title">📦 Venta de Producto</span>
-            <input type="text" id="nombreProd" placeholder="Producto">
-            <input type="number" id="montoProd" placeholder="Monto $">
-            <button class="btn-luxury btn-outline" onclick="registrar('cerrado')">Registrar Venta</button>
+        <div class="lux-card">
+            <span class="card-lbl">📦 Cerrado</span>
+            <input type="text" id="regCerrNom" placeholder="Producto">
+            <input type="number" id="regCerrMon" placeholder="Monto $">
+            <button class="btn-lux btn-outline" onclick="guardarDato('cerrado')">Registrar Venta</button>
         </div>
-        <span class="card-title">Bitácora Activa</span>
-        <div id="bitacoraLista"></div>
+        <span class="card-lbl">Movimientos de hoy</span>
+        <div id="listaMovimientos"></div>
     </div>
 
-    <!-- VISTA REPORTE -->
-    <div id="view-repo" class="view hidden">
-        <div class="luxury-card">
-            <span class="card-title">Filtros de Cierre</span>
-            <select id="filtroModo" onchange="toggleFiltros()">
-                <option value="dia">Cierre Diario (con Lista)</option>
-                <option value="semana">Resumen Semanal (Vie-Jue)</option>
-                <option value="mes">Resumen Mensual</option>
-                <option value="rango">Rango Personalizado</option>
+    <!-- REPORTES -->
+    <div id="view-rep" class="view-content hidden">
+        <div class="lux-card">
+            <span class="card-lbl">Tipo de Reporte</span>
+            <select id="selPeriodo" onchange="actualizarFiltros()">
+                <option value="dia">Reporte Diario</option>
+                <option value="semana">Semana (Vie-Jue)</option>
+                <option value="mes">Reporte Mensual</option>
+                <option value="rango">Rango Libre</option>
             </select>
-            <div id="ctrl-simple">
-                <input type="date" id="fechaRef" onchange="recalcular()">
+            <div id="div-simple">
+                <input type="date" id="fRef" onchange="generarCalculos()">
             </div>
-            <div id="ctrl-rango" class="hidden">
-                <input type="date" id="fechaDesde" onchange="recalcular()">
-                <input type="date" id="fechaHasta" onchange="recalcular()">
+            <div id="div-rango" class="hidden">
+                <input type="date" id="fDe" onchange="generarCalculos()">
+                <input type="date" id="fA" onchange="generarCalculos()">
             </div>
         </div>
 
-        <!-- CANVAS INVISIBLE PARA CAPTURA -->
+        <!-- CANVAS PARA WHATSAPP (OCULTO) -->
         <div style="position: absolute; top: -10000px; left: -10000px;">
-            <div id="reporte-export">
-                <div class="rep-bg-pattern">
-                    <svg width="100%" height="100%"><defs><pattern id="leaves" width="100" height="100" patternUnits="userSpaceOnUse"><path d="M50 20c15 0 20 20 20 30s-5 30-20 30-20-20-20-30 5-30 20-30z" fill="#c5a059" fill-opacity="0.2"/></pattern></defs><rect width="100%" height="100%" fill="url(#leaves)"/></svg>
-                </div>
-                
-                <div class="rep-head">
-                    <div class="rep-logo-area">
-                        <div class="rep-logo-img">
-                            <img id="logoExport" class="hidden">
-                            <b id="logoExportPlaceholder" style="font-size: 50px; color: #c5a059;">BV</b>
+            <div id="reporte-canvas">
+                <div class="rep-header">
+                    <div class="rep-logo-box">
+                        <div class="rep-logo-circle">
+                            <img id="canLogo" class="hidden">
+                            <b id="canLogoDef" style="font-size: 50px; color: #c5a059;">BV</b>
                         </div>
-                        <div class="rep-club-info">
+                        <div class="rep-club-name">
                             <h2>BELLE VITA</h2>
-                            <p>Nutrición • Bienestar • Transformación</p>
+                            <p>Premium Nutrition Club</p>
                         </div>
                     </div>
-                    <div class="rep-date-box">
-                        <div class="rep-date-main" id="can-num">21</div>
-                        <div class="rep-date-sub" id="can-txt">Martes, Abril 2026</div>
+                    <div class="rep-date-tag">
+                        <div class="rep-date-day" id="c-dia-n">21</div>
+                        <div class="rep-date-month" id="c-dia-t">Martes, Abril 2026</div>
                     </div>
                 </div>
 
                 <div class="rep-body">
-                    <div class="rep-col-left" id="reporte-contenido-dinamico">
-                        <!-- Se llena con tabla o resumen gigante -->
+                    <div class="rep-left" id="c-dinamico">
+                        <!-- Tabla o Promedio -->
                     </div>
-                    <div class="rep-col-right">
-                        <div class="badge-box">
-                            <div class="badge-lbl" id="lbl-consumos">Consumos</div>
-                            <div class="badge-val" id="can-consumos">0.00</div>
+                    <div class="rep-right">
+                        <div class="rep-badge-cons">
+                            <span class="rep-badge-cons-lbl" id="c-lbl-c">Consumos</span>
+                            <span class="rep-badge-cons-num" id="c-val-c">0.00</span>
                         </div>
-                        <div class="stat-line">
-                            <span class="stat-name">P. Cerrado</span>
-                            <span class="stat-num" id="can-cerrado">$0</span>
-                        </div>
-                        <div class="stat-line">
-                            <span class="stat-name">Vta Total</span>
-                            <span class="stat-num" id="can-total">$0</span>
-                        </div>
-                        <div class="stat-line rojo">
-                            <span class="stat-name" style="color:inherit">Rojo</span>
-                            <span class="stat-num" id="can-rojo">$0</span>
-                        </div>
-                        <div class="stat-line verde">
-                            <span class="stat-name" style="color:inherit">Verde</span>
-                            <span class="stat-num" id="can-verde">$0</span>
-                        </div>
+                        <div class="rep-stat-card"><div class="rep-stat-info"><span class="rep-stat-lbl">P. Cerrado</span><div class="rep-stat-val" id="c-v-c">$0</div></div></div>
+                        <div class="rep-stat-card"><div class="rep-stat-info"><span class="rep-stat-lbl">Venta Total</span><div class="rep-stat-val" id="c-v-t">$0</div></div></div>
+                        <div class="rep-stat-card rojo"><div class="rep-stat-info"><span class="rep-stat-lbl" style="color:inherit">Rojo</span><div class="rep-stat-val" id="c-v-r">$0</div></div></div>
+                        <div class="rep-stat-card verde"><div class="rep-stat-info"><span class="rep-stat-lbl" style="color:inherit">Verde</span><div class="rep-stat-val" id="c-v-v">$0</div></div></div>
                     </div>
                 </div>
-
-                <div class="rep-foot">
-                    <p>Belle Vita, belleza que nace de ti.</p>
-                </div>
+                <div class="rep-footer"><p>Belle Vita, el poder de tu transformación.</p></div>
             </div>
         </div>
 
-        <button class="btn-luxury btn-green" onclick="descargarReporte()">📸 GENERAR IMAGEN PARA WHATSAPP</button>
+        <button class="btn-lux btn-green" onclick="descargarImagen()">📸 GENERAR IMAGEN PARA WHATSAPP</button>
     </div>
 </div>
 
 <div id="toast"></div>
 
 <script>
-    // --- MOTOR DE DATOS ---
-    let clubDB = JSON.parse(localStorage.getItem('bv_luxury_v11')) || [];
-    let savedLogo = localStorage.getItem('bv_logo_v11') || null;
+    // Almacenamiento Seguro
+    let dataLocal = JSON.parse(localStorage.getItem('bv_master_stable_v1')) || [];
+    let logoLocal = localStorage.getItem('bv_logo_v11') || null;
 
-    // --- ELEMENTOS ---
-    const fechaCtrl = document.getElementById('fechaCtrl');
-    const fechaRef = document.getElementById('fechaRef');
-    const filtroModo = document.getElementById('filtroModo');
+    const regFecha = document.getElementById('regFecha');
+    const fRef = document.getElementById('fRef');
+    const selPeriodo = document.getElementById('selPeriodo');
 
-    window.onload = function() {
-        const hoy = new Date().toISOString().split('T')[0];
-        fechaCtrl.value = hoy;
-        fechaRef.value = hoy;
-        document.getElementById('fechaDesde').value = hoy;
-        document.getElementById('fechaHasta').value = hoy;
-        if(savedLogo) aplicarLogo(savedLogo);
-        renderizarLista();
+    window.onload = () => {
+        const t = new Date().toISOString().split('T')[0];
+        regFecha.value = t; fRef.value = t;
+        document.getElementById('fDe').value = t;
+        document.getElementById('fA').value = t;
+        if(logoLocal) setLogo(logoLocal);
+        mostrarLista();
     };
 
     // --- LOGO ---
-    document.getElementById('logoBtn').onclick = () => document.getElementById('fileIn').click();
-    document.getElementById('fileIn').onchange = (e) => {
+    document.getElementById('logoUpload').onchange = (e) => {
         const file = e.target.files[0];
         if(file) {
             const reader = new FileReader();
             reader.onload = (ev) => {
-                savedLogo = ev.target.result;
-                localStorage.setItem('bv_logo_v11', savedLogo);
-                aplicarLogo(savedLogo);
+                logoLocal = ev.target.result;
+                localStorage.setItem('bv_logo_v11', logoLocal);
+                setLogo(logoLocal);
             };
             reader.readAsDataURL(file);
         }
     };
 
-    function aplicarLogo(url) {
-        document.getElementById('logoUi').src = url; document.getElementById('logoUi').classList.remove('hidden');
-        document.getElementById('logoUiPlaceholder').classList.add('hidden');
-        document.getElementById('logoExport').src = url; document.getElementById('logoExport').classList.remove('hidden');
-        document.getElementById('logoExportPlaceholder').classList.add('hidden');
+    function setLogo(url) {
+        document.getElementById('uiLogo').src = url; document.getElementById('uiLogo').classList.remove('hidden');
+        document.getElementById('uiLogoDef').classList.add('hidden');
+        document.getElementById('canLogo').src = url; document.getElementById('canLogo').classList.remove('hidden');
+        document.getElementById('canLogoDef').classList.add('hidden');
     }
 
-    // --- NAVEGACIÓN ---
-    function switchView(target) {
-        document.getElementById('view-oper').classList.toggle('hidden', target !== 'oper');
-        document.getElementById('view-repo').classList.toggle('hidden', target !== 'repo');
-        document.getElementById('tab-oper').classList.toggle('active', target === 'oper');
-        document.getElementById('tab-repo').classList.toggle('active', target === 'repo');
-        if(target === 'repo') recalcular();
+    // --- NAVEGACION ---
+    function cambiarVista(v) {
+        document.getElementById('view-reg').classList.toggle('hidden', v !== 'reg');
+        document.getElementById('view-rep').classList.toggle('hidden', v !== 'rep');
+        document.getElementById('tab-o').classList.toggle('active', v === 'reg');
+        document.getElementById('tab-r').classList.toggle('active', v === 'rep');
+        if(v === 'rep') generarCalculos();
     }
 
-    // --- REGISTRO ---
-    function registrar(tipo) {
+    // --- GUARDADO ---
+    function guardarDato(tipo) {
         let n, m;
         if(tipo === 'normal') {
-            n = document.getElementById('nombreSocio').value || "Socio";
-            m = parseFloat(document.getElementById('montoSocio').value);
-            document.getElementById('nombreSocio').value = ''; 
-            document.getElementById('montoSocio').value = '';
+            n = document.getElementById('regNom').value || "Socio";
+            m = parseFloat(document.getElementById('regMon').value);
+            document.getElementById('regNom').value = ''; document.getElementById('regMon').value = '';
         } else {
-            n = document.getElementById('nombreProd').value || "Venta";
-            m = parseFloat(document.getElementById('montoProd').value);
-            document.getElementById('nombreProd').value = ''; 
-            document.getElementById('montoProd').value = '';
+            n = document.getElementById('regCerrNom').value || "Venta";
+            m = parseFloat(document.getElementById('regCerrMon').value);
+            document.getElementById('regCerrNom').value = ''; document.getElementById('regCerrMon').value = '';
         }
-
-        if(isNaN(m)) { showToast("⚠️ Ingresa un monto válido"); return; }
-
-        clubDB.push({ id: Date.now(), fecha: fechaCtrl.value, nombre: n, monto: m, tipo: tipo });
-        localStorage.setItem('bv_luxury_v11', JSON.stringify(clubDB));
-        renderizarLista();
-        showToast("✅ Registro Exitoso");
+        if(isNaN(m)) { msg("Ingresa un monto válido"); return; }
+        
+        dataLocal.push({ id: Date.now(), fecha: regFecha.value, nombre: n, monto: m, tipo: tipo });
+        localStorage.setItem('bv_master_stable_v1', JSON.stringify(dataLocal));
+        mostrarLista();
+        msg("✅ Guardado");
     }
 
-    function eliminar(id) {
-        clubDB = clubDB.filter(i => i.id !== id);
-        localStorage.setItem('bv_luxury_v11', JSON.stringify(clubDB));
-        renderizarLista();
+    function borrarDato(id) {
+        dataLocal = dataLocal.filter(i => i.id !== id);
+        localStorage.setItem('bv_master_stable_v1', JSON.stringify(dataLocal));
+        mostrarLista();
     }
 
-    function renderizarLista() {
-        const list = document.getElementById('bitacoraLista');
-        const items = clubDB.filter(d => d.fecha === fechaCtrl.value);
-        if(items.length === 0) { list.innerHTML = `<p style="text-align:center; color:#555; font-size:12px;">Sin registros hoy</p>`; return; }
-        list.innerHTML = items.map(i => `
-            <div class="log-item">
-                <div class="log-info"><b>${i.tipo === 'cerrado' ? '📦' : '🥤'} ${i.nombre}</b><br><small>$${i.monto.toFixed(2)}</small></div>
-                <button class="btn-del" onclick="eliminar(${i.id})">QUITAR</button>
+    function mostrarLista() {
+        const list = document.getElementById('listaMovimientos');
+        const hoy = regFecha.value;
+        const filtrados = dataLocal.filter(d => d.fecha === hoy);
+        if(filtrados.length === 0) { list.innerHTML = `<p style="text-align:center; color:#555; font-size:12px;">Sin registros hoy</p>`; return; }
+        list.innerHTML = filtrados.map(i => `
+            <div class="log-row">
+                <div><b>${i.tipo === 'cerrado' ? '📦' : '🥤'} ${i.nombre}</b><br><small>$${i.monto.toFixed(2)}</small></div>
+                <button class="btn-del" onclick="borrarDato(${i.id})">QUITAR</button>
             </div>
         `).join('');
     }
 
     // --- REPORTES ---
-    function toggleFiltros() {
-        const m = filtroModo.value;
-        document.getElementById('ctrl-simple').classList.toggle('hidden', m === 'rango');
-        document.getElementById('ctrl-rango').classList.toggle('hidden', m !== 'rango');
-        recalcular();
+    function actualizarFiltros() {
+        const m = selPeriodo.value;
+        document.getElementById('div-simple').classList.toggle('hidden', m === 'rango');
+        document.getElementById('div-rango').classList.toggle('hidden', m !== 'rango');
+        generarCalculos();
     }
 
-    function recalcular() {
-        const modo = filtroModo.value;
-        let filtrados = [];
-        let dIni, dFin;
-        let diasAbiertos = new Set();
+    function generarCalculos() {
+        const modo = selPeriodo.value;
+        let finalData = [];
+        let dI, dF;
+        let setDias = new Set();
 
         if(modo === 'rango') {
-            dIni = new Date(document.getElementById('fechaDesde').value + 'T12:00:00');
-            dFin = new Date(document.getElementById('fechaHasta').value + 'T12:00:00');
-            filtrados = clubDB.filter(d => {
+            dI = new Date(document.getElementById('fDe').value + 'T12:00:00');
+            dF = new Date(document.getElementById('fA').value + 'T12:00:00');
+            finalData = dataLocal.filter(d => {
                 let f = new Date(d.fecha + 'T12:00:00');
-                if(f >= dIni && f <= dFin) {
-                    if(d.tipo === 'normal') diasAbiertos.add(d.fecha);
+                if(f >= dI && f <= dF) {
+                    if(d.tipo === 'normal') setDias.add(d.fecha);
                     return true;
                 }
                 return false;
             });
         } else {
-            const ref = fechaRef.value;
-            const dRef = new Date(ref + 'T12:00:00');
-   
+            const r = fRef.value;
+            const dR = new Date(r + 'T12:00:00');
+            if(modo === 'dia') {
+                finalData = dataLocal.filter(d => d.fecha === r);
+                dI = dR; dF = dR;
+            } else if(modo === 'semana') {
+                let dia = dR.getDay();
+                let diff = (dia >= 5) ? (dia - 5) : (dia + 2);
+                dI = new Date(dR); dI.setDate(dR.getDate() - diff);
+                dF = new Date(dI); dF.setDate(dI.getDate() + 6);
+                finalData = dataLocal.filter(d => {
+                    let f = new Date(d.fecha + 'T12:00:00');
+                    if(f >= dI && f <= dF) {
+                        if(d.tipo === 'normal') setDias.add(d.fecha);
+                        return true;
+                    }
+                    return false;
+                });
+            } else {
+                finalData = dataLocal.filter(d => {
+                    let f = new Date(d.fecha + 'T12:00:00');
+                    if(f.getMonth() === dR.getMonth() && f.getFullYear() === dR.getFullYear()) {
+                        if(d.tipo === 'normal') setDias.add(d.fecha);
+                        return true;
+                    }
+                    return false;
+                });
+                dI = new Date(dR
