@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Belle Vita - Master Stable</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700;900&family=Playfair+Display:ital,wght@0,700;1,700&display=swap');
+
+        :root {
+            --emerald: #0b1f15;
+            --gold: #c5a059;
+            --gold-light: #e4c68d;
+            --paper: #fdfaf5;
+            --rojo: #b03a2e;
+            --verde: #1e8449;
+            --sh-in: inset 4px 4px 8px rgba(0,0,0,0.5), inset -2px -2px 5px rgba(255,255,255,0.05);
+            --sh-out: 6px 6px 12px rgba(0,0,0,0.4);
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
+        body { margin: 0; font-family: 'Montserrat', sans-serif; background: var(--emerald); color: white; display: flex; justify-content: center; min-height: 100vh; }
+        .app { width: 100%; max-width: 480px; display: flex; flex-direction: column; background: var(--emerald); }
+
+        /* HEADER */
+        .header { padding: 25px 15px; text-align: center; }
+        .logo-circle { 
+            width: 75px; height: 75px; background: white; margin: 0 auto 10px; 
+            border-radius: 50%; border: 3px solid var(--gold); 
+            display: flex; align-items: center; justify-content: center; overflow: hidden;
+            box-shadow: 0 0 20px var(--gold); cursor: pointer;
+            animation: pulse-gold 2s infinite;
+        }
+        @keyframes pulse-gold { 0%, 100% { box-shadow: 0 0 10px var(--gold); } 50% { box-shadow: 0 0 25px var(--gold-light); } }
+        .logo-circle img { width: 100%; height: 100%; object-fit: cover; }
+        .logo-circle b { font-size: 28px; color: var(--emerald); }
+        .header h1 { font-family: 'Playfair Display', serif; color: var(--gold); margin: 0; font-size: 22px; letter-spacing: 3px; text-transform: uppercase; }
+
+        /* TABS */
+        .tabs { display: flex; padding: 0 20px; gap: 15px; margin-top: -15px; position: relative; z-index: 100; }
+        .tab-btn { 
+            flex: 1; padding: 15px; border-radius: 15px; border: 1px solid var(--gold); 
+            font-weight: 800; font-size: 11px; cursor: pointer; text-align: center;
+            background: rgba(11,31,21,0.9); color: var(--gold); transition: 0.3s;
+        }
+        .tab-btn.active { background: var(--gold); color: var(--emerald); box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
+
+        /* VISTAS */
+        .content { padding: 30px 20px; flex: 1; }
+        .card { background: rgba(255,255,255,0.03); border-radius: 20px; padding: 20px; margin-bottom: 20px; border: 1px solid rgba(197,160,89,0.15); }
+        .lbl { font-size: 10px; font-weight: 900; color: var(--gold); text-transform: uppercase; margin-bottom: 12px; display: block; }
+        
+        input, select { 
+            width: 100%; padding: 14px; border: none; border-radius: 12px; 
+            background: rgba(0,0,0,0.2); color: white; margin-bottom: 15px;
+            box-shadow: var(--sh-in); font-family: inherit; font-weight: 600;
+        }
+
+        .btn-lux { 
+            width: 100%; padding: 16px; border-radius: 12px; border: none; 
+            font-weight: 900; text-transform: uppercase; cursor: pointer; 
+            box-shadow: var(--sh-out); transition: 0.2s;
+        }
+        .btn-gold { background: linear-gradient(135deg, var(--gold-light), var(--gold)); color: var(--emerald); }
+        .btn-outline { background: transparent; border: 1px solid var(--gold); color: var(--gold); }
+        .btn-green { background: var(--verde); color: white; margin-top: 20px; font-size: 16px; }
+        .btn-lux:active { transform: scale(0.97); }
+
+        .log-row { display: flex; justify-content: space-between; align-items: center; padding: 12px; background: rgba(255,255,255,0.02); border-radius: 12px; margin-bottom: 8px; border-left: 3px solid var(--gold); }
+        .btn-del { background: rgba(176,58,46,0.2); color: #ff4d4d; border: none; padding: 6px 12px; border-radius: 8px; font-size: 10px; font-weight: 900; cursor: pointer; }
+
+        /* REPORTE CANVAS (PARA WHATSAPP) */
+        #canvas-reporte {
+            width: 800px; height: 1100px; background: var(--emerald);
+            padding: 40px; position: relative; color: white; display: flex; flex-direction: column;
+            overflow: hidden; border: 2px solid var(--gold);
+        }
+        .r-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+        .r-logo-box { display: flex; align-items: center; gap: 15px; }
+        .r-logo-circle { width: 110px; height: 110px; border: 3px solid var(--gold); border-radius: 50%; background: white; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+        .r-logo-circle img { width: 100%; height: 100%; object-fit: cover; }
+        .r-club-name h2 { font-family: 'Playfair Display', serif; font-size: 45px; margin: 0; color: white; }
+        .r-club-name p { color: var(--gold); font-size: 12px; text-transform: uppercase; margin: 0; letter-spacing: 3px; }
+        .r-date-tag { border: 2px solid var(--gold); padding: 10px 20px; text-align: center; border-radius: 15px; background: rgba(0,0,0,0.3); }
+        .r-date-num { font-size: 45px; font-weight: 900; line-height: 1; }
+        .r-date-txt { font-size: 12px; color: var(--gold); text-transform: uppercase; font-weight: 800; margin-top: 5px; }
+
+        .r-body { display: flex; gap: 30px; flex: 1; }
+        .r-left { flex: 1.2; }
+        .r-right { flex: 0.8; display: flex; flex-direction: column; gap: 15px; }
+
+        .r-table { width: 100%; border-collapse: separate; border-spacing: 0 4px; background: var(--paper); border-radius: 12px; border: 3px solid var(--gold); overflow: hidden; }
+        .r-table th { background: var(--emerald); color: var(--gold); padding: 12px; font-size: 14px; text-transform: uppercase; }
+        .r-table td { padding: 10px 15px; color: var(--emerald); font-weight: 700; font-size: 17px; border-bottom: 1px solid rgba(0,0,0,0.05); }
+
+        .r-exec-box { height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; background: rgba(255,255,255,0.03); border: 2px solid var(--gold); border-radius: 30px; text-align: center; padding: 20px; }
+        .r-exec-lbl { font-size: 18px; color: var(--gold); text-transform: uppercase; letter-spacing: 4px; margin-bottom: 10px; }
+        .r-exec-val { font-size: 100px; font-weight: 900; color: white; }
+
+        .r-badge-c { background: rgba(0,0,0,0.5); border: 1px solid var(--gold); border-radius: 60px; padding: 10px 15px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .r-badge-lbl { font-size: 14px; color: var(--gold); text-transform: uppercase; font-weight: 800; }
+        .r-badge-num { background: var(--verde); color: white; min-width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; border-radius: 30px; font-size: 24px; font-weight: 900; }
+
+        .r-stat { background: var(--paper); color: var(--emerald); border-radius: 15px; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-left: 8px solid var(--gold); }
+        .r-stat.rojo { border-left-color: var(--rojo); color: var(--rojo); }
+        .r-stat.verde { border-left-color: var(--verde); color: var(--verde); }
+        .r-stat-val { font-size: 28px; font-weight: 900; }
+
+        .r-foot { margin-top: 30px; text-align: center; border-top: 1px solid rgba(197,160,89,0.3); padding-top: 20px; font-family: 'Playfair Display', serif; font-style: italic; font-size: 22px; color: white; }
+
+        .hidden { display: none !important; }
+        #toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: var(--gold); color: var(--emerald); padding: 12px 25px; border-radius: 50px; font-weight: 900; font-size: 13px; opacity: 0; transition: 0.5s; z-index: 2000; }
+    </style>
+</head>
+<body>
+
+<div class="app">
+    <div class="header">
+        <input type="file" id="up-logo" class="hidden" accept="image/*">
+        <div class="logo-circle" id="logo-trigger">
+            <img id="ui-logo" class="hidden">
+            <b id="ui-def">BV</b>
+        </div>
+        <h1>Belle Vita</h1>
+    </div>
+
+    <div class="tabs">
+        <div class="tab-btn active" id="tab-o" onclick="window.nav('reg')">OPERACIÓN</div>
+        <div class="tab-btn" id="tab-r" onclick="window.nav('rep')">REPORTES</div>
+    </div>
+
+    <!-- VISTA REGISTRO -->
+    <div id="v-reg" class="content">
+        <div class="card">
+            <span class="lbl">📅 Fecha</span>
+            <input type="date" id="i-fecha">
+        </div>
+        <div class="card">
+            <span class="lbl">🥤 Barra</span>
+            <input type="text" id="i-nom" placeholder="Nombre Socio">
+            <input type="number" id="i-mon" placeholder="Monto $">
+            <button class="btn-lux btn-gold" onclick="window.guardar('normal')">Añadir a Barra</button>
+        </div>
+        <div class="card">
+            <span class="lbl">📦 Cerrado</span>
+            <input type="text" id="i-p-nom" placeholder="Producto">
+            <input type="number" id="i-p-mon" placeholder="Monto $">
+            <button class="btn-lux btn-outline" onclick="window.guardar('cerrado')">Registrar Venta</button>
+        </div>
+        <span class="lbl">Log del día</span>
+        <div id="lista-bit"></div>
+    </div>
+
+    <!-- VISTA REPORTE -->
+    <div id="v-rep" class="content hidden">
+        <div class="card">
+            <span class="lbl">Periodo</span>
+            <select id="s-periodo" onchange="window.calc()">
+                <option value="dia">Cierre Diario</option>
+                <option value="semana">Cierre Semanal (Vie-Jue)</option>
+                <option value="mes">Cierre Mensual</option>
+                <option value="rango">Rango Libre</option>
+            </select>
+            <div id="f-s">
+                <input type="date" id="f-ref" onchange="window.calc()">
+            </div>
+            <div id="f-r" class="hidden">
+                <input type="date" id="f-de" onchange="window.calc()">
+                <input type="date" id="f-a" onchange="window.calc()">
+            </div>
+        </div>
+
+        <div style="position: absolute; top: -10000px; left: -10000px;">
+            <div id="canvas-reporte">
+                <div class="r-head">
+                    <div class="r-logo-box">
+                        <div class="r-logo-circle">
+                            <img id="c-logo" class="hidden">
+                            <b id="c-def" style="font-size: 50px; color: #c5a059;">BV</b>
+                        </div>
+                        <div class="r-club-name">
+                            <h2>BELLE VITA</h2>
+                            <p>Luxury Nutrition Club</p>
+                        </div>
+                    </div>
+                    <div class="r-date-tag">
+                        <div class="r-date-num" id="c-d-n">21</div>
+                        <div class="r-date-txt" id="c-d-t">Abril, 2026</div>
+                    </div>
+                </div>
+                <div class="r-body">
+                    <div class="r-left" id="c-izq"></div>
+                    <div class="r-right">
+                        <div class="r-badge-c">
+                            <span class="r-badge-lbl" id="c-lbl-cons">Consumos</span>
+                            <span class="r-badge-num" id="c-val-cons">0</span>
+                        </div>
+                        <div class="r-stat"><span>P. Cerrado</span><div class="r-stat-val" id="c-v-c">$0</div></div>
+                        <div class="r-stat"><span>Vta Total</span><div class="r-stat-val" id="c-v-t">$0</div></div>
+                        <div class="r-stat rojo"><span>Rojo</span><div class="r-stat-val" id="c-v-r">$0</div></div>
+                        <div class="r-stat verde"><span>Verde</span><div class="r-stat-val" id="c-v-v">$0</div></div>
+                    </div>
+                </div>
+                <div class="r-foot">Belle Vita, el poder de tu transformación.</div>
+            </div>
+        </div>
+        <button class="btn-lux btn-green" onclick="window.capturar()">📸 GENERAR PARA WHATSAPP</button>
+    </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+    // --- MOTOR MASTER SEGURO ---
+    (function() {
+        let db = JSON.parse(localStorage.getItem('bv_master_v12')) || [];
+        let logo = localStorage.getItem('bv_logo_v12') || null;
+
+        const iFecha = document.getElementById('i-fecha');
+        const fRef = document.getElementById('f-ref');
+        const sModo = document.getElementById('s-periodo');
+
+        // INICIALIZACION
+        window.onload = () => {
+            const t = new Date().toISOString().split('T')[0];
+            iFecha.value = t; fRef.value = t;
+            document.getElementById('f-de').value = t;
+            document.getElementById('f-a').value = t;
+            if(logo) applyLogo(logo);
+            window.render();
+            
+            // Trigger Logo Blindado
+            document.getElementById('logo-trigger').onclick = () => document.getElementById('up-logo').click();
+        };
+
+        // MANEJO DE LOGO
+        document.getElementById('up-logo').onchange = (e) => {
+            const f = e.target.files[0];
+            if(f) {
+                const r = new FileReader();
+                r.onload = (ev) => {
+                    logo = ev.target.result;
+                    localStorage.setItem('bv_logo_v12', logo);
+                    applyLogo(logo);
+                };
+                r.readAsDataURL(f);
+            }
+        };
+
+        function applyLogo(url) {
+            document.getElementById('ui-logo').src = url; document.getElementById('ui-logo').classList.remove('hidden');
+            document.getElementById('ui-def').classList.add('hidden');
+            document.getElementById('c-logo').src = url; document.getElementById('c-logo').classList.remove('hidden');
+            document.getElementById('c-def').classList.add('hidden');
+        }
+
+        // NAVEGACION
+        window.nav = (v) => {
+            document.getElementById('v-reg').classList.toggle('hidden', v !== 'reg');
+            document.getElementById('v-rep').classList.toggle('hidden', v !== 'rep');
+            document.getElementById('tab-o').classList.toggle('active', v === 'reg');
+            document.getElementById('tab-r').classList.toggle('active', v === 'rep');
+            if(v === 'rep') window.calc();
+        };
+
+        // GUARDADO
+        window.guardar = (tipo) => {
+            let n, m;
+            if(tipo === 'normal') {
+                n = document.getElementById('i-nom').value || "Socio";
+                m = parseFloat(document.getElementById('i-mon').value);
+                document.getElementById('i-nom').value = ''; document.getElementById('i-mon').value = '';
+            } else {
+                n = document.getElementById('i-p-nom').value || "Venta";
+                m = parseFloat(document.getElementById('i-p-mon').value);
+                document.getElementById('i-p-nom').value = ''; document.getElementById('i-p-mon').value = '';
+            }
+            if(isNaN(m)) return;
+            db.push({ id: Date.now(), fecha: iFecha.value, nombre: n, monto: m, tipo });
+            localStorage.setItem('bv_master_v12', JSON.stringify(db));
+            window.render();
+            pop("✅ Guardado");
+        };
+
+        window.borrar = (id) => {
+            db = db.filter(i => i.id !== id);
+            localStorage.setItem('bv_master_v12', JSON.stringify(db));
+            window.render();
+        };
+
+        window.render = () => {
+            const div = document.getElementById('lista-bit');
+            const hoy = iFecha.value;
+            const filtrados = db.filter(d => d.fecha === hoy);
+            if(filtrados.length === 0) { div.innerHTML = `<p style="text-align:center; color:#555; font-size:12px;">Sin registros</p>`; return; }
+            div.innerHTML = filtrados.map(i => `
+                <div class="log-row">
+                    <div><b>${i.tipo === 'cerrado' ? '📦' : '🥤'} ${i.nombre}</b><br><small>$${i.monto.toFixed(2)}</small></div>
+                    <button class="btn-del" onclick="window.borrar(${i.id})">QUITAR</button>
+                </div>
+            `).join('');
+        };
+
+        // REPORTES
+        window.calc = () => {
+            const modo = sModo.value;
+            document.getElementById('f-s').classList.toggle('hidden', modo === 'rango');
+            document.getElementById('f-r').classList.toggle('hidden', modo !== 'rango');
+
+            let fData = [];
+            let dI, dF, setD = new Set();
+
+            if(modo === 'rango') {
+                dI = new Date(document.getElementById('f-de').value + 'T12:00:00');
+                dF = new Date(document.getElementById('f-a').value + 'T12:00:00');
+                fData = db.filter(d => {
+                    let f = new Date(d.fecha + 'T12:00:00');
+                    if(f >= dI && f <= dF) { if(d.tipo === 'normal') setD.add(d.fecha); return true; }
+                    return false;
+                });
+            } else {
+                const r = fRef.value;
+                const dR = new Date(r + 'T12:00:00');
+                if(modo === 'dia') { fData = db.filter(d => d.fecha === r); dI = dR; dF = dR; }
+                else if(modo === 'semana') {
+                    let dia = dR.getDay();
+                    let diff = (dia >= 5) ? (dia - 5) : (dia + 2);
+                    dI = new Date(dR); dI.setDate(dR.getDate() - diff);
+                    dF = new Date(dI); dF.setDate(dI.getDate() + 6);
+                    fData = db.filter(d => {
+                        let f = new Date(d.fecha + 'T12:00:00');
+                        if(f >= dI && f <= dF) { if(d.tipo === 'normal') setD.add(d.fecha); return true; }
+                        return false;
+                    });
+                } else {
+                    fData = db.filter(d => {
+                        let f = new Date(d.fecha + 'T12:00:00');
+                        if(f.getMonth() === dR.getMonth() && f.getFullYear() === dR.getFullYear()) { if(d.tipo === 'normal') setD.add(d.fecha); return true; }
+                        return false;
+                    });
+                    dI = new Date(dR.getFullYear(), dR.getMonth(), 1);
+                    dF = new Date(dR.getFullYear(), dR.getMonth() + 1, 0);
+                }
+            }
+
+            const b = fData.filter(f => f.tipo === 'normal');
+            const totB = b.reduce((a, x) => a + x.monto, 0);
+            const totC = fData.filter(f => f.tipo === 'cerrado').reduce((a, x) => a + x.monto, 0);
+            const total = totB + totC;
+            const consT = totB / 90;
+            const avg = (consT / (setD.size || 1)).toFixed(2);
+
+            document.getElementById('c-d-n').innerText = dI.getDate();
+            document.getElementById('c-d-t').innerText = dI.toLocaleDateString('es-ES', { month: 'long', year: 'numeric' });
+            document.getElementById('c-lbl-cons').innerText = modo === 'dia' ? 'Consumos' : 'Promedio';
+            document.getElementById('c-val-cons').innerText = modo === 'dia' ? consT.toFixed(2) : avg;
+            document.getElementById('c-v-c').innerText = `$ ${totC.toLocaleString()}`;
+            document.getElementById('c-v-t').innerText = `$ ${total.toLocaleString()}`;
+            document.getElementById('c-v-r').innerText = `$ ${(total * 0.7).toLocaleString()}`;
+            document.getElementById('c-v-v').innerText = `$ ${(total * 0.3).toLocaleString()}`;
+
+            const divIz = document.getElementById('c-izq');
+            if(modo === 'dia') {
+                let t = `<table class
