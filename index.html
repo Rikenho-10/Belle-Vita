@@ -356,4 +356,24 @@
         }
     }
 
-    funct
+    function capturar() {
+        calcular();
+        popToast("📸 Generando...");
+        setTimeout(function() {
+            html2canvas(document.getElementById('reporte-export'), { scale: 3, backgroundColor: "#0b1f15" }).then(function(c) {
+                var l = document.createElement('a');
+                l.download = 'BelleVita_' + Date.now() + '.png';
+                l.href = c.toDataURL('image/png');
+                l.click();
+                popToast("✅ Guardado");
+            });
+        }, 700);
+    }
+
+    function popToast(m) {
+        var t = document.getElementById('toast'); t.innerText = m; t.style.opacity = 1;
+        setTimeout(function() { t.style.opacity = 0; }, 3000);
+    }
+</script>
+</body>
+</html>
