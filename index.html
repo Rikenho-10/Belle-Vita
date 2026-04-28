@@ -3,377 +3,364 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Belle Vita Premium - Ricardo Master</title>
-    <!-- Librería para el reporte de WhatsApp -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <title>Belle Vita - Sistema de Gestión</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700;900&family=Playfair+Display:ital,wght@0,700;1,700&display=swap');
-
         :root {
-            --emerald: #0b1f15;
-            --gold: #c5a059;
-            --gold-light: #e4c68d;
-            --paper: #fdfaf5;
-            --rojo: #b03a2e;
-            --verde: #1e8449;
+            --emerald: #062c26;
+            --emerald-light: #0a3d34;
+            --gold: #d4af37;
+            --cream: #fef3c7;
+            --sunken: rgba(0, 0, 0, 0.5);
         }
-
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
-        body { margin: 0; font-family: 'Montserrat', sans-serif; background: var(--emerald); color: white; display: flex; justify-content: center; min-height: 100vh; }
-        .app-shell { width: 100%; max-width: 480px; background: var(--emerald); display: flex; flex-direction: column; position: relative; }
-
-        /* HEADER */
-        .header { padding: 30px 15px; text-align: center; }
-        .logo-box { 
-            width: 80px; height: 80px; background: white; margin: 0 auto 10px; 
-            border-radius: 50%; border: 3px solid var(--gold); 
-            display: flex; align-items: center; justify-content: center; overflow: hidden;
-            box-shadow: 0 0 20px var(--gold); cursor: pointer;
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background: #041512;
+            background-image: 
+                radial-gradient(circle at 50% 0%, var(--emerald-light) 0%, transparent 75%),
+                url('https://www.transparenttextures.com/patterns/marble-similar.png');
+            color: var(--cream);
+            min-height: 100vh;
         }
-        .logo-box img { width: 100%; height: 100%; object-fit: cover; }
-        .logo-box b { font-size: 30px; color: var(--emerald); }
-        .header h1 { font-family: 'Playfair Display', serif; color: var(--gold); margin: 0; font-size: 24px; letter-spacing: 3px; text-transform: uppercase; }
-
-        /* NAVEGACION */
-        .tabs { display: flex; padding: 0 20px; gap: 10px; margin-top: -15px; z-index: 100; }
-        .tab-btn { 
-            flex: 1; padding: 16px; border-radius: 12px; border: 1px solid var(--gold); 
-            font-weight: 900; font-size: 10px; cursor: pointer; text-align: center;
-            background: rgba(0,0,0,0.6); color: var(--gold); transition: 0.3s;
-        }
-        .tab-btn.active { background: var(--gold); color: var(--emerald); }
-
-        /* VISTAS */
-        .view { padding: 25px 20px; flex: 1; }
-        .view.hidden { display: none; }
-        .lux-card { background: rgba(255,255,255,0.05); border-radius: 20px; padding: 20px; margin-bottom: 25px; border: 1px solid rgba(197, 160, 89, 0.2); }
-        .lux-lbl { font-size: 10px; font-weight: 900; color: var(--gold); text-transform: uppercase; margin-bottom: 10px; display: block; letter-spacing: 2px; }
+        .font-serif { font-family: 'Playfair Display', serif; }
         
-        input, select { 
-            width: 100%; padding: 14px; border: none; border-radius: 10px; 
-            background: rgba(0,0,0,0.3); color: white; margin-bottom: 15px;
-            box-shadow: inset 3px 3px 6px rgba(0,0,0,0.5); font-family: inherit; font-weight: 600;
+        /* Efecto Hundido para Cajas de Texto */
+        .sunken-input {
+            background-color: rgba(0, 0, 0, 0.4) !important;
+            box-shadow: inset 4px 4px 10px rgba(0, 0, 0, 0.8), 
+                        inset -1px -1px 2px rgba(255, 255, 255, 0.05) !important;
+            border: 1px solid rgba(212, 175, 55, 0.2) !important;
+            color: var(--cream) !important;
+            transition: all 0.2s;
+        }
+        .sunken-input:focus {
+            border-color: var(--gold) !important;
+            box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.9) !important;
         }
 
-        .btn-lux { 
-            width: 100%; padding: 18px; border-radius: 15px; border: none; 
-            font-weight: 900; text-transform: uppercase; cursor: pointer; 
-            transition: 0.2s; letter-spacing: 1px;
+        .sunken-card {
+            background: rgba(10, 61, 52, 0.4);
+            box-shadow: inset 1px 1px 10px rgba(0,0,0,0.3);
+            border: 1px solid rgba(212, 175, 55, 0.1);
         }
-        .btn-gold { background: linear-gradient(135deg, var(--gold-light), var(--gold)); color: var(--emerald); }
-        .btn-dark { background: transparent; border: 1px solid var(--gold); color: var(--gold); }
-        .btn-green { background: var(--verde); color: white; margin-top: 20px; font-size: 16px; }
-        .btn-lux:active { transform: scale(0.97); opacity: 0.8; }
 
-        .log-item { display: flex; justify-content: space-between; align-items: center; padding: 12px; background: rgba(255,255,255,0.02); border-radius: 12px; margin-bottom: 8px; border-left: 4px solid var(--gold); }
-        .btn-del { background: rgba(176, 58, 46, 0.3); color: #ff6b6b; border: none; padding: 6px 12px; border-radius: 8px; font-size: 10px; font-weight: 900; cursor: pointer; }
-
-        /* REPORTE PARA WHATSAPP - DISEÑO 416418 */
-        #reporte-export {
-            width: 800px; 
-            min-height: 1100px; 
-            background: var(--emerald);
-            padding: 50px 40px; 
-            position: relative; color: white; 
-            display: flex; flex-direction: column;
-            border: 3px solid var(--gold);
+        .gold-btn {
+            background: linear-gradient(145deg, #d4af37, #b48a09);
+            box-shadow: 2px 2px 10px rgba(0,0,0,0.4);
+            color: black;
+            font-weight: 800;
         }
-        .c-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; }
-        .c-logo-group { display: flex; align-items: center; gap: 20px; }
-        .c-logo-circle { width: 130px; height: 130px; border: 4px solid var(--gold); border-radius: 50%; background: white; overflow: hidden; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 30px rgba(197, 160, 89, 0.5); }
-        .c-logo-circle img { width: 100%; height: 100%; object-fit: cover; }
-        .c-club-text h2 { font-family: 'Playfair Display', serif; font-size: 48px; margin: 0; letter-spacing: 3px; }
-        .c-club-text p { color: var(--gold); font-size: 12px; text-transform: uppercase; margin: 0; letter-spacing: 4px; }
+        
+        .gold-btn:active { transform: scale(0.95); box-shadow: inset 2px 2px 5px rgba(0,0,0,0.5); }
 
-        .c-date-box { border: 2.5px solid var(--gold); padding: 12px 25px; text-align: center; border-radius: 15px; background: rgba(0,0,0,0.3); }
-        .c-date-n { font-size: 55px; font-weight: 900; line-height: 1; }
-        .c-date-t { font-size: 14px; color: var(--gold); text-transform: uppercase; font-weight: 800; margin-top: 5px; }
-
-        .c-main { display: flex; gap: 30px; flex: 1; }
-        .c-left-col { flex: 1.25; }
-        .c-right-col { flex: 0.75; display: flex; flex-direction: column; gap: 20px; }
-
-        .c-table { width: 100%; border-collapse: separate; border-spacing: 0 3px; background: var(--paper); border-radius: 12px; border: 3px solid var(--gold); overflow: hidden; }
-        .c-table th { background: var(--emerald); color: var(--gold); padding: 15px; font-size: 16px; text-transform: uppercase; }
-        .c-table td { padding: 12px 15px; color: var(--emerald); font-weight: 800; font-size: 18px; border-bottom: 1px solid rgba(0,0,0,0.05); }
-
-        .c-exec-box { height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; background: rgba(255,255,255,0.03); border: 2px solid var(--gold); border-radius: 40px; text-align: center; padding: 20px; }
-        .c-exec-lbl { font-size: 20px; color: var(--gold); text-transform: uppercase; letter-spacing: 5px; margin-bottom: 15px; }
-        .c-exec-val { font-size: 110px; font-weight: 900; color: white; text-shadow: 0 0 30px var(--gold); }
-
-        .c-badge-pill { background: rgba(0,0,0,0.5); border: 2px solid var(--gold); border-radius: 60px; padding: 10px 15px; display: flex; justify-content: space-between; align-items: center; }
-        .c-badge-lbl { font-size: 14px; color: var(--gold); text-transform: uppercase; font-weight: 800; font-family: 'Playfair Display'; }
-        .c-badge-num { background: var(--verde); color: white; min-width: 65px; height: 65px; display: flex; align-items: center; justify-content: center; border-radius: 35px; font-size: 26px; font-weight: 900; }
-
-        .c-stat-card { background: var(--paper); color: var(--emerald); border-radius: 15px; padding: 18px 25px; display: flex; justify-content: space-between; align-items: center; border-left: 10px solid var(--gold); }
-        .c-stat-card.rojo { border-left-color: var(--rojo); color: var(--rojo); }
-        .c-stat-card.verde { border-left-color: var(--verde); color: var(--verde); }
-        .c-stat-val { font-size: 30px; font-weight: 900; }
-
-        .c-footer { margin-top: 40px; text-align: center; border-top: 2px solid rgba(197, 160, 89, 0.3); padding-top: 30px; font-family: 'Playfair Display', serif; font-style: italic; font-size: 24px; }
-
-        /* UTILS */
-        .msg-toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: var(--gold); color: var(--emerald); padding: 12px 25px; border-radius: 50px; font-weight: 900; font-size: 13px; opacity: 0; transition: 0.5s; z-index: 1000; pointer-events: none; }
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 10px; }
+        
+        .tab-active { color: var(--gold); border-bottom: 3px solid var(--gold); }
+        
+        @media print { .no-print { display: none; } }
     </style>
 </head>
 <body>
+    <div id="root"></div>
 
-<div class="app-shell">
-    <div class="header">
-        <input type="file" id="upLogo" style="display:none" accept="image/*">
-        <div class="logo-box" id="btnLogo">
-            <img id="logoUi" class="hidden">
-            <b id="logoDef">BV</b>
-        </div>
-        <h1>Belle Vita</h1>
-    </div>
+    <script type="text/babel">
+        const { useState, useMemo, useEffect } = React;
 
-    <div class="tabs">
-        <button class="tab-btn active" id="tab-o" onclick="navegar('oper')">REGISTRO</button>
-        <button class="tab-btn" id="tab-r" onclick="navegar('repo')">REPORTES</button>
-    </div>
+        const App = () => {
+            const [activeTab, setActiveTab] = useState('diario');
+            const [currentDate, setCurrentDate] = useState(new Date().toISOString().split('T')[0]);
+            const [logoUrl, setLogoUrl] = useState(localStorage.getItem('bv_logo_vfinal') || '');
+            
+            // Datos del día actual
+            const [clients, setClients] = useState([]);
+            const [closedProducts, setClosedProducts] = useState([]);
+            const [movements, setMovements] = useState([]); // {type, concept, amount}
 
-    <!-- OPERACION -->
-    <div id="view-oper" class="view">
-        <div class="lux-card">
-            <span class="lux-lbl">📅 Fecha Actual</span>
-            <input type="date" id="iFecha">
-        </div>
-        <div class="lux-card">
-            <span class="lux-lbl">🥤 Barra (Socio)</span>
-            <input type="text" id="iNom" placeholder="Nombre Socio">
-            <input type="number" id="iMon" placeholder="Monto $">
-            <button class="btn-lux btn-gold" onclick="guardar('normal')">Añadir Consumo</button>
-        </div>
-        <div class="lux-card">
-            <span class="lux-lbl">📦 Producto</span>
-            <input type="text" id="iProd" placeholder="Venta Cerrada">
-            <input type="number" id="iProdMon" placeholder="Monto $">
-            <button class="btn-lux btn-dark" onclick="guardar('cerrado')">Registrar Venta</button>
-        </div>
-        <span class="lux-lbl">Actividad</span>
-        <div id="bitacora"></div>
-    </div>
+            // Historial para reportes
+            const [history, setHistory] = useState(() => {
+                const saved = localStorage.getItem('bv_history_vfinal');
+                return saved ? JSON.parse(saved) : [];
+            });
 
-    <!-- REPORTE -->
-    <div id="view-repo" class="view hidden">
-        <div class="lux-card">
-            <span class="lux-lbl">Filtro de Reporte</span>
-            <select id="sPeriodo" onchange="calcular()">
-                <option value="dia">Reporte Diario (Lista)</option>
-                <option value="semana">Semanal (Vie-Jue)</option>
-                <option value="mes">Mensual</option>
-                <option value="rango">Personalizado</option>
-            </select>
-            <div id="fSimple">
-                <input type="date" id="fRef" onchange="calcular()">
-            </div>
-            <div id="fRango" class="hidden">
-                <input type="date" id="fDe" onchange="calcular()">
-                <input type="date" id="fA" onchange="calcular()">
-            </div>
-        </div>
+            // Formularios
+            const [cForm, setCForm] = useState({ name: '', amount: '' });
+            const [pForm, setPForm] = useState({ name: '', amount: '' });
+            const [mForm, setMForm] = useState({ type: 'tarjeta', concept: '', amount: '' });
 
-        <div style="position: absolute; top: -10000px; left: -10000px; width: 800px;">
-            <div id="reporte-export">
-                <div class="c-header">
-                    <div class="c-logo-group">
-                        <div class="c-logo-circle">
-                            <img id="canImg" class="hidden">
-                            <b id="canDef" style="font-size: 55px; color: #c5a059;">BV</b>
-                        </div>
-                        <div class="c-club-text">
-                            <h2>BELLE VITA</h2>
-                            <p>Luxury Nutrition Experience</p>
-                        </div>
-                    </div>
-                    <div class="c-date-box">
-                        <div class="c-date-n" id="c-num">21</div>
-                        <div class="c-date-t" id="c-txt">Abril, 2026</div>
-                    </div>
-                </div>
-                <div class="c-main">
-                    <div class="c-left-col" id="c-dinamico"></div>
-                    <div class="c-right-col">
-                        <div class="c-badge-pill">
-                            <span class="c-badge-lbl" id="c-lbl">Consumos</span>
-                            <span class="c-badge-num" id="c-cons">0</span>
-                        </div>
-                        <div class="c-stat-card"><span>P. Cerrado</span><div class="c-stat-val" id="c-v-c">$0</div></div>
-                        <div class="c-stat-card"><span>Vta Total</span><div class="c-stat-val" id="c-v-t">$0</div></div>
-                        <div class="c-stat-card rojo"><span>Rojo</span><div class="c-stat-val" id="c-v-r">$0</div></div>
-                        <div class="c-stat-card verde"><span>Verde</span><div class="c-stat-val" id="c-v-v">$0</div></div>
-                    </div>
-                </div>
-                <div class="c-footer">Belle Vita, belleza que nace de ti.</div>
-            </div>
-        </div>
-        <button class="btn-lux btn-green" onclick="capturar()">📸 GENERAR FLYER WHATSAPP</button>
-    </div>
-</div>
+            // Rango Semanal
+            const [weekStart, setWeekStart] = useState('');
+            const [weekEnd, setWeekEnd] = useState('');
 
-<div id="toast" class="msg-toast"></div>
+            // Cálculos
+            const totals = useMemo(() => {
+                const vtaClientes = clients.reduce((s, c) => s + Number(c.amount), 0);
+                const vtaCerrado = closedProducts.reduce((s, p) => s + Number(p.amount), 0);
+                const vtaTotal = vtaClientes + vtaCerrado;
+                
+                const cards = movements.filter(m => m.type === 'tarjeta').reduce((s, m) => s + Number(m.amount), 0);
+                const pends = movements.filter(m => m.type === 'pendiente').reduce((s, m) => s + Number(m.amount), 0);
+                const gas = movements.filter(m => m.type === 'gasto').reduce((s, m) => s + Number(m.amount), 0);
 
-<script>
-    // --- MOTOR BLINDADO ---
-    var database = JSON.parse(localStorage.getItem('bv_luxury_v100')) || [];
-    var logo_url = localStorage.getItem('bv_logo_v100') || null;
+                return {
+                    vtaClientes,
+                    vtaCerrado,
+                    vtaTotal,
+                    consumos: (vtaClientes / 90).toFixed(2),
+                    rojo: (vtaTotal * 0.7).toFixed(1),
+                    verde: (vtaTotal * 0.3).toFixed(1),
+                    efectivo: (vtaTotal - cards - pends - gas).toFixed(1),
+                    cards, pends, gas
+                };
+            }, [clients, closedProducts, movements]);
 
-    window.onload = function() {
-        var h = new Date().toISOString().split('T')[0];
-        document.getElementById('iFecha').value = h;
-        document.getElementById('fRef').value = h;
-        document.getElementById('fDe').value = h;
-        document.getElementById('fA').value = h;
-        if(logo_url) applyLogo(logo_url);
-        renderLog();
-        document.getElementById('btnLogo').onclick = function() { document.getElementById('upLogo').click(); };
-    };
-
-    document.getElementById('upLogo').onchange = function(e) {
-        var f = e.target.files[0];
-        if(f) {
-            var r = new FileReader();
-            r.onload = function(ev) {
-                logo_url = ev.target.result;
-                localStorage.setItem('bv_logo_v100', logo_url);
-                applyLogo(logo_url);
+            const handleLogo = (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onloadend = () => {
+                        setLogoUrl(reader.result);
+                        localStorage.setItem('bv_logo_vfinal', reader.result);
+                    };
+                    reader.readAsDataURL(file);
+                }
             };
-            r.readAsDataURL(f);
-        }
-    };
 
-    function applyLogo(u) {
-        document.getElementById('logoUi').src = u; document.getElementById('logoUi').classList.remove('hidden');
-        document.getElementById('logoDef').classList.add('hidden');
-        document.getElementById('canImg').src = u; document.getElementById('canImg').classList.remove('hidden');
-        document.getElementById('canDef').classList.add('hidden');
-    }
+            const addData = (state, setter, form, fSetter, empty) => {
+                if (!form.amount) return;
+                setter([...state, { ...form, id: Date.now() }]);
+                fSetter(empty);
+            };
 
-    function navegar(s) {
-        document.getElementById('view-oper').classList.toggle('hidden', s !== 'oper');
-        document.getElementById('view-repo').classList.toggle('hidden', s !== 'repo');
-        document.getElementById('tab-o').classList.toggle('active', s === 'oper');
-        document.getElementById('tab-r').classList.toggle('active', s === 'repo');
-        if(s === 'repo') calcular();
-    }
+            const removeData = (id, state, setter) => {
+                setter(state.filter(item => item.id !== id));
+            };
 
-    function guardar(tipo) {
-        var n, m, f = document.getElementById('iFecha').value;
-        if(tipo === 'normal') {
-            n = document.getElementById('iNom').value || "Socio";
-            m = parseFloat(document.getElementById('iMon').value);
-            document.getElementById('iNom').value = ''; document.getElementById('iMon').value = '';
-        } else {
-            n = document.getElementById('iProd').value || "Venta";
-            m = parseFloat(document.getElementById('iProdMon').value);
-            document.getElementById('iProd').value = ''; document.getElementById('iProdMon').value = '';
-        }
-        if(isNaN(m)) return;
-        database.push({ id: Date.now(), fecha: f, nombre: n, monto: m, tipo: tipo });
-        localStorage.setItem('bv_luxury_v100', JSON.stringify(database));
-        renderLog();
-        popToast("✅ Guardado");
-    }
+            const guardarCierre = () => {
+                if (clients.length === 0) {
+                    alert("Agregue clientes antes de cerrar el día.");
+                    return;
+                }
+                const newEntry = {
+                    date: currentDate,
+                    consumos: Number(totals.consumos),
+                    vtaTotal: totals.vtaTotal,
+                    verde: Number(totals.verde),
+                    efectivo: Number(totals.efectivo),
+                    clients: [...clients]
+                };
+                const updated = [...history.filter(h => h.date !== currentDate), newEntry];
+                setHistory(updated);
+                localStorage.setItem('bv_history_vfinal', JSON.stringify(updated));
+                alert("Cierre del día guardado con éxito.");
+            };
 
-    function borrar(id) {
-        database = database.filter(function(i) { return i.id !== id; });
-        localStorage.setItem('bv_luxury_v100', JSON.stringify(database));
-        renderLog();
-    }
+            // Lógica de reportes históricos
+            const weeklyData = useMemo(() => {
+                if (!weekStart || !weekEnd) return { verde: 0, consumos: 0, estimado: 0 };
+                const filtered = history.filter(h => h.date >= weekStart && h.date <= weekEnd);
+                const sumVerde = filtered.reduce((s, h) => s + h.verde, 0);
+                const sumConsumos = filtered.reduce((s, h) => s + h.consumos, 0);
+                return { verde: sumVerde, consumos: sumConsumos, estimado: sumVerde * 4 };
+            }, [history, weekStart, weekEnd]);
 
-    function renderLog() {
-        var b = document.getElementById('bitacora');
-        var hoy = document.getElementById('iFecha').value;
-        var f = database.filter(function(d) { return d.fecha === hoy; });
-        if(f.length === 0) { b.innerHTML = '<p style="text-align:center;color:#555;font-size:12px;">Sin ventas</p>'; return; }
-        b.innerHTML = f.map(function(i) {
-            return '<div class="log-item"><div><b>' + (i.tipo === 'cerrado' ? '📦' : '🥤') + ' ' + i.nombre + '</b><br><small>$' + i.monto.toFixed(2) + '</small></div><button class="btn-del" onclick="borrar(' + i.id + ')">X</button></div>';
-        }).join('');
-    }
+            return (
+                <div className="max-w-md mx-auto min-h-screen flex flex-col">
+                    {/* Header Premium */}
+                    <header className="p-6 flex flex-col items-center relative no-print">
+                        <label className="cursor-pointer mb-4 group">
+                            <div className="w-24 h-24 rounded-full border-2 border-gold sunken-card flex items-center justify-center overflow-hidden shadow-[0_0_20px_rgba(212,175,55,0.2)]">
+                                {logoUrl ? <img src={logoUrl} className="w-full h-full object-cover" /> : <span className="text-[10px] text-gold font-bold">LOGOTIPO</span>}
+                            </div>
+                            <input type="file" className="hidden" onChange={handleLogo} />
+                        </label>
+                        <h1 className="text-3xl font-serif text-gold tracking-widest uppercase">Belle Vita</h1>
+                        <p className="text-[10px] text-emerald-100/40 tracking-[0.4em] uppercase font-bold">Nutrición de Élite</p>
+                    </header>
 
-    function calcular() {
-        var m = document.getElementById('sPeriodo').value;
-        document.getElementById('fSimple').classList.toggle('hidden', m === 'rango');
-        document.getElementById('fRango').classList.toggle('hidden', m !== 'rango');
+                    {/* Nav Tabs */}
+                    <nav className="flex justify-around border-b border-white/5 mx-6 mb-6 no-print">
+                        {['diario', 'caja', 'reportes'].map(t => (
+                            <button key={t} onClick={() => setActiveTab(t)} className={`pb-2 text-[10px] font-bold uppercase tracking-widest transition-all ${activeTab === t ? 'tab-active' : 'opacity-40'}`}>
+                                {t === 'diario' ? 'Ventas' : t}
+                            </button>
+                        ))}
+                    </nav>
 
-        var res = [], dI, dF, setD = new Set();
-        if(m === 'rango') {
-            dI = new Date(document.getElementById('fDe').value + 'T12:00:00');
-            dF = new Date(document.getElementById('fA').value + 'T12:00:00');
-            res = database.filter(function(d) {
-                var f = new Date(d.fecha + 'T12:00:00');
-                if(f >= dI && f <= dF) { if(d.tipo === 'normal') setD.add(d.fecha); return true; }
-                return false;
-            });
-        } else {
-            var r = document.getElementById('fRef').value;
-            var dR = new Date(r + 'T12:00:00');
-            if(m === 'dia') { res = database.filter(function(d) { return d.fecha === r; }); dI = dR; dF = dR; }
-            else if(m === 'semana') {
-                var dia = dR.getDay();
-                var diff = (dia >= 5) ? (dia - 5) : (dia + 2);
-                dI = new Date(dR); dI.setDate(dR.getDate() - diff);
-                dF = new Date(dI); dF.setDate(dI.getDate() + 6);
-                res = database.filter(function(d) {
-                    var f = new Date(d.fecha + 'T12:00:00');
-                    if(f >= dI && f <= dF) { if(d.tipo === 'normal') setD.add(d.fecha); return true; }
-                    return false;
-                });
-            } else {
-                res = database.filter(function(d) {
-                    var f = new Date(d.fecha + 'T12:00:00');
-                    if(f.getMonth() === dR.getMonth() && f.getFullYear() === dR.getFullYear()) { if(d.tipo === 'normal') setD.add(d.fecha); return true; }
-                    return false;
-                });
-                dI = new Date(dR.getFullYear(), dR.getMonth(), 1);
-                dF = new Date(dR.getFullYear(), dR.getMonth() + 1, 0);
-            }
-        }
+                    <main className="flex-1 px-4 pb-24 space-y-6">
+                        
+                        {activeTab === 'diario' && (
+                            <div className="animate-in fade-in space-y-6">
+                                {/* Dashboard rápido */}
+                                <div className="grid grid-cols-2 gap-4">
+                                    <div className="sunken-card p-4 rounded-2xl text-center border-l-4 border-gold">
+                                        <p className="text-[9px] uppercase gold-text opacity-70 mb-1">Consumos</p>
+                                        <p className="text-4xl font-serif text-white">{totals.consumos}</p>
+                                    </div>
+                                    <div className="sunken-card p-4 rounded-2xl text-center">
+                                        <p className="text-[9px] uppercase text-emerald-200 opacity-70 mb-1">Venta Total</p>
+                                        <p className="text-2xl font-serif text-white">${totals.vtaTotal}</p>
+                                    </div>
+                                </div>
 
-        var b = res.filter(function(f) { return f.tipo === 'normal'; });
-        var sB = b.reduce(function(a, x) { return a + x.monto; }, 0);
-        var sC = res.filter(function(f) { return f.tipo === 'cerrado'; }).reduce(function(a, x) { return a + x.monto; }, 0);
-        var total = sB + sC;
-        var cons = sB / 90;
-        var avg = (cons / (setD.size || 1)).toFixed(2);
+                                {/* Form Clientes */}
+                                <section className="sunken-card p-5 rounded-3xl">
+                                    <h3 className="text-[10px] uppercase text-gold font-bold mb-4 tracking-widest">Registrar Cliente</h3>
+                                    <div className="flex gap-2 mb-4">
+                                        <input type="text" placeholder="Nombre" value={cForm.name} onChange={e => setCForm({...cForm, name: e.target.value})} className="sunken-input flex-1 p-3 rounded-xl outline-none text-sm" />
+                                        <input type="number" placeholder="$" value={cForm.amount} onChange={e => setCForm({...cForm, amount: e.target.value})} className="sunken-input w-20 p-3 rounded-xl outline-none text-center text-sm" />
+                                        <button onClick={() => addData(clients, setClients, cForm, setCForm, {name:'', amount:''})} className="gold-btn w-12 rounded-xl text-xl">+</button>
+                                    </div>
+                                    <div className="space-y-2 max-h-48 overflow-y-auto custom-scrollbar">
+                                        {clients.map(c => (
+                                            <div key={c.id} className="flex justify-between items-center bg-black/20 p-3 rounded-xl border border-white/5">
+                                                <span className="text-xs">{c.name}</span>
+                                                <div className="flex items-center gap-3">
+                                                    <span className="text-sm font-bold text-gold">${c.amount}</span>
+                                                    <button onClick={() => removeData(c.id, clients, setClients)} className="text-red-900 font-bold px-2">✕</button>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </section>
 
-        document.getElementById('c-num').innerText = dI.getDate();
-        document.getElementById('c-txt').innerText = dI.toLocaleDateString('es-ES', { month: 'long', year: 'numeric' });
-        document.getElementById('c-cons').innerText = m === 'dia' ? cons.toFixed(2) : avg;
-        document.getElementById('c-v-c').innerText = '$' + sC.toLocaleString();
-        document.getElementById('c-v-t').innerText = '$' + total.toLocaleString();
-        document.getElementById('c-v-r').innerText = '$' + (total * 0.7).toLocaleString();
-        document.getElementById('c-v-v').innerText = '$' + (total * 0.3).toLocaleString();
+                                {/* Producto Cerrado */}
+                                <section className="sunken-card p-5 rounded-3xl">
+                                    <h3 className="text-[10px] uppercase text-emerald-200/50 font-bold mb-4 tracking-widest">Producto Cerrado</h3>
+                                    <div className="flex gap-2 mb-4">
+                                        <input type="text" placeholder="Detalle" value={pForm.name} onChange={e => setPForm({...pForm, name: e.target.value})} className="sunken-input flex-1 p-3 rounded-xl outline-none text-sm" />
+                                        <input type="number" placeholder="$" value={pForm.amount} onChange={e => setPForm({...pForm, amount: e.target.value})} className="sunken-input w-20 p-3 rounded-xl outline-none text-center text-sm" />
+                                        <button onClick={() => addData(closedProducts, setClosedProducts, pForm, setPForm, {name:'', amount:''})} className="bg-emerald-900/50 border border-emerald-500/50 text-white w-12 rounded-xl text-xl">+</button>
+                                    </div>
+                                    {closedProducts.map(p => (
+                                        <div key={p.id} className="flex justify-between items-center p-2 text-[11px] opacity-60">
+                                            <span>• {p.name}</span>
+                                            <div className="flex gap-3">
+                                                <span>${p.amount}</span>
+                                                <button onClick={() => removeData(p.id, closedProducts, setClosedProducts)} className="text-red-900">✕</button>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </section>
+                            </div>
+                        )}
 
-        var boxIz = document.getElementById('c-dinamico');
-        if(m === 'dia') {
-            var html = '<table class="c-table"><thead><tr><th>#</th><th style="text-align:left">Socio</th><th style="text-align:right">$</th></tr></thead><tbody>';
-            b.forEach(function(i, idx) { html += '<tr><td style="text-align:center;color:#888;">' + (idx+1) + '</td><td>' + i.nombre + '</td><td style="text-align:right">' + i.monto + '</td></tr>'; });
-            boxIz.innerHTML = html + '</tbody></table>';
-        } else {
-            boxIz.innerHTML = '<div class="c-exec-box"><span class="c-exec-lbl">Consumos Totales</span><div class="c-exec-val">' + cons.toFixed(2) + '</div><span class="c-exec-lbl">Acumulado</span></div>';
-        }
-    }
+                        {activeTab === 'caja' && (
+                            <div className="animate-in slide-in-from-right space-y-6">
+                                <section className="sunken-card p-6 rounded-3xl">
+                                    <h3 className="text-[10px] uppercase text-gold font-bold mb-5 tracking-widest text-center">Gestión de Caja</h3>
+                                    <div className="flex justify-center gap-2 mb-6">
+                                        {['tarjeta', 'pendiente', 'gasto'].map(t => (
+                                            <button key={t} onClick={() => setMForm({...mForm, type: t})} className={`px-3 py-2 rounded-full text-[9px] font-bold uppercase transition-all ${mForm.type === t ? 'bg-gold text-black shadow-lg' : 'bg-black/40 opacity-40'}`}>
+                                                {t === 'tarjeta' ? '💳 Tarjeta' : t === 'pendiente' ? '⏳ Deuda' : '💸 Gasto'}
+                                            </button>
+                                        ))}
+                                    </div>
+                                    <div className="flex gap-2">
+                                        <input type="text" placeholder="¿Quién o qué?" value={mForm.concept} onChange={e => setMForm({...mForm, concept: e.target.value})} className="sunken-input flex-1 p-3 rounded-xl outline-none text-sm" />
+                                        <input type="number" placeholder="$" value={mForm.amount} onChange={e => setMForm({...mForm, amount: e.target.value})} className="sunken-input w-20 p-3 rounded-xl outline-none text-center text-sm" />
+                                        <button onClick={() => addData(movements, setMovements, mForm, setMForm, {...mForm, concept:'', amount:''})} className="gold-btn w-12 rounded-xl text-xl">+</button>
+                                    </div>
+                                </section>
 
-    function capturar() {
-        calcular();
-        popToast("📸 Generando...");
-        setTimeout(function() {
-            html2canvas(document.getElementById('reporte-export'), { scale: 3, backgroundColor: "#0b1f15" }).then(function(c) {
-                var l = document.createElement('a');
-                l.download = 'BelleVita_' + Date.now() + '.png';
-                l.href = c.toDataURL('image/png');
-                l.click();
-                popToast("✅ Guardado");
-            });
-        }, 700);
-    }
+                                <div className="space-y-2">
+                                    {movements.map(m => (
+                                        <div key={m.id} className="flex justify-between items-center bg-black/30 p-3 rounded-2xl border-l-4" 
+                                            style={{borderColor: m.type==='tarjeta'?'#60a5fa':m.type==='pendiente'?'#fb923c':'#ef4444'}}>
+                                            <div className="flex flex-col">
+                                                <span className="text-[9px] font-bold uppercase opacity-40">{m.type}</span>
+                                                <span className="text-xs">{m.concept}</span>
+                                            </div>
+                                            <div className="flex items-center gap-4">
+                                                <span className="text-sm font-bold">-${m.amount}</span>
+                                                <button onClick={() => removeData(m.id, movements, setMovements)} className="text-red-900">✕</button>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
 
-    function popToast(m) {
-        var t = document.getElementById('toast'); t.innerText = m; t.style.opacity = 1;
-        setTimeout(function() { t.style.opacity = 0; }, 3000);
-    }
-</script>
+                                <div className="bg-gradient-to-b from-emerald-900/40 to-black/80 p-8 rounded-[40px] border-2 border-emerald-500/20 text-center shadow-2xl">
+                                    <p className="text-[10px] text-emerald-200 font-bold uppercase tracking-[0.3em] mb-2 opacity-70">Efectivo a Entregar</p>
+                                    <p className="text-6xl font-serif text-white font-bold tracking-tighter drop-shadow-lg">${totals.efectivo}</p>
+                                </div>
+                            </div>
+                        )}
+
+                        {activeTab === 'reportes' && (
+                            <div className="animate-in slide-in-from-right space-y-8">
+                                {/* DIARIO */}
+                                <section className="sunken-card p-6 rounded-3xl border-t-4 border-gold">
+                                    <h2 className="text-xl font-serif text-gold text-center mb-4">Reporte Diario</h2>
+                                    <div className="grid grid-cols-2 gap-3 mb-6">
+                                        <div className="bg-red-950/20 p-4 rounded-2xl border border-red-900/30 text-center">
+                                            <p className="text-[9px] text-red-500 font-bold uppercase mb-1">Rojo (70%)</p>
+                                            <p className="text-xl font-serif">${totals.rojo}</p>
+                                        </div>
+                                        <div className="bg-green-950/20 p-4 rounded-2xl border border-green-900/30 text-center">
+                                            <p className="text-[9px] text-green-500 font-bold uppercase mb-1">Verde (30%)</p>
+                                            <p className="text-xl font-serif">${totals.verde}</p>
+                                        </div>
+                                    </div>
+                                    <button onClick={guardarCierre} className="w-full gold-btn py-4 rounded-2xl text-[10px] uppercase tracking-widest shadow-xl">Guardar Cierre de Hoy</button>
+                                </section>
+
+                                {/* SEMANAL */}
+                                <section className="sunken-card p-6 rounded-3xl">
+                                    <h2 className="text-lg font-serif text-gold text-center mb-4 italic">Reporte Semanal</h2>
+                                    <div className="flex gap-2 mb-6">
+                                        <<input type="date" value={weekStart} onChange={e => setWeekStart(e.target.value)} className="sunken-input flex-1 p-2 text-[10px] rounded-lg" />
+                                        <span className="flex items-center text-gold">/</span>
+                                        <input type="date" value={weekEnd} onChange={e => setWeekEnd(e.target.value)} className="sunken-input flex-1 p-2 text-[10px] rounded-lg" />
+                                    </div>
+                                    <div className="space-y-3">
+                                        <div className="flex justify-between text-xs opacity-60"><span>Sum. Consumos:</span><span>{weeklyData.consumos.toFixed(1)}</span></div>
+                                        <div className="flex justify-between text-xs opacity-60"><span>Sum. Verdes:</span><span>${weeklyData.verde.toFixed(1)}</span></div>
+                                        <div className="bg-gold p-4 rounded-2xl text-black flex justify-between items-center mt-2">
+                                            <span className="text-[10px] font-bold uppercase">Estimado Mensual:</span>
+                                            <span className="text-2xl font-serif font-bold">${weeklyData.estimado.toFixed(1)}</span>
+                                        </div>
+                                    </div>
+                                </section>
+
+                                {/* MENSUAL */}
+                                <section className="sunken-card p-6 rounded-3xl">
+                                    <h2 className="text-lg font-serif text-gold text-center mb-4">Resumen Mensual</h2>
+                                    <div className="space-y-4">
+                                        <div className="flex justify-between items-center border-b border-white/5 pb-2">
+                                            <span className="text-xs opacity-50">Total Sobres Verdes:</span>
+                                            <span className="text-green-500 font-bold text-lg">${history.reduce((a,b)=>a+b.verde,0).toFixed(1)}</span>
+                                        </div>
+                                        <div className="flex justify-between items-center">
+                                            <span className="text-xs opacity-50">Promedio Consumos:</span>
+                                            <span className="gold-text font-serif text-lg">{history.length > 0 ? (history.reduce((a,b)=>a+b.consumos,0)/history.length).toFixed(2) : 0}</span>
+                                        </div>
+                                    </div>
+                                </section>
+                            </div>
+                        )}
+                    </main>
+
+                    {/* Botón Flotante Cámara (Esquina Superior) */}
+                    <div className="fixed top-6 right-6 z-[100] no-print">
+                        {/* Se mantiene el botón arriba para no estorbar */}
+                    </div>
+
+                    {/* Reporte de WhatsApp (Visualización para Screenshot) */}
+                    {activeTab === 'diario' && clients.length > 0 && (
+                        <div className="fixed bottom-24 right-4 no-print">
+                            <button onClick={() => window.scrollTo(0, 0) || setTimeout(() => window.print(), 100)} className="gold-btn w-12 h-12 rounded-full text-xl shadow-2xl flex items-center justify-center">🖨️</button>
+                        </div>
+                    )}
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
 </body>
 </html>
