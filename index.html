@@ -2,110 +2,188 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Belle Vita Reporte</title>
+<title>Belle Vita Elite</title>
 <script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+body {
+  background: url('https://images.unsplash.com/photo-1582582429416-9a5c5d3b0a5d') no-repeat center/cover;
+}
+.overlay {
+  background: rgba(0,40,30,0.85);
+}
+.card {
+  background: rgba(0,0,0,0.7);
+  border-radius: 12px;
+}
+.gold { color:#d4af37; }
+</style>
 </head>
 
-<body class="bg-green-950 text-white p-4 text-center">
+<body class="overlay text-white p-4">
 
-<h1 class="text-3xl font-bold mb-4">BELLE VITA</h1>
+<h1 class="text-center text-4xl font-bold gold mb-4">BELLE VITA</h1>
 
-<input id="ventaDia" type="number" placeholder="Venta del día" class="text-black p-1 m-1">
-<input id="producto" type="number" placeholder="Producto cerrado" class="text-black p-1 m-1">
+<div class="grid md:grid-cols-2 gap-4">
 
-<br>
+<!-- TABLA -->
+<div class="card p-4">
 
-<button onclick="calcular()" class="bg-green-500 px-4 py-2 m-2">Calcular</button>
-<button onclick="generarImagen()" class="bg-purple-500 px-4 py-2 m-2">Generar Imagen</button>
+<h2 class="mb-2">Clientes</h2>
 
-<div class="mt-4">
-  <p>Consumos: <span id="consumos"></span></p>
-  <p>Venta total: $<span id="ventaTotal"></span></p>
-  <p class="text-red-400">Rojo: $<span id="rojo"></span></p>
-  <p class="text-green-400">Verde: $<span id="verde"></span></p>
+<input id="nombre" placeholder="Nombre" class="text-black p-1 mr-2">
+<input id="monto" type="number" placeholder="$" class="text-black p-1">
+
+<button onclick="agregar()" class="bg-green-600 px-3 py-1 mt-2">Agregar</button>
+
+<table class="w-full mt-4 text-sm">
+<thead>
+<tr class="border-b">
+<th>#</th><th>Nombre</th><th>$</th>
+</tr>
+</thead>
+<tbody id="tabla"></tbody>
+</table>
+
+<p class="mt-2 text-right">Total: $<span id="total"></span></p>
+
 </div>
 
-<canvas id="canvas" width="600" height="800" class="hidden"></canvas>
+<!-- PANEL -->
+<div class="grid gap-4">
+
+<div class="card p-4 text-center">
+<h2 class="gold">CONSUMOS</h2>
+<p class="text-6xl text-green-400" id="consumos"></p>
+</div>
+
+<div class="card p-4">
+
+<p>Producto cerrado: 
+<input id="producto" type="number" class="text-black w-24" oninput="render()">
+</p>
+
+<p class="mt-2">Venta total: $<span id="ventaTotal"></span></p>
+
+<p class="text-red-400">Rojo: $<span id="rojo"></span></p>
+<p class="text-green-400">Verde: $<span id="verde"></span></p>
+
+</div>
+
+<div class="card p-4">
+
+<p>Tarjeta: <input id="tarjeta" type="number" class="text-black w-24" oninput="render()"></p>
+<p>Pendiente: <input id="pendiente" type="number" class="text-black w-24" oninput="render()"></p>
+<p>Gastos: <input id="gastos" type="number" class="text-black w-24" oninput="render()"></p>
+
+<p class="text-yellow-300 text-xl mt-2">
+Efectivo: $<span id="efectivo"></span>
+</p>
+
+</div>
+
+<button onclick="generarImagen()" class="bg-purple-600 p-2 rounded">
+Generar Imagen
+</button>
+
+</div>
+
+</div>
+
+<canvas id="canvas" width="700" height="900" class="hidden"></canvas>
 
 <script>
+let clientes=[];
 
-let datos={};
+function agregar(){
+  const n=nombre.value;
+  const m=parseFloat(monto.value);
+  if(!n||!m)return;
+
+  clientes.push({nombre:n,monto:m});
+  render();
+}
+
+function render(){
+  tabla.innerHTML="";
+
+  clientes.forEach((c,i)=>{
+    tabla.innerHTML+=`
+    <tr class="border-b">
+      <td>${i+1}</td>
+      <td>${c.nombre}</td>
+      <td>$${c.monto}</td>
+    </tr>`;
+  });
+
+  calcular();
+}
 
 function calcular(){
-  const ventaDia=parseFloat(document.getElementById("ventaDia").value)||0;
-  const producto=parseFloat(document.getElementById("producto").value)||0;
+  const producto=parseFloat(producto.value)||0;
+  const tarjeta=parseFloat(tarjeta.value)||0;
+  const pendiente=parseFloat(pendiente.value)||0;
+  const gastos=parseFloat(gastos.value)||0;
 
+  const ventaDia=clientes.reduce((a,c)=>a+c.monto,0);
   const ventaTotal=ventaDia+producto;
+
   const consumos=ventaDia/90;
   const rojo=ventaTotal*0.7;
   const verde=ventaTotal*0.3;
+  const efectivo=ventaTotal-tarjeta-pendiente-gastos;
 
-  datos={ventaDia,producto,ventaTotal,consumos,rojo,verde};
+  total.innerText=ventaDia.toFixed(2);
+  consumosEl.innerText=consumos.toFixed(2);
+  ventaTotalEl.innerText=ventaTotal.toFixed(2);
+  rojoEl.innerText=rojo.toFixed(2);
+  verdeEl.innerText=verde.toFixed(2);
+  efectivoEl.innerText=efectivo.toFixed(2);
 
-  document.getElementById("consumos").innerText=consumos.toFixed(2);
-  document.getElementById("ventaTotal").innerText=ventaTotal.toFixed(2);
-  document.getElementById("rojo").innerText=rojo.toFixed(2);
-  document.getElementById("verde").innerText=verde.toFixed(2);
+  window.data={consumos,ventaTotal,rojo,verde};
 }
 
 function generarImagen(){
-  const c=document.getElementById("canvas");
+  const c=canvas;
   const ctx=c.getContext("2d");
 
-  // Fondo
   ctx.fillStyle="#022c22";
-  ctx.fillRect(0,0,600,800);
+  ctx.fillRect(0,0,700,900);
 
-  // Título
   ctx.fillStyle="#d4af37";
   ctx.font="bold 40px Arial";
   ctx.textAlign="center";
-  ctx.fillText("BELLE VITA",300,80);
-
-  ctx.fillStyle="white";
-  ctx.font="20px Arial";
-  ctx.fillText("Club de Nutrición",300,120);
-
-  // Caja consumos
-  ctx.fillStyle="#065f46";
-  ctx.fillRect(100,160,400,150);
+  ctx.fillText("BELLE VITA",350,80);
 
   ctx.fillStyle="#22c55e";
-  ctx.font="bold 60px Arial";
-  ctx.fillText(datos.consumos.toFixed(2),300,250);
+  ctx.font="bold 70px Arial";
+  ctx.fillText(window.data.consumos.toFixed(2),350,200);
 
   ctx.fillStyle="white";
   ctx.font="20px Arial";
-  ctx.fillText("CONSUMOS",300,290);
+  ctx.fillText("CONSUMOS",350,250);
 
-  // Datos
-  ctx.font="24px Arial";
+  ctx.fillText("Venta total: $" + window.data.ventaTotal.toFixed(2),350,350);
 
-  ctx.fillText("Venta del día: $" + datos.ventaDia.toFixed(2),300,380);
-  ctx.fillText("Producto cerrado: $" + datos.producto.toFixed(2),300,420);
-  ctx.fillText("Venta total: $" + datos.ventaTotal.toFixed(2),300,460);
-
-  // Rojo / Verde
   ctx.fillStyle="#ef4444";
-  ctx.fillText("Rojo: $" + datos.rojo.toFixed(2),300,540);
+  ctx.fillText("Rojo: $" + window.data.rojo.toFixed(2),350,420);
 
   ctx.fillStyle="#22c55e";
-  ctx.fillText("Verde: $" + datos.verde.toFixed(2),300,580);
+  ctx.fillText("Verde: $" + window.data.verde.toFixed(2),350,460);
 
-  // Fecha
-  ctx.fillStyle="white";
-  ctx.font="18px Arial";
-  const fecha=new Date().toLocaleDateString();
-  ctx.fillText(fecha,300,700);
-
-  // Descargar
-  const img=c.toDataURL();
   const link=document.createElement("a");
-  link.download="reporte_belle_vita.png";
-  link.href=img;
+  link.download="reporte.png";
+  link.href=c.toDataURL();
   link.click();
 }
 
+const consumosEl=document.getElementById("consumos");
+const ventaTotalEl=document.getElementById("ventaTotal");
+const rojoEl=document.getElementById("rojo");
+const verdeEl=document.getElementById("verde");
+const efectivoEl=document.getElementById("efectivo");
+
+render();
 </script>
 
 </body>
