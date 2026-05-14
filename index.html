@@ -3,59 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Belle Vita Fit - Gestión de Clientes</title>
+    <title>Belle Vita Fit - Club de Nutrición</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'menta': '#D1FAE5',
+                        'menta-fuerte': '#10B981',
+                        'beige-claro': '#F5F5F4',
+                        'hoja': '#065F46'
+                    }
+                }
+            }
+        }
+    </script>
 </head>
-<body class="bg-slate-900 text-slate-100 pb-20">
+<body class="bg-beige-claro text-slate-800 pb-20">
 
-    <header class="bg-slate-950 p-4 shadow-md border-b border-slate-800 flex justify-between items-center sticky top-0 z-10">
-        <h1 class="text-xl font-bold tracking-wider">BELLE VITA <span class="text-yellow-500">FIT</span></h1>
+    <header class="bg-white p-4 shadow-sm border-b border-menta-fuerte/20 flex justify-between items-center sticky top-0 z-10">
+        <h1 class="text-xl font-bold tracking-tight text-hoja">BELLE VITA <span class="text-menta-fuerte">FIT</span></h1>
         <div class="flex items-center gap-2">
-            <select id="selectCliente" onchange="cambiarCliente()" class="bg-slate-800 border border-slate-700 text-white text-sm rounded-lg px-2 py-1 focus:outline-none focus:border-yellow-500 max-w-[110px] truncate"></select>
-            <button onclick="agregarCliente()" class="bg-yellow-500 text-black rounded-full w-8 h-8 font-bold flex items-center justify-center text-lg hover:bg-yellow-400">+</button>
+            <select id="selectCliente" onchange="cambiarCliente()" class="bg-menta border border-menta-fuerte/30 text-hoja text-sm rounded-full px-3 py-1 focus:outline-none focus:ring-2 focus:ring-menta-fuerte/50 max-w-[120px] truncate font-medium"></select>
+            <button onclick="agregarCliente()" class="bg-menta-fuerte text-white rounded-full w-8 h-8 font-bold flex items-center justify-center shadow-sm hover:bg-hoja transition-colors">+</button>
         </div>
     </header>
 
     <main class="p-4 max-w-md mx-auto">
         <!-- SECCIÓN RUTINAS -->
         <section id="secRutinas">
-            <h2 class="text-2xl font-bold text-yellow-500 mb-4 flex items-center gap-2">🏋️‍♀️ Plan Semanal</h2>
+            <h2 class="text-2xl font-bold text-hoja mb-4 flex items-center gap-2">🌿 Plan de Bienestar</h2>
             <div id="contenedorRutinas" class="space-y-4"></div>
         </section>
 
         <!-- SECCIÓN EVALUACIÓN -->
         <section id="secProgreso" class="hidden">
             <div class="flex justify-between items-center mb-4">
-                <h2 class="text-2xl font-bold text-yellow-500">📉 Evaluación</h2>
-                <button id="btnEstado" onclick="alternarEstadoCliente()" class="text-xs px-3 py-1 rounded-full font-bold border transition-colors"></button>
+                <h2 class="text-2xl font-bold text-hoja">📊 Evaluación</h2>
+                <button id="btnEstado" onclick="alternarEstadoCliente()" class="text-[10px] px-3 py-1 rounded-full font-bold border uppercase tracking-wider transition-colors"></button>
             </div>
             
-            <div id="formMedicion" class="bg-slate-800 p-4 rounded-xl border border-slate-700 mb-6 shadow-lg">
-                <h3 class="font-bold mb-3 text-white border-b border-slate-700 pb-2">Nueva Medición</h3>
-                <div class="grid grid-cols-2 gap-3 mb-4">
-                    <div><label class="text-slate-400 text-xs block mb-1">Peso (kg)</label><input type="number" id="inpPeso" step="0.1" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-white"></div>
-                    <div><label class="text-slate-400 text-xs block mb-1">Cintura (cm)</label><input type="number" id="inpCintura" step="0.1" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-white"></div>
-                    <div><label class="text-slate-400 text-xs block mb-1">IMC</label><input type="number" id="inpIMC" step="0.1" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-white"></div>
-                    <div><label class="text-slate-400 text-xs block mb-1">% Grasa</label><input type="number" id="inpGrasa" step="0.1" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-white"></div>
-                    <div><label class="text-slate-400 text-xs block mb-1">% Músculo</label><input type="number" id="inpMusculo" step="0.1" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-white"></div>
-                    <div><label class="text-slate-400 text-xs block mb-1">G. Visceral</label><input type="number" id="inpVisceral" step="1" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-white"></div>
-                    <div><label class="text-slate-400 text-xs block mb-1">Metabolismo</label><input type="number" id="inpMetabolismo" step="1" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-white"></div>
-                    <div><label class="text-slate-400 text-xs block mb-1">Edad Bio.</label><input type="number" id="inpEdad" step="1" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-white"></div>
+            <div id="formMedicion" class="bg-white p-5 rounded-2xl border border-menta shadow-sm mb-6">
+                <h3 class="font-bold mb-4 text-hoja border-b border-menta pb-2 flex items-center gap-2">✨ Nueva Medición</h3>
+                <div class="grid grid-cols-2 gap-4 mb-5">
+                    <div><label class="text-slate-500 text-[10px] uppercase font-bold block mb-1">Peso (kg)</label><input type="number" id="inpPeso" step="0.1" class="w-full bg-beige-claro border border-slate-200 rounded-xl px-3 py-2 text-hoja focus:border-menta-fuerte focus:outline-none"></div>
+                    <div><label class="text-slate-500 text-[10px] uppercase font-bold block mb-1">Cintura (cm)</label><input type="number" id="inpCintura" step="0.1" class="w-full bg-beige-claro border border-slate-200 rounded-xl px-3 py-2 text-hoja focus:border-menta-fuerte focus:outline-none"></div>
+                    <div><label class="text-slate-500 text-[10px] uppercase font-bold block mb-1">IMC</label><input type="number" id="inpIMC" step="0.1" class="w-full bg-beige-claro border border-slate-200 rounded-xl px-3 py-2 text-hoja focus:border-menta-fuerte focus:outline-none"></div>
+                    <div><label class="text-slate-500 text-[10px] uppercase font-bold block mb-1">% Grasa</label><input type="number" id="inpGrasa" step="0.1" class="w-full bg-beige-claro border border-slate-200 rounded-xl px-3 py-2 text-hoja focus:border-menta-fuerte focus:outline-none"></div>
+                    <div><label class="text-slate-500 text-[10px] uppercase font-bold block mb-1">% Músculo</label><input type="number" id="inpMusculo" step="0.1" class="w-full bg-beige-claro border border-slate-200 rounded-xl px-3 py-2 text-hoja focus:border-menta-fuerte focus:outline-none"></div>
+                    <div><label class="text-slate-500 text-[10px] uppercase font-bold block mb-1">G. Visceral</label><input type="number" id="inpVisceral" step="1" class="w-full bg-beige-claro border border-slate-200 rounded-xl px-3 py-2 text-hoja focus:border-menta-fuerte focus:outline-none"></div>
+                    <div><label class="text-slate-500 text-[10px] uppercase font-bold block mb-1">Metabolismo</label><input type="number" id="inpMetabolismo" step="1" class="w-full bg-beige-claro border border-slate-200 rounded-xl px-3 py-2 text-hoja focus:border-menta-fuerte focus:outline-none"></div>
+                    <div><label class="text-slate-500 text-[10px] uppercase font-bold block mb-1">Edad Bio.</label><input type="number" id="inpEdad" step="1" class="w-full bg-beige-claro border border-slate-200 rounded-xl px-3 py-2 text-hoja focus:border-menta-fuerte focus:outline-none"></div>
                 </div>
-                <button onclick="guardarMedicion()" class="w-full bg-yellow-500 text-slate-900 font-bold py-3 rounded-lg uppercase tracking-wide">Guardar</button>
+                <button onclick="guardarMedicion()" class="w-full bg-menta-fuerte hover:bg-hoja text-white font-bold py-3 rounded-xl uppercase tracking-widest transition-all shadow-md active:scale-95">Guardar Evaluación</button>
             </div>
 
-            <div class="bg-slate-800 rounded-xl border border-slate-700 overflow-hidden shadow-lg">
-                <div class="bg-slate-900 px-4 py-3 font-bold border-b border-slate-700 text-slate-300 italic" id="msgEstado">Historial</div>
-                <div id="historialEvaluaciones" class="divide-y divide-slate-700"></div>
+            <div class="bg-white rounded-2xl border border-menta shadow-sm overflow-hidden">
+                <div class="bg-menta/30 px-4 py-3 font-bold border-b border-menta text-hoja italic text-sm" id="msgEstado">Historial de progreso</div>
+                <div id="historialEvaluaciones" class="divide-y divide-menta/50"></div>
             </div>
         </section>
     </main>
 
-    <nav class="fixed bottom-0 w-full bg-slate-950 border-t border-slate-800 flex justify-around p-3 z-20">
-        <button onclick="cambiarPestana('rutinas')" class="text-yellow-500 font-bold flex flex-col items-center"><span class="text-xl">🏋️‍♀️</span><span class="text-xs">Rutinas</span></button>
-        <button onclick="cambiarPestana('progreso')" class="text-slate-400 hover:text-yellow-500 font-bold flex flex-col items-center"><span class="text-xl">📉</span><span class="text-xs">Evaluación</span></button>
+    <nav class="fixed bottom-0 w-full bg-white border-t border-menta flex justify-around p-3 z-20 shadow-[0_-2px_10px_rgba(0,0,0,0.05)]">
+        <button onclick="cambiarPestana('rutinas')" id="navRutinas" class="text-menta-fuerte font-bold flex flex-col items-center">
+            <span class="text-2xl">🥗</span><span class="text-[10px] uppercase mt-1">Rutinas</span>
+        </button>
+        <button onclick="cambiarPestana('progreso')" id="navProgreso" class="text-slate-400 font-bold flex flex-col items-center">
+            <span class="text-2xl">📈</span><span class="text-[10px] uppercase mt-1">Progreso</span>
+        </button>
     </nav>
 
     <script src="script.js"></script>
