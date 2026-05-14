@@ -1,5 +1,25 @@
-body { font-family: sans-serif; }
+/* style.css */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
+body { 
+    font-family: 'Inter', sans-serif;
+    -webkit-tap-highlight-color: transparent;
+}
+
 .hidden { display: none; }
+
 input[type=number]::-webkit-inner-spin-button, 
-input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
-.hover-bg-slate-750:hover { background-color: #1e293b; }
+input[type=number]::-webkit-outer-spin-button { 
+    -webkit-appearance: none; 
+    margin: 0; 
+}
+
+/* Transiciones suaves para las pestañas */
+#secRutinas, #secProgreso {
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
