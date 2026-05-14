@@ -1,0 +1,5 @@
+body { font-family: sans-serif; }
+.hidden { display: none; }
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+.hover-bg-slate-750:hover { background-color: #1e293b; }
